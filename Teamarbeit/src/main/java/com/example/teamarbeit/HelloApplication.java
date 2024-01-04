@@ -1,18 +1,14 @@
 package com.example.teamarbeit;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
+
 
 import java.util.HashSet;
 import java.util.Random;
@@ -20,10 +16,11 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import java.io.File;
+
 
 import java.io.IOException;
 import java.util.Set;
@@ -63,11 +60,14 @@ public class HelloApplication extends Application {
     Canvas gameCanvas;
     private final Set<KeyCode> keysPressedP1 = new HashSet<>(); //HashSet für Input Player 1
     private final Set<KeyCode> keysPressedP2 = new HashSet<>(); //HashSet für Input Player 2
+    private static MediaPlayer mediaPlayer1 ,mediaPlayer2;
+
 
 
 
     @Override
     public void start(Stage primaryStage) throws IOException {
+
 
         currentStage = primaryStage;
         currentStage.setTitle("Pong Project");
@@ -81,6 +81,9 @@ public class HelloApplication extends Application {
                 startCountdown(5, ball, gc, 100, WINDOW_WIDTH / 2, (int)WINDOW_HEIGHT / 2);
                 updateCanvas();
                 updateScore();
+                playBackgroundMusic("E:/Program Files/JetBrains/IntelliJ IDEA Community Edition 2023.2.1/Projects/PROG-Projekt/Teamarbeit/src/main/resources/com.example.teamarbeit/children-electro-swing-2_medium-178290.mp3");
+
+
             });
 
         //Create Label/Text
@@ -113,12 +116,22 @@ public class HelloApplication extends Application {
         gcRoot.setStyle("-fx-background-color: black;"); // Set the background color
         createPaddles();
         createBall();
+        currentStage.setOnCloseRequest(windowEvent -> {
+            if (mediaPlayer1 != null) {
+                mediaPlayer1.stop();
+            }
+        });
 
 
-        
+
+
         currentStage.setResizable(false);
         currentStage.setScene(scene1); // Set gameScene as the initial scene
         currentStage.show();
+
+
+
+
 
         Timeline tl = new Timeline(new KeyFrame(Duration.millis(10), e -> paddleMovement())); //Timeline updatet das Game konstant alle 10 ms --> 100FPS
         tl.setCycleCount(Timeline.INDEFINITE); //Timeline wird für immer laufen bzw. wird indefinite Mal ausgeführt
@@ -215,6 +228,23 @@ public class HelloApplication extends Application {
         player1.move();
         player2.move();
         ball.move();
+    }
+    private void playBackgroundMusic(String filePath) {
+        Media backgroundMusic = new Media(new File(filePath).toURI().toString());
+        mediaPlayer1 = new MediaPlayer(backgroundMusic);
+        mediaPlayer1.setCycleCount(MediaPlayer.INDEFINITE);
+        mediaPlayer1.setVolume(0.2);
+        mediaPlayer1.play();
+        mediaPlayer1.setOnError(() -> {
+            System.out.println("Media error occurred: " + mediaPlayer1.getError());
+            // You can perform error handling or logging here
+        });
+    }
+    public static void playBounceSound(String filePath) {
+        Media bounceSound = new Media(new File(filePath).toURI().toString());
+        mediaPlayer2 = new MediaPlayer(bounceSound);
+        mediaPlayer2.setCycleCount(1);
+        mediaPlayer2.play();
     }
 
     private void run (GraphicsContext gc) {

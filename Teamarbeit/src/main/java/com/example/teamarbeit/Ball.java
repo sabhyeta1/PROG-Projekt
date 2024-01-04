@@ -73,14 +73,17 @@ public class Ball {
             // Check for collisions with player 1
             if (xPosBall <= PADDLE_WIDTH && yPosBall >= player1.getYPaddlePosition() && yPosBall <= player1.getYPaddlePosition() + PADDLE_HEIGHT && xBallVelocity < 0) {
                 xBallVelocity = -xBallVelocity;// Change horizontal direction
+                playBounceSound("E:/Program Files/JetBrains/IntelliJ IDEA Community Edition 2023.2.1/Projects/PROG-Projekt/Teamarbeit/src/main/resources/com.example.teamarbeit/Single_Ping_pong_ball_bouncing_sound.mp3");
                 if (ballSpeed <= 7) {
                     ballSpeed = ballSpeed + 0.5;
                 }
+
             }
 
             // Check for collisions with player 2
             if (xPosBall >= WINDOW_WIDTH - PADDLE_WIDTH - BALL_DIAMETER && yPosBall >= player2.getYPaddlePosition() && yPosBall <= player2.getYPaddlePosition() + PADDLE_HEIGHT && xBallVelocity > 0) {
                 xBallVelocity = -xBallVelocity;// Change horizontal direction
+                playBounceSound("E:/Program Files/JetBrains/IntelliJ IDEA Community Edition 2023.2.1/Projects/PROG-Projekt/Teamarbeit/src/main/resources/com.example.teamarbeit/Single_Ping_pong_ball_bouncing_sound.mp3");
                 if (ballSpeed <= 7) {
                     ballSpeed = ballSpeed + 0.5;
                 }
