@@ -19,6 +19,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.io.InputStream;
+
 public class GameMenu extends Application {
 
     private Stage primaryStage;
@@ -43,20 +45,30 @@ public class GameMenu extends Application {
     // Use "file://" protocol to specify a local file path
     private void switchToMenu() {
         VBox menuLayout = createMenuLayout();
-        String imagePath = "file:///Users/mbilla19/IdeaProjects/GameMenu/images/WhatsApp Image 2023-12-24 at 23.43.20.jpeg";
-        StackPane root = createBackground(imagePath, menuLayout);
-        primaryStage.setScene(new Scene(root, 800, 600));
+        Image image1 = loadImage("stage1.png");
+        if (image1 != null) {
+            StackPane root = createBackground(image1, menuLayout);
+            primaryStage.setScene(new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT));
+        } else {
+            // Handle the case where the image isn't loaded correctly
+            System.out.println("Failed to load stage1.png. Check if the file exists and is in the correct directory.");
+            primaryStage.setScene(new Scene(new Label("Failed to load resources"), WINDOW_WIDTH, WINDOW_HEIGHT));
+        }
     }
 
     private void switchToSettings() {
         VBox settingsLayout = createSettingsLayout();
-        String imagePath = "file:///Users/mbilla19/IdeaProjects/GameMenu/images/WhatsApp Image 2023-12-24 at 23.43.20.jpeg";
-        StackPane root = createBackground(imagePath, settingsLayout);
-        primaryStage.setScene(new Scene(root, 800, 600));
+        Image image2 = loadImage("stage2.png"); // Modified to use loadImage method
+        if (image2 != null) {
+            StackPane root = createBackground(image2, settingsLayout);
+            primaryStage.setScene(new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT));
+        } else {
+            System.out.println("Failed to load stage2.png. Check if the file exists and is in the correct directory.");
+            primaryStage.setScene(new Scene(new Label("Failed to load resources"), WINDOW_WIDTH, WINDOW_HEIGHT));
+        }
     }
 
-    private StackPane createBackground(String imagePath, VBox content) {
-        Image backgroundImage = new Image(imagePath);
+    private StackPane createBackground(Image backgroundImage, VBox content) {
         ImageView backgroundImageView = new ImageView(backgroundImage);
         backgroundImageView.setFitWidth(800);
         backgroundImageView.setFitHeight(600);
@@ -177,5 +189,14 @@ public class GameMenu extends Application {
         Label label = new Label(text);
         label.setStyle("-fx-font-size: 24px; -fx-text-fill: white;");
         return label;
+    }
+
+    private Image loadImage(String resourceName) {
+        InputStream stream = getClass().getResourceAsStream("/" + resourceName); // note the slash at the beginning
+        if (stream == null) {
+            System.out.println("Resource not found: " + resourceName);
+            return null;
+        }
+        return new Image(stream);
     }
 }
