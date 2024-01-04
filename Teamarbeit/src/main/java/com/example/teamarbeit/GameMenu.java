@@ -23,7 +23,7 @@ import java.io.InputStream;
 
 public class GameMenu extends Application {
 
-    private Stage primaryStage;
+    public Stage primaryStage;
     static final int WINDOW_WIDTH = 800;
     static final double WINDOW_HEIGHT = 600;
 
@@ -92,6 +92,7 @@ public class GameMenu extends Application {
         addGlowEffectOnHover(quitButton);
 
         startButton.setOnAction(e -> {
+            createAvatarSelection();
             System.out.println("Navigating to Avatar Selection Screen");
             // Hier den Code einfügen um auf Avatar Auswahl zuzugreifen
             Label labelGameScene = new Label("This is Gamescene!");
@@ -126,6 +127,10 @@ public class GameMenu extends Application {
 
         return layout;
     }
+    private void createAvatarSelection(){
+        Avatars avatarSelection = new Avatars(WINDOW_WIDTH, (int) WINDOW_HEIGHT, primaryStage);
+    }
+
 
     private VBox createSettingsLayout() {
         Label titleLabel = new Label("SETTINGS");
