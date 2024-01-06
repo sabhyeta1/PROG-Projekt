@@ -85,7 +85,7 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
 
     private void switchToGame() {
         try {
-            game.start(new Stage());
+            game.start(primaryStage);
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error starting the game.");
