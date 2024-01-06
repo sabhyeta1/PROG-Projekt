@@ -28,6 +28,8 @@ public class Avatars {
     private AvatarSelectionCompleteCallback callback;
 
 
+    //contructor that sets up avatar selection screen, dimensions and stage where avatars will be displayed
+    //callback = eine instanz, wird verwendet um bekannt zu geben, wenn avatar selection gemacht wurde
     public Avatars(int windowWidth, int windowHeight, Stage currentStage, AvatarSelectionCompleteCallback callback){
         this.callback = callback;
         this.window = currentStage;
@@ -36,14 +38,14 @@ public class Avatars {
 
         instructions = new Label("Player 1: Select your character");
 
-        // Avatar Selection Screen
+        // Avatar Selection Screen - images layout
 
         //image1 = avatar1
         Image image1 = new Image(getClass().getResourceAsStream("/avatar1.png"));
         ImageView view1 = new ImageView(image1);
         view1.setFitHeight(250); // Sets the height of the avatar image
         view1.setPreserveRatio(true);
-        Button avatar1 = new Button("", view1);
+        Button avatar1 = new Button("", view1); //erlaubt player auf avatar zu klicken, falls er selektieren will
 
         //image2 = avatar2
         Image image2 = new Image(getClass().getResourceAsStream("/avatar2.png"));
@@ -72,9 +74,9 @@ public class Avatars {
         avatar4.setOnAction(e -> selectCharacter(image4));
 
 
-        GridPane grid = new GridPane();
-        grid.setVgap(20);
-        grid.setHgap(20);
+        GridPane grid = new GridPane(); // arranges the avatars into a grid view
+        grid.setVgap(20); //vertical size
+        grid.setHgap(20); //horizontal size
         grid.setAlignment(Pos.CENTER); // Center the content of the GridPane
 
 
@@ -85,10 +87,10 @@ public class Avatars {
         grid.add(avatar4, 1, 1); // Bottom-right
 
 
-        VBox selectionLayout = new VBox(20);
+        VBox selectionLayout = new VBox(20); //stacks instructions and grid of avatars vertically
         selectionLayout.setAlignment(Pos.CENTER); // Center the children of VBox
         selectionLayout.getChildren().addAll(instructions, grid);
-        Scene selectionScene = new Scene(selectionLayout, this.windowWidth, this.windowHeight);
+        Scene selectionScene = new Scene(selectionLayout, this.windowWidth, this.windowHeight); //displays avatars screen
 
         currentStage.setScene(selectionScene);
 
@@ -101,7 +103,7 @@ public class Avatars {
 
 
 
-    private void selectCharacter(Image selectedImage) {
+    private void selectCharacter(Image selectedImage) { //player selection
         if (playerSelecting == 1) {
             selectedImagePlayer1 = selectedImage;
             instructions.setText("Player 2: Select your character");
@@ -109,13 +111,13 @@ public class Avatars {
         } else {
             selectedImagePlayer2 = selectedImage;
             if (callback != null) {
-                callback.onSelectionComplete();
+                callback.onSelectionComplete(); //callback saying both player have been selected
                 // Both players have selected, start the game
             }
         }
     }
 
-    private void startGame() {
+    private void startGame() { //placeholder
         // Game Screen
         Label player1Label = new Label("Player 1 character selected!");
         Label player2Label = new Label("Player 2 character selected!");
