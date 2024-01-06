@@ -42,22 +42,22 @@ public class VisualCountdown {
         drawCountdown();
     }
     void countdownLogic() {
-        tl = new Timeline();
-        tl.setCycleCount(countdownStartValue);
-        tl.getKeyFrames().add(new KeyFrame(Duration.seconds(1), event -> {
-            currentCountdownValue--;
+        tl = new Timeline(); // Timeline, damit Code wiederholt ausgeführt wird
+        tl.setCycleCount(countdownStartValue); //Timeline wird so oft ausgeführt, wie die Dauer des Countdowns (5s countdown --> Timeline wird 5x ausgeführt)
+        tl.getKeyFrames().add(new KeyFrame(Duration.seconds(1), event -> { //Jede Sekunde kommt ein Keyframe/Update
+            currentCountdownValue--; //Countdown wird um eins niedriger und gezeichnet
             drawCountdown();
-            if (currentCountdownValue <= 0 && tl != null) {
+            if (currentCountdownValue <= 0 && tl != null) { //Wenn ein Countdown existiert und dieser 0 erreicht, wird die timeline gestoppt
                 tl.stop();
 
-                ball.gameSceneIsRunning = true;
+                ball.gameSceneIsRunning = true; //Wenn Countdown 0 erreicht, darf der Ball sich bewegen
             }
         }));
         tl.play();
     }
     private void drawCountdown(){
         gc.setFill(Color.WHITE);
-        gc.setFont(new Font(fontSize));
+        gc.setFont(new Font(fontSize)); // Übernehme die übergebene Font Größe
         gc.fillText(Integer.toString(currentCountdownValue), fontXPos, fontYPos);
     }
 

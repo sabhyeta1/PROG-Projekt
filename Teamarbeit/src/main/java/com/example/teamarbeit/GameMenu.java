@@ -24,8 +24,8 @@ import java.io.InputStream;
 public class GameMenu extends Application implements AvatarSelectionCompleteCallback {
 
     public Stage primaryStage;
-    static final int WINDOW_WIDTH = 1000;
-    static final double WINDOW_HEIGHT = 666.6666666666666666666666;
+    static final int WINDOW_WIDTH = 800;
+    static final double WINDOW_HEIGHT = 600;
 
     //public static void main(String[] args) {
         //launch(args);
@@ -74,8 +74,8 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
 
     private StackPane createBackground(Image backgroundImage, VBox content) {
         ImageView backgroundImageView = new ImageView(backgroundImage);
-        backgroundImageView.setFitWidth(WINDOW_WIDTH);
-        backgroundImageView.setFitHeight(WINDOW_HEIGHT + 0.333333333333);
+        backgroundImageView.setFitWidth(800);
+        backgroundImageView.setFitHeight(600);
 
         StackPane stackPane = new StackPane();
         stackPane.getChildren().addAll(backgroundImageView, content);

@@ -69,14 +69,14 @@ public class HelloApplication extends Application {
     public void start(Stage primaryStage) throws IOException {
 
 
-        currentStage = primaryStage;
-        currentStage.setTitle("Pong Project");
+        currentStage = primaryStage; //Stage wird übernommen
+        currentStage.setTitle("Pong Project"); //Stage (Fenster) bekommt Titel Pong Projekt (Ist oben links zu sehen)
         //Create Button
-        button = new Button("Welcome to Pong");
+        button = new Button("Welcome to Pong"); //Button mit "Welcome to Pong" angeschrieben
         button.setOnAction(event -> {
             currentStage.setScene(gameScene); //Wenn Knopf gedrückt wird, wechsel auf gameScene und stelle gameSceneIsRunning auf true
 
-                createPaddles();
+                createPaddles(); //Für Methoden für Zeile 79 bis 84 siehe Unten
                 createBall();
                 startCountdown(5, ball, gc, 100, WINDOW_WIDTH / 2, (int)WINDOW_HEIGHT / 2);
                 updateCanvas();
@@ -87,36 +87,36 @@ public class HelloApplication extends Application {
             });
 
         //Create Label/Text
-        Label welcomeText = new Label("Welcome to the game!");
-        welcomeText.setLayoutX((double) WINDOW_WIDTH /2);
+        Label welcomeText = new Label("Welcome to the game!"); //Das gleiche wie sout aber für JavaFx (Text wird erstellt)
+        welcomeText.setLayoutX((double) WINDOW_WIDTH /2); // Zeile 91-92: Position des Textes
         welcomeText.setLayoutY(WINDOW_HEIGHT/2 + 100);
 
 
-        StackPane layout = new StackPane();
-        layout.getChildren().addAll(welcomeText,button);
+        StackPane layout = new StackPane(); //Layout wird erstellt (ein Layout ist ein Container, der alles speichert, was abgebildet werden soll)
+        layout.getChildren().addAll(welcomeText,button); // welcomeText und button werden dem Layout hinzugefügt, damit es in einer Scene abgebildet werden kann
 
 
-        Scene scene1 = new Scene(layout, WINDOW_WIDTH, WINDOW_HEIGHT);
+        Scene scene1 = new Scene(layout, WINDOW_WIDTH, WINDOW_HEIGHT); //Scene wird erstellt
 
 
 
 
         //Create gameCanvas to draw our Game
 
-        score = new Score(WINDOW_WIDTH,(int) WINDOW_HEIGHT);
+        score = new Score(WINDOW_WIDTH,(int) WINDOW_HEIGHT); //Punkteanzahl wird erstellt
 
-        gameCanvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGHT);
-        gc = gameCanvas.getGraphicsContext2D();
-
-
+        gameCanvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGHT); //Ein Canvas wird erstellt (Ein Canvas ist wie eine Szene, nur können dort Objekte wie Rechtecke oder Kreise gezeichnet werden)
+        gc = gameCanvas.getGraphicsContext2D(); //unser Zeichenobjekt wird als gc gespeichert, so können wir Funktionen ausführen, die das Objekt betreffen (z.B. Farbe, Größe etc. ändern).
 
 
-        StackPane gcRoot = new StackPane(gameCanvas);
-        gameScene = new Scene(gcRoot, WINDOW_WIDTH, WINDOW_HEIGHT); //neue Szene wird erstellt mit gcRoot
+
+
+        StackPane gcRoot = new StackPane(gameCanvas); //noch ein Layout wird erstellt mit StackPane
+        gameScene = new Scene(gcRoot, WINDOW_WIDTH, WINDOW_HEIGHT); //neue Szene wird erstellt mit gcRoot und größe WINDOW_WIDTH X WINDOW_HEIGHT
         gcRoot.setStyle("-fx-background-color: black;"); // Set the background color
         createPaddles();
         createBall();
-        currentStage.setOnCloseRequest(windowEvent -> {
+        currentStage.setOnCloseRequest(windowEvent -> { // Sobald Fenster geschlossen wird, stoppe die Hintergrundmusik, falls schon vorhanden
             if (mediaPlayer1 != null) {
                 mediaPlayer1.stop();
             }
@@ -125,9 +125,9 @@ public class HelloApplication extends Application {
 
 
 
-        currentStage.setResizable(false);
+        currentStage.setResizable(false); //Fenstergröße bleibt fix, kann nicht verändert werden vom Endbenutzer
         currentStage.setScene(scene1); // Set gameScene as the initial scene
-        currentStage.show();
+        currentStage.show(); //Stage wird angezeigt
 
 
 
@@ -135,10 +135,10 @@ public class HelloApplication extends Application {
 
         Timeline tl = new Timeline(new KeyFrame(Duration.millis(10), e -> paddleMovement())); //Timeline updatet das Game konstant alle 10 ms --> 100FPS
         tl.setCycleCount(Timeline.INDEFINITE); //Timeline wird für immer laufen bzw. wird indefinite Mal ausgeführt
-        tl.play();
+        tl.play(); //Starte Timeline
         gameCanvas.requestFocus(); //Sicherheitsvorkehrung damit gameCanvas unsere Keyboard Inputs annehmen kann, weil es jetzt in Fokus ist
     }
-    private void createPaddles() {
+    private void createPaddles() { //Erstelle 2 Paddles mit Konstruktor "Paddle" --> siehe Zeile 16 - 23 von Klasse Paddle
         player1 = new Paddle(0, (double) ((WINDOW_HEIGHT / 2) - (PADDLE_HEIGHT / 2)), PADDLE_WIDTH, PADDLE_HEIGHT, 1);
         player2 = new Paddle(WINDOW_WIDTH - PADDLE_WIDTH, (double) ((WINDOW_HEIGHT / 2) - (PADDLE_HEIGHT / 2)), PADDLE_WIDTH, PADDLE_HEIGHT, 2);
     }
@@ -185,13 +185,14 @@ public class HelloApplication extends Application {
             player2.setYDirection(0);
         }
 
+        //Diese 3 Methoden sollen auch jede 10ms aufgerufen werden
         allMovement();
         updateCanvas();
         updateScore();
     }
-    private void createBall() {
+    private void createBall() { //Ball wird erstellt mit "Ball" Konstruktor, siehe Ball Klasse
 
-        random = new Random();
+        random = new Random(); //Random damit der Ball in eine zufällige Anfangsrichtung geht
         ball = new Ball(WINDOW_WIDTH / 2, (int)WINDOW_HEIGHT / 2, BALL_DIAMETER,random.nextInt(2) * 2 - 1, random.nextInt(2) * 2 - 1, player1, player2 );
 
     }
@@ -201,49 +202,49 @@ public class HelloApplication extends Application {
         gc.clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT); // Clear the canvas
         player1.draw(gc); // Redraw player 1 paddle
         player2.draw(gc); // Redraw player 2 paddle
-        ball.draw(gc);
-        score.draw(gc);
+        ball.draw(gc); // Draw Ball
+        score.draw(gc); // Draw Score
     }
-    private void updateScore() {
-        if (ball.getXPosBall() <= BALL_DIAMETER) {
+    private void updateScore() { // Score Bedingungen
+        if (ball.getXPosBall() <= 0) { // Wenn Ball ganz links, dann bekommt Spiele 2 einen Punkt
             score.scorePlayer2++;
-            System.out.println("Player 2: " + score.scorePlayer2);
-            createBall();
+
+            createBall(); //Ball soll wieder in der Mitte erstellt werden und Countdown von 3 Sek wird gestartet
             startCountdown(3, ball, gc, 40, WINDOW_WIDTH / 2, (int) WINDOW_HEIGHT / 2);
         }
-        else if (ball.getXPosBall() >= WINDOW_WIDTH - BALL_DIAMETER) {
+        else if (ball.getXPosBall() >= WINDOW_WIDTH ) { //Wenn Ball ganz rechts, bekommt Spieler 1 einen Punkt
             score.scorePlayer1++;
-            System.out.println("Player 1: " + score.scorePlayer1);
+
             createBall();
             startCountdown(3, ball, gc, 40, WINDOW_WIDTH / 2, (int)WINDOW_HEIGHT / 2);
         }
     }
 
-    private void startCountdown(int duration, Ball ball, GraphicsContext gc, int fontSize, int fontXPos, int fontYPos) {
+    private void startCountdown(int duration, Ball ball, GraphicsContext gc, int fontSize, int fontXPos, int fontYPos) { //siehe Visual Countdown Klasse
         VisualCountdown countdown = new VisualCountdown(duration, ball, gc, fontSize, fontXPos, fontYPos);
         countdown.countdownLogic();
     }
 
     private void allMovement(){
-        player1.move();
+        player1.move(); //siehe Klasse Paddle Zeile 87
         player2.move();
-        ball.move();
+        ball.move(); //siehe Klasse Ball Zeile 62 - 95
     }
-    private void playBackgroundMusic(String filePath) {
+    private void playBackgroundMusic(String filePath) { //Hintergrundmusik
         Media backgroundMusic = new Media(new File(filePath).toURI().toString());
         mediaPlayer1 = new MediaPlayer(backgroundMusic);
-        mediaPlayer1.setCycleCount(MediaPlayer.INDEFINITE);
-        mediaPlayer1.setVolume(0.2);
+        mediaPlayer1.setCycleCount(MediaPlayer.INDEFINITE); //Musik soll unendlich lang geloopt werden
+        mediaPlayer1.setVolume(0.2); //20% Lautstärke
         mediaPlayer1.play();
         mediaPlayer1.setOnError(() -> {
             System.out.println("Media error occurred: " + mediaPlayer1.getError());
-            // You can perform error handling or logging here
+            //Error code, falls iwann einer kommt
         });
     }
-    public static void playBounceSound(String filePath) {
+    public static void playBounceSound(String filePath) { //Methode für Ballsound, wenn er gegen Paddle abprallt
         Media bounceSound = new Media(new File(filePath).toURI().toString());
         mediaPlayer2 = new MediaPlayer(bounceSound);
-        mediaPlayer2.setCycleCount(1);
+        mediaPlayer2.setCycleCount(1); //Sound wird nur einmal abgespielt
         mediaPlayer2.play();
     }
 

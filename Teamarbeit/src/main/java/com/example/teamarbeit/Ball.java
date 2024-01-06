@@ -62,7 +62,7 @@ public class Ball {
     public void move () {
         if (gameSceneIsRunning) { //ball bewegt sich erst, wenn gameScene läuft
 
-            xPosBall += (int) (xBallVelocity * ballSpeed);
+            xPosBall += (int) (xBallVelocity * ballSpeed); //Gib zur Position die "Velocity multipliziert mit Geschwindigkeit" dazu
             yPosBall += (int) (yBallVelocity * ballSpeed);
 
             //Ballrichtung wird an y-Achse gespiegelt, wenn er obere oder untere Wand trifft
@@ -73,8 +73,9 @@ public class Ball {
             // Check for collisions with player 1
             if (xPosBall <= PADDLE_WIDTH && yPosBall >= player1.getYPaddlePosition() && yPosBall <= player1.getYPaddlePosition() + PADDLE_HEIGHT && xBallVelocity < 0) {
                 xBallVelocity = -xBallVelocity;// Change horizontal direction
+                // Wenn Ball an Paddle abprallt, spiele Sound ab
                 playBounceSound("E:/Program Files/JetBrains/IntelliJ IDEA Community Edition 2023.2.1/Projects/PROG-Projekt/Teamarbeit/src/main/resources/com.example.teamarbeit/Single_Ping_pong_ball_bouncing_sound.mp3");
-                if (ballSpeed <= 7) {
+                if (ballSpeed <= 7) { // Geschwindigkeit wird nur erhöht bis 7
                     ballSpeed = ballSpeed + 0.5;
                 }
 
