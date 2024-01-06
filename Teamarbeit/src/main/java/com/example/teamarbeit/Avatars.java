@@ -25,9 +25,11 @@ public class Avatars {
     private int windowWidth;
     private int windowHeight;
     private Stage currentStage;
+    private AvatarSelectionCompleteCallback callback;
 
 
-    public Avatars(int windowWidth, int windowHeight, Stage currentStage){
+    public Avatars(int windowWidth, int windowHeight, Stage currentStage, AvatarSelectionCompleteCallback callback){
+        this.callback = callback;
         this.window = currentStage;
         this.windowWidth = windowWidth;
         this.windowHeight = windowHeight;
@@ -106,7 +108,10 @@ public class Avatars {
             playerSelecting = 2;
         } else {
             selectedImagePlayer2 = selectedImage;
-            startGame(); // Both players have selected, start the game
+            if (callback != null) {
+                callback.onSelectionComplete();
+                // Both players have selected, start the game
+            }
         }
     }
 
@@ -117,7 +122,9 @@ public class Avatars {
         Button startGameButton = new Button("Start Game");
         startGameButton.setStyle("-fx-background-color: red; -fx-text-fill: white; -fx-font-size: 50px; -fx-pref-width: 400px; -fx-pref-height: 80px;");
         startGameButton.setOnAction(e -> {
-            //  the game start logic belongs here
+            if (callback != null) {
+                callback.onSelectionComplete();
+            }
         });
 
         VBox gameLayout = new VBox(10);

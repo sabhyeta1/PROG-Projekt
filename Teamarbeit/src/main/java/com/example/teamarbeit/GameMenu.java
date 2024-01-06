@@ -21,14 +21,19 @@ import javafx.stage.Stage;
 
 import java.io.InputStream;
 
-public class GameMenu extends Application {
+public class GameMenu extends Application implements AvatarSelectionCompleteCallback {
 
     public Stage primaryStage;
     static final int WINDOW_WIDTH = 800;
     static final double WINDOW_HEIGHT = 600;
 
-    public static void main(String[] args) {
-        launch(args);
+    //public static void main(String[] args) {
+        //launch(args);
+    //}
+    public HelloApplication game;
+
+    public GameMenu() {
+        this.game = new HelloApplication();
     }
 
 
@@ -38,7 +43,6 @@ public class GameMenu extends Application {
         this.primaryStage.setTitle("Game Menu");
 
         switchToMenu();
-
         primaryStage.show();
     }
 
@@ -79,6 +83,14 @@ public class GameMenu extends Application {
         return stackPane;
     }
 
+    private void switchToGame() {
+        try {
+            game.start(new Stage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error starting the game.");
+        }
+    }
     private VBox createMenuLayout() {
         Label titleLabel = new Label("PING PONG");
         titleLabel.setStyle("-fx-font-size: 100px; -fx-text-fill: white;");
@@ -94,7 +106,7 @@ public class GameMenu extends Application {
         startButton.setOnAction(e -> {
             createAvatarSelection();
             System.out.println("Navigating to Avatar Selection Screen");
-            // Hier den Code einfügen um auf Avatar Auswahl zuzugreifen
+            //switchToGame();
             Label labelGameScene = new Label("This is Gamescene!");
             Button buttonGameScene = new Button("Gamescene");
 
@@ -128,7 +140,13 @@ public class GameMenu extends Application {
         return layout;
     }
     private void createAvatarSelection(){
-        Avatars avatarSelection = new Avatars(WINDOW_WIDTH, (int) WINDOW_HEIGHT, primaryStage);
+        Avatars avatarSelection = new Avatars(WINDOW_WIDTH, (int) WINDOW_HEIGHT, primaryStage, this);
+    }
+
+    @Override
+    public void onSelectionComplete() {
+        // Avatar selection is complete, start the game
+        switchToGame();
     }
 
 
