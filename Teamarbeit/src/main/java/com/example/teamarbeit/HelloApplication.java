@@ -271,7 +271,7 @@ public class HelloApplication extends Application {
         Media backgroundMusic = new Media(new File(filePath).toURI().toString());
         mediaPlayer2 = new MediaPlayer(backgroundMusic);
         mediaPlayer2.setCycleCount(MediaPlayer.INDEFINITE); //Musik soll unendlich lang geloopt werden
-        mediaPlayer2.setVolume(0.5); //50% Lautstärke
+        mediaPlayer2.setVolume(GameMenu.getSliderValue(GameMenu.getMusicSlider())); //50% Lautstärke
         mediaPlayer2.play();
         mediaPlayer2.setOnError(() -> {
             System.out.println("Media error occurred: " + mediaPlayer1.getError());
