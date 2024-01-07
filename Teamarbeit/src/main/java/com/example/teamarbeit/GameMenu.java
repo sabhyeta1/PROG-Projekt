@@ -39,7 +39,7 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
     private static double gameSoundSliderValue = 50.0;
     private static double musicSliderValue = 50.0;
     public HelloApplication game;
-    static MediaPlayer mediaPlayer1;
+    public static MediaPlayer mediaPlayer1;
 
     //public static void main(String[] args) {
         //launch(args);
@@ -221,7 +221,7 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
         return layout;
     }
 
-    private Button createStyledButton(String text) {
+    public static Button createStyledButton(String text) {
         Button button = new Button(text);
         button.setPrefWidth(200);
         button.setPrefHeight(60);

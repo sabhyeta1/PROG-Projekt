@@ -57,6 +57,7 @@ public class HelloApplication extends Application {
     Paddle player2;
     Ball ball;
     Score score;
+    static VisualCountdown countdown;
     GraphicsContext gc;
     Canvas gameCanvas;
     Timeline tl;
@@ -139,6 +140,9 @@ public class HelloApplication extends Application {
             allMovement();
             updateCanvas();
             updateScore();
+            if (countdown.currentCountdownValue >0){
+                countdown.drawCountdown(gc);
+            }
             gameOver();
             if (gameOver()) { //Code für Victory Screen und zurück ins GameMenu einfügen
                 if (score.scorePlayer1 == MAX_SCORE) {
@@ -236,24 +240,24 @@ public class HelloApplication extends Application {
     private void updateScore() { // Score Bedingungen
         if (ball.getXPosBall() <= 0) { // Wenn Ball ganz links, dann bekommt Spiele 2 einen Punkt
             score.scorePlayer2++;
-            if (score.scorePlayer1 < MAX_SCORE) {
+            if (score.scorePlayer1 < MAX_SCORE && score.scorePlayer2 < MAX_SCORE) {
                 createBall(); //Ball soll wieder in der Mitte erstellt werden und Countdown von 3 Sek wird gestartet
-                startCountdown(3, ball, gc, 40, WINDOW_WIDTH / 2, (int) WINDOW_HEIGHT / 2);
+                startCountdown(3, ball, gc, 100, WINDOW_WIDTH / 2, (int) WINDOW_HEIGHT / 2);
             }
         }
         else if (ball.getXPosBall() >= WINDOW_WIDTH ) { //Wenn Ball ganz rechts, bekommt Spieler 1 einen Punkt
             score.scorePlayer1++;
 
 
-            if (score.scorePlayer1 < MAX_SCORE) {
+            if (score.scorePlayer1 < MAX_SCORE && score.scorePlayer2 < MAX_SCORE) {
                 createBall();
-                startCountdown(3, ball, gc, 40, WINDOW_WIDTH / 2, (int) WINDOW_HEIGHT / 2);
+                startCountdown(3, ball, gc, 100, WINDOW_WIDTH / 2, (int) WINDOW_HEIGHT / 2);
             }
         }
     }
 
-    private void startCountdown(int duration, Ball ball, GraphicsContext gc, int fontSize, int fontXPos, int fontYPos) { //siehe Visual Countdown Klasse
-        VisualCountdown countdown = new VisualCountdown(duration, ball, gc, fontSize, fontXPos, fontYPos);
+    private static void startCountdown(int duration, Ball ball, GraphicsContext gc, int fontSize, int fontXPos, int fontYPos) { //siehe Visual Countdown Klasse
+        countdown = new VisualCountdown(duration, ball, gc, fontSize, fontXPos, fontYPos);
         countdown.countdownLogic();
     }
 

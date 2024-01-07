@@ -19,8 +19,8 @@ import static com.example.teamarbeit.HelloApplication.WINDOW_HEIGHT;
 import static com.example.teamarbeit.HelloApplication.WINDOW_WIDTH;
 
 public class VisualCountdown {
-    private int countdownStartValue;
-    private int currentCountdownValue;
+    public int countdownStartValue;
+    public int currentCountdownValue;
     private Label countdownLabel;
     private Timeline tl;
     private GraphicsContext gc;
@@ -28,6 +28,7 @@ public class VisualCountdown {
     private double fontSize;
     private int fontXPos;
     private int fontYPos;
+    public static boolean isCountdownStarted;
 
 
 
@@ -39,14 +40,15 @@ public class VisualCountdown {
         this.fontXPos = fontXPos;
         this.fontYPos = fontYPos;
         this.ball = ball;
-        drawCountdown();
+        isCountdownStarted = false;
+        drawCountdown(gc);
     }
     void countdownLogic() {
         tl = new Timeline(); // Timeline, damit Code wiederholt ausgeführt wird
         tl.setCycleCount(countdownStartValue); //Timeline wird so oft ausgeführt, wie die Dauer des Countdowns (5s countdown --> Timeline wird 5x ausgeführt)
         tl.getKeyFrames().add(new KeyFrame(Duration.seconds(1), event -> { //Jede Sekunde kommt ein Keyframe/Update
             currentCountdownValue--; //Countdown wird um eins niedriger und gezeichnet
-            drawCountdown();
+            drawCountdown(gc);
             if (currentCountdownValue <= 0 && tl != null) { //Wenn ein Countdown existiert und dieser 0 erreicht, wird die timeline gestoppt
                 tl.stop();
 
@@ -54,11 +56,16 @@ public class VisualCountdown {
             }
         }));
         tl.play();
+        isCountdownStarted = true;
     }
-    private void drawCountdown(){
+    public void drawCountdown(GraphicsContext gc) {
+        gc.setFill(Color.BLACK); // Clear the countdown area with a background color
+        gc.fillRect(fontXPos, fontYPos - fontSize, fontSize * 2, fontSize); // Adjust the dimensions as needed
+
         gc.setFill(Color.WHITE);
-        gc.setFont(new Font(fontSize)); // Übernehme die übergebene Font Größe
+        gc.setFont(new Font(fontSize));
         gc.fillText(Integer.toString(currentCountdownValue), fontXPos, fontYPos);
+
     }
 
 }

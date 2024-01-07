@@ -11,9 +11,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-
-import static com.example.teamarbeit.HelloApplication.WINDOW_HEIGHT;
-import static com.example.teamarbeit.HelloApplication.WINDOW_WIDTH;
+import static com.example.teamarbeit.HelloApplication.*;
 
 public class Avatars {
 
@@ -73,6 +71,12 @@ public class Avatars {
         avatar3.setOnAction(e -> selectCharacter(image3));
         avatar4.setOnAction(e -> selectCharacter(image4));
 
+        Button backButton = GameMenu.createStyledButton("Back");
+        backButton.setOnAction(event -> {
+            GameMenu.mediaPlayer1.stop();
+            switchToGameMenu();
+        });
+
 
         GridPane grid = new GridPane(); // arranges the avatars into a grid view
         grid.setVgap(20); //vertical size
@@ -87,9 +91,10 @@ public class Avatars {
         grid.add(avatar4, 1, 1); // Bottom-right
 
 
+
         VBox selectionLayout = new VBox(20); //stacks instructions and grid of avatars vertically
         selectionLayout.setAlignment(Pos.CENTER); // Center the children of VBox
-        selectionLayout.getChildren().addAll(instructions, grid);
+        selectionLayout.getChildren().addAll(instructions, grid, backButton);
         Scene selectionScene = new Scene(selectionLayout, this.windowWidth, this.windowHeight); //displays avatars screen
 
         currentStage.setScene(selectionScene);
@@ -115,6 +120,17 @@ public class Avatars {
                 // Both players have selected, start the game
             }
         }
+    }
+    private void createBackButton() {
+        Button backButton = new Button("Back");
+        backButton.setOnAction(e -> switchToGameMenu());
+        VBox selectionLayout = (VBox) currentStage.getScene().getRoot();
+        selectionLayout.getChildren().add(backButton);
+    }
+    private void switchToGameMenu() {
+        // Instantiate GameMenu class and switch back to its scene
+        GameMenu gameMenu = new GameMenu();
+        gameMenu.start(window);
     }
 
     private void startGame() { //placeholder
