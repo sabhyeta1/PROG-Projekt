@@ -262,14 +262,6 @@ public class HelloApplication extends Application {
         player2.move();
         ball.move(); //siehe Klasse Ball Zeile 62 - 95
     }
-    public static void setVolume() {
-        if (mediaPlayer1 != null) {
-            mediaPlayer1.setVolume(GameMenu.getSliderValue(GameMenu.getMusicSlider()));
-        }
-        if (mediaPlayer3 != null) {
-            mediaPlayer3.setVolume(GameMenu.getSliderValue(GameMenu.getGameSoundSlider()));
-        }
-    }
 
     public static void playGameMusic(String filePath) {
         Media backgroundMusic = new Media(new File(filePath).toURI().toString());

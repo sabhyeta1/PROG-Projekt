@@ -27,11 +27,13 @@ import javafx.util.Duration;
 import java.io.File;
 import java.io.InputStream;
 
+import static com.example.teamarbeit.HelloApplication.mediaPlayer3;
+
 public class GameMenu extends Application implements AvatarSelectionCompleteCallback {
 
     public Stage primaryStage;
-    static final int WINDOW_WIDTH = 800;
-    static final double WINDOW_HEIGHT = 600;
+    static final int WINDOW_WIDTH = 1000;
+    static final double WINDOW_HEIGHT = 666;
     static Slider gameSoundSlider;
     static Slider musicSlider;
     private static double gameSoundSliderValue = 50.0;
@@ -91,8 +93,8 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
 
     private StackPane createBackground(Image backgroundImage, VBox content) {
         ImageView backgroundImageView = new ImageView(backgroundImage);
-        backgroundImageView.setFitWidth(800);
-        backgroundImageView.setFitHeight(600);
+        backgroundImageView.setFitWidth(WINDOW_WIDTH);
+        backgroundImageView.setFitHeight(WINDOW_HEIGHT);
 
         StackPane stackPane = new StackPane();
         stackPane.getChildren().addAll(backgroundImageView, content);
@@ -129,7 +131,7 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
 
             VBox layoutGameScene = new VBox();
             layoutGameScene.getChildren().addAll(labelGameScene, buttonGameScene);
-            buttonGameScene.setOnAction(event -> this.primaryStage.setScene(new Scene(layoutGameScene, 800, 600)));
+            buttonGameScene.setOnAction(event -> this.primaryStage.setScene(new Scene(layoutGameScene, WINDOW_WIDTH, WINDOW_HEIGHT)));
 
 
             layoutGameScene.setStyle("-fx-background-color: black;");
@@ -191,15 +193,18 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
         //Zeile 173-179: Damit sich die Slider merken welche Werte die hatten, falls man Settings schließt und neu öffnet
         gameSoundSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             gameSoundSliderValue = newValue.doubleValue();
+            setVolume(); // Call setVolume() when gameSoundSlider's value changes
         });
 
         musicSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             musicSliderValue = newValue.doubleValue();
+            setVolume(); // Call setVolume() when musicSlider's value changes
         });
 
         Button backButton = createStyledButton("Back");
-        backButton.setOnAction(e -> {switchToMenu();
-        HelloApplication.setVolume();
+        backButton.setOnAction(e -> {
+            switchToMenu();
+            setVolume();
         });
 
         VBox layout = new VBox(20);
@@ -257,6 +262,16 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
             return inputSlider.getValue() /100;
         }
         else return 0.5;
+    }
+    public static void setVolume() {
+        if (mediaPlayer1 != null) {
+            mediaPlayer1.setVolume(GameMenu.getSliderValue(GameMenu.getMusicSlider()));
+            System.out.println("Ändert menuMusic Läutstärke");
+        }
+        if (mediaPlayer3 != null) {
+            System.out.println("Ändert bounceSound Lautstärke");
+            mediaPlayer3.setVolume(GameMenu.getSliderValue(GameMenu.getGameSoundSlider()));
+        }
     }
     public static void reduceVolumeGradually() { //Fade away von Menu Music (Wenn man auf "Start The Game" drückt)
         Timeline volumeReductionTimeline = new Timeline(
