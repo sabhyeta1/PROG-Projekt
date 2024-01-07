@@ -87,13 +87,11 @@ public class HelloApplication extends Application {
             });
 
         //Create Label/Text
-        Label welcomeText = new Label("Welcome to the game!"); //Das gleiche wie sout aber für JavaFx (Text wird erstellt)
-        welcomeText.setLayoutX((double) WINDOW_WIDTH /2); // Zeile 91-92: Position des Textes
-        welcomeText.setLayoutY(WINDOW_HEIGHT/2 + 100);
+
 
 
         StackPane layout = new StackPane(); //Layout wird erstellt (ein Layout ist ein Container, der alles speichert, was abgebildet werden soll)
-        layout.getChildren().addAll(welcomeText,button); // welcomeText und button werden dem Layout hinzugefügt, damit es in einer Scene abgebildet werden kann
+        layout.getChildren().addAll(button); // welcomeText und button werden dem Layout hinzugefügt, damit es in einer Scene abgebildet werden kann
 
 
         Scene scene1 = new Scene(layout, WINDOW_WIDTH, WINDOW_HEIGHT); //Scene wird erstellt
@@ -230,11 +228,19 @@ public class HelloApplication extends Application {
         player2.move();
         ball.move(); //siehe Klasse Ball Zeile 62 - 95
     }
-    private void playBackgroundMusic(String filePath) { //Hintergrundmusik
+    public static void setVolume() {
+        if (mediaPlayer1 != null) {
+            mediaPlayer1.setVolume(GameMenu.getSliderValue(GameMenu.getMusicSlider()));
+        }
+        if (mediaPlayer2 != null) {
+            mediaPlayer2.setVolume(GameMenu.getSliderValue(GameMenu.getGameSoundSlider()));
+        }
+    }
+    public static void playBackgroundMusic(String filePath) { //Hintergrundmusik
         Media backgroundMusic = new Media(new File(filePath).toURI().toString());
         mediaPlayer1 = new MediaPlayer(backgroundMusic);
         mediaPlayer1.setCycleCount(MediaPlayer.INDEFINITE); //Musik soll unendlich lang geloopt werden
-        mediaPlayer1.setVolume(0.2); //20% Lautstärke
+        mediaPlayer1.setVolume(0.5); //50% Lautstärke
         mediaPlayer1.play();
         mediaPlayer1.setOnError(() -> {
             System.out.println("Media error occurred: " + mediaPlayer1.getError());

@@ -26,11 +26,16 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
     public Stage primaryStage;
     static final int WINDOW_WIDTH = 800;
     static final double WINDOW_HEIGHT = 600;
+    static Slider gameSoundSlider;
+    static Slider musicSlider;
+    private static double gameSoundSliderValue = 50.0;
+    private static double musicSliderValue = 50.0;
+    public HelloApplication game;
 
     //public static void main(String[] args) {
         //launch(args);
     //}
-    public HelloApplication game;
+
 
     public GameMenu() {
         this.game = new HelloApplication();
@@ -44,6 +49,7 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
 
         switchToMenu();
         primaryStage.show();
+        HelloApplication.playBackgroundMusic("E:/Program Files/JetBrains/IntelliJ IDEA Community Edition 2023.2.1/Projects/PROG-Projekt/Teamarbeit/src/main/resources/com.example.teamarbeit/happy-rock-165132.mp3");
     }
 
     // Use "file://" protocol to specify a local file path
@@ -66,6 +72,9 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
         if (image2 != null) {
             StackPane root = createBackground(image2, settingsLayout);
             primaryStage.setScene(new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT));
+
+            gameSoundSlider.setValue(gameSoundSliderValue);
+            musicSlider.setValue(musicSliderValue);
         } else {
             System.out.println("Failed to load stage2.png. Check if the file exists and is in the correct directory.");
             primaryStage.setScene(new Scene(new Label("Failed to load resources"), WINDOW_WIDTH, WINDOW_HEIGHT));
@@ -150,18 +159,29 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
     }
 
 
-    private VBox createSettingsLayout() {
+    public VBox createSettingsLayout() {
         Label titleLabel = new Label("SETTINGS");
         titleLabel.setStyle("-fx-font-size: 50px; -fx-text-fill: white;");
 
         Label gameSoundLabel = createStyledLabel("Game Sound");
         Label musicLabel = createStyledLabel("Music");
 
-        Slider gameSoundSlider = createSlider();
-        Slider musicSlider = createSlider();
+        gameSoundSlider = createSlider();
+        musicSlider = createSlider();
+
+        //Zeile 173-179: Damit sich die Slider merken welche Werte die hatten, falls man Settings schließt und neu öffnet
+        gameSoundSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            gameSoundSliderValue = newValue.doubleValue();
+        });
+
+        musicSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            musicSliderValue = newValue.doubleValue();
+        });
 
         Button backButton = createStyledButton("Back");
-        backButton.setOnAction(e -> switchToMenu());
+        backButton.setOnAction(e -> {switchToMenu();
+        HelloApplication.setVolume();
+        });
 
         VBox layout = new VBox(20);
         layout.setAlignment(Pos.CENTER);
@@ -194,7 +214,7 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
         button.setOnMouseExited(e -> button.setEffect(null));
     }
 
-    private Slider createSlider() {
+    public Slider createSlider() {
         Slider slider = new Slider();
         slider.setMin(0);
         slider.setMax(100);
@@ -206,6 +226,18 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
         slider.setMinorTickCount(5);
         slider.setBlockIncrement(10);
         return slider;
+    }
+    public static Slider getGameSoundSlider() {
+        return gameSoundSlider;
+    }
+    public static Slider getMusicSlider() {
+        return musicSlider;
+    }
+    public static double getSliderValue(Slider inputSlider){
+        if(inputSlider != null) {
+            return inputSlider.getValue() /100;
+        }
+        else return 0.5;
     }
 
     private Label createStyledLabel(String text) {
