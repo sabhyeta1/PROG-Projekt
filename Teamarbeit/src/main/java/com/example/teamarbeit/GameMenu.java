@@ -1,5 +1,7 @@
 package com.example.teamarbeit;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -16,9 +18,13 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
+import java.io.File;
 import java.io.InputStream;
 
 public class GameMenu extends Application implements AvatarSelectionCompleteCallback {
@@ -31,6 +37,7 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
     private static double gameSoundSliderValue = 50.0;
     private static double musicSliderValue = 50.0;
     public HelloApplication game;
+    static MediaPlayer mediaPlayer1;
 
     //public static void main(String[] args) {
         //launch(args);
@@ -49,7 +56,8 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
 
         switchToMenu();
         primaryStage.show();
-        HelloApplication.playBackgroundMusic("E:/Program Files/JetBrains/IntelliJ IDEA Community Edition 2023.2.1/Projects/PROG-Projekt/Teamarbeit/src/main/resources/com.example.teamarbeit/happy-rock-165132.mp3");
+        playMenuMusic("E:/Program Files/JetBrains/IntelliJ IDEA Community Edition 2023.2.1/Projects/PROG-Projekt/Teamarbeit/src/main/resources/com.example.teamarbeit/happy-rock-165132.mp3");
+
     }
 
     // Use "file://" protocol to specify a local file path
@@ -58,7 +66,7 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
         Image image1 = loadImage("stage1.png");
         if (image1 != null) {
             StackPane root = createBackground(image1, menuLayout);
-            primaryStage.setScene(new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT));
+            primaryStage.setScene(new Scene (root, WINDOW_WIDTH, WINDOW_HEIGHT));
         } else {
             // Handle the case where the image isn't loaded correctly
             System.out.println("Failed to load stage1.png. Check if the file exists and is in the correct directory.");
@@ -147,6 +155,17 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
         quitButton.setStyle("-fx-background-color: red; -fx-text-fill: white; -fx-font-size: 20px;");
 
         return layout;
+    }
+    public static void playMenuMusic(String filePath) { //Hintergrundmusik
+        Media backgroundMusic = new Media(new File(filePath).toURI().toString());
+        mediaPlayer1 = new MediaPlayer(backgroundMusic);
+        mediaPlayer1.setCycleCount(MediaPlayer.INDEFINITE); //Musik soll unendlich lang geloopt werden
+        mediaPlayer1.setVolume(0.5); //50% Lautstärke
+        mediaPlayer1.play();
+        mediaPlayer1.setOnError(() -> {
+            System.out.println("Media error occurred: " + mediaPlayer1.getError());
+            //Error code, falls iwann einer kommt
+        });
     }
     private void createAvatarSelection(){
         Avatars avatarSelection = new Avatars(WINDOW_WIDTH, (int) WINDOW_HEIGHT, primaryStage, this);
@@ -238,6 +257,20 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
             return inputSlider.getValue() /100;
         }
         else return 0.5;
+    }
+    public static void reduceVolumeGradually() { //Fade away von Menu Music (Wenn man auf "Start The Game" drückt)
+        Timeline volumeReductionTimeline = new Timeline(
+                new KeyFrame(Duration.seconds(0.1), event -> {
+                    if (mediaPlayer1.getVolume() > 0) {
+                        double currentVolume = mediaPlayer1.getVolume();
+                        mediaPlayer1.setVolume(currentVolume - 0.05); // Adjust decrement value as needed
+                    } else {
+                        mediaPlayer1.stop();
+                    }
+                })
+        );
+        volumeReductionTimeline.setCycleCount(Timeline.INDEFINITE);
+        volumeReductionTimeline.play();
     }
 
     private Label createStyledLabel(String text) {

@@ -27,13 +27,14 @@ import java.util.Set;
 
 
 public class HelloApplication extends Application {
-    Stage currentStage;
+    static Stage currentStage;
     Scene scene1, gameScene;
     Button button;
     static final int WINDOW_WIDTH = 1000;
     static final double WINDOW_HEIGHT = WINDOW_WIDTH * (0.666666666);
 
     static final int PADDLE_WIDTH = 25;
+    static final int MAX_SCORE = 2;
     static final int PADDLE_HEIGHT = 100;
     static final int BALL_DIAMETER = 20;
     static int ballYSpeed = 1;
@@ -58,9 +59,10 @@ public class HelloApplication extends Application {
     Score score;
     GraphicsContext gc;
     Canvas gameCanvas;
+    Timeline tl;
     private final Set<KeyCode> keysPressedP1 = new HashSet<>(); //HashSet für Input Player 1
     private final Set<KeyCode> keysPressedP2 = new HashSet<>(); //HashSet für Input Player 2
-    private static MediaPlayer mediaPlayer1 ,mediaPlayer2;
+    public static MediaPlayer mediaPlayer1 ,mediaPlayer2, mediaPlayer3;
 
 
 
@@ -72,16 +74,17 @@ public class HelloApplication extends Application {
         currentStage = primaryStage; //Stage wird übernommen
         currentStage.setTitle("Pong Project"); //Stage (Fenster) bekommt Titel Pong Projekt (Ist oben links zu sehen)
         //Create Button
-        button = new Button("Welcome to Pong"); //Button mit "Welcome to Pong" angeschrieben
+        button = new Button("Start the game!"); //Button mit "Welcome to Pong" angeschrieben
+        button.setStyle("-fx-background-color: red; -fx-text-fill: white; -fx-font-size: 20px;");
         button.setOnAction(event -> {
             currentStage.setScene(gameScene); //Wenn Knopf gedrückt wird, wechsel auf gameScene und stelle gameSceneIsRunning auf true
-
+                GameMenu.reduceVolumeGradually();
                 createPaddles(); //Für Methoden für Zeile 79 bis 84 siehe Unten
                 createBall();
                 startCountdown(5, ball, gc, 100, WINDOW_WIDTH / 2, (int)WINDOW_HEIGHT / 2);
                 updateCanvas();
                 updateScore();
-                playBackgroundMusic("E:/Program Files/JetBrains/IntelliJ IDEA Community Edition 2023.2.1/Projects/PROG-Projekt/Teamarbeit/src/main/resources/com.example.teamarbeit/children-electro-swing-2_medium-178290.mp3");
+                playGameMusic("E:/Program Files/JetBrains/IntelliJ IDEA Community Edition 2023.2.1/Projects/PROG-Projekt/Teamarbeit/src/main/resources/com.example.teamarbeit/children-electro-swing-2_medium-178290.mp3");
 
 
             });
@@ -131,7 +134,38 @@ public class HelloApplication extends Application {
 
 
 
-        Timeline tl = new Timeline(new KeyFrame(Duration.millis(10), e -> paddleMovement())); //Timeline updatet das Game konstant alle 10 ms --> 100FPS
+        tl = new Timeline(new KeyFrame(Duration.millis(10), e -> {
+            paddleMovement(); //Timeline updatet diese Methoden konstant alle 10 ms --> 100FPS
+            allMovement();
+            updateCanvas();
+            updateScore();
+            gameOver();
+            if (gameOver()) { //Code für Victory Screen und zurück ins GameMenu einfügen
+                if (score.scorePlayer1 == MAX_SCORE) {
+                    Label victoryPlayer1 = new Label("Player 1 Wins!");
+                    victoryPlayer1.setStyle("-fx-background-color: white; -fx-padding: 10px;");
+                    StackPane victoryLabel = new StackPane();
+                    victoryLabel.setStyle("-fx-background-color: black;");
+                    victoryLabel.getChildren().addAll(gameCanvas, victoryPlayer1);
+                    Scene victoryScene = new Scene(victoryLabel, WINDOW_WIDTH, WINDOW_HEIGHT);
+                    currentStage.setScene(victoryScene);
+                    currentStage.show();
+
+                }
+                else {
+                    Label victoryPlayer2 = new Label("Player 2 Wins!");
+                    victoryPlayer2.setStyle("-fx-background-color: white; -fx-padding: 10px;");
+                    StackPane victoryLabel = new StackPane();
+                    victoryLabel.setStyle("-fx-background-color: black;");
+                    victoryLabel.getChildren().addAll(gameCanvas, victoryPlayer2);
+                    Scene victoryScene = new Scene(victoryLabel, WINDOW_WIDTH, WINDOW_HEIGHT);
+                    currentStage.setScene(victoryScene);
+                    currentStage.show();
+                }
+
+            }
+        }));
+
         tl.setCycleCount(Timeline.INDEFINITE); //Timeline wird für immer laufen bzw. wird indefinite Mal ausgeführt
         tl.play(); //Starte Timeline
         gameCanvas.requestFocus(); //Sicherheitsvorkehrung damit gameCanvas unsere Keyboard Inputs annehmen kann, weil es jetzt in Fokus ist
@@ -183,10 +217,6 @@ public class HelloApplication extends Application {
             player2.setYDirection(0);
         }
 
-        //Diese 3 Methoden sollen auch jede 10ms aufgerufen werden
-        allMovement();
-        updateCanvas();
-        updateScore();
     }
     private void createBall() { //Ball wird erstellt mit "Ball" Konstruktor, siehe Ball Klasse
 
@@ -206,15 +236,19 @@ public class HelloApplication extends Application {
     private void updateScore() { // Score Bedingungen
         if (ball.getXPosBall() <= 0) { // Wenn Ball ganz links, dann bekommt Spiele 2 einen Punkt
             score.scorePlayer2++;
-
-            createBall(); //Ball soll wieder in der Mitte erstellt werden und Countdown von 3 Sek wird gestartet
-            startCountdown(3, ball, gc, 40, WINDOW_WIDTH / 2, (int) WINDOW_HEIGHT / 2);
+            if (score.scorePlayer1 < MAX_SCORE) {
+                createBall(); //Ball soll wieder in der Mitte erstellt werden und Countdown von 3 Sek wird gestartet
+                startCountdown(3, ball, gc, 40, WINDOW_WIDTH / 2, (int) WINDOW_HEIGHT / 2);
+            }
         }
         else if (ball.getXPosBall() >= WINDOW_WIDTH ) { //Wenn Ball ganz rechts, bekommt Spieler 1 einen Punkt
             score.scorePlayer1++;
 
-            createBall();
-            startCountdown(3, ball, gc, 40, WINDOW_WIDTH / 2, (int)WINDOW_HEIGHT / 2);
+
+            if (score.scorePlayer1 < MAX_SCORE) {
+                createBall();
+                startCountdown(3, ball, gc, 40, WINDOW_WIDTH / 2, (int) WINDOW_HEIGHT / 2);
+            }
         }
     }
 
@@ -232,27 +266,37 @@ public class HelloApplication extends Application {
         if (mediaPlayer1 != null) {
             mediaPlayer1.setVolume(GameMenu.getSliderValue(GameMenu.getMusicSlider()));
         }
-        if (mediaPlayer2 != null) {
-            mediaPlayer2.setVolume(GameMenu.getSliderValue(GameMenu.getGameSoundSlider()));
+        if (mediaPlayer3 != null) {
+            mediaPlayer3.setVolume(GameMenu.getSliderValue(GameMenu.getGameSoundSlider()));
         }
     }
-    public static void playBackgroundMusic(String filePath) { //Hintergrundmusik
+
+    public static void playGameMusic(String filePath) {
         Media backgroundMusic = new Media(new File(filePath).toURI().toString());
-        mediaPlayer1 = new MediaPlayer(backgroundMusic);
-        mediaPlayer1.setCycleCount(MediaPlayer.INDEFINITE); //Musik soll unendlich lang geloopt werden
-        mediaPlayer1.setVolume(0.5); //50% Lautstärke
-        mediaPlayer1.play();
-        mediaPlayer1.setOnError(() -> {
+        mediaPlayer2 = new MediaPlayer(backgroundMusic);
+        mediaPlayer2.setCycleCount(MediaPlayer.INDEFINITE); //Musik soll unendlich lang geloopt werden
+        mediaPlayer2.setVolume(0.5); //50% Lautstärke
+        mediaPlayer2.play();
+        mediaPlayer2.setOnError(() -> {
             System.out.println("Media error occurred: " + mediaPlayer1.getError());
             //Error code, falls iwann einer kommt
         });
     }
     public static void playBounceSound(String filePath) { //Methode für Ballsound, wenn er gegen Paddle abprallt
         Media bounceSound = new Media(new File(filePath).toURI().toString());
-        mediaPlayer2 = new MediaPlayer(bounceSound);
-        mediaPlayer2.setCycleCount(1); //Sound wird nur einmal abgespielt
-        mediaPlayer2.play();
+        mediaPlayer3 = new MediaPlayer(bounceSound);
+        mediaPlayer3.setCycleCount(1); //Sound wird nur einmal abgespielt
+        mediaPlayer3.play();
     }
+    private boolean gameOver() {
+        if (score.scorePlayer1 == MAX_SCORE || score.scorePlayer2 == MAX_SCORE){
+            updateCanvas();
+            tl.stop();
+            return true;
+        }
+        else return false;
+    }
+
 
     private void run (GraphicsContext gc) {
 
