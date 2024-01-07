@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.util.Set;
 
 
-public class HelloApplication extends Application {
+public class HelloApplication extends Application implements ExitPause {
     static Stage currentStage;
     Scene scene1, gameScene;
     Button button;
@@ -65,6 +65,12 @@ public class HelloApplication extends Application {
     private final Set<KeyCode> keysPressedP2 = new HashSet<>(); //HashSet für Input Player 2
     public static MediaPlayer mediaPlayer1 ,mediaPlayer2, mediaPlayer3;
 
+    private boolean paused;
+
+    public void setPaused(boolean paused) {
+        this.paused = paused;
+    }
+
 
 
 
@@ -73,33 +79,7 @@ public class HelloApplication extends Application {
 
 
         currentStage = primaryStage; //Stage wird übernommen
-        currentStage.setTitle("Pong Project"); //Stage (Fenster) bekommt Titel Pong Projekt (Ist oben links zu sehen)
-        //Create Button
-        button = new Button("Start the game!"); //Button mit "Welcome to Pong" angeschrieben
-        button.setStyle("-fx-background-color: red; -fx-text-fill: white; -fx-font-size: 20px;");
-        button.setOnAction(event -> {
-            currentStage.setScene(gameScene); //Wenn Knopf gedrückt wird, wechsel auf gameScene und stelle gameSceneIsRunning auf true
-                GameMenu.reduceVolumeGradually();
-                createPaddles(); //Für Methoden für Zeile 79 bis 84 siehe Unten
-                createBall();
-                startCountdown(5, ball, gc, 100, WINDOW_WIDTH / 2, (int)WINDOW_HEIGHT / 2);
-                updateCanvas();
-                updateScore();
-                playGameMusic("E:/Program Files/JetBrains/IntelliJ IDEA Community Edition 2023.2.1/Projects/PROG-Projekt/Teamarbeit/src/main/resources/com.example.teamarbeit/children-electro-swing-2_medium-178290.mp3");
-
-
-            });
-
-        //Create Label/Text
-
-
-
-        StackPane layout = new StackPane(); //Layout wird erstellt (ein Layout ist ein Container, der alles speichert, was abgebildet werden soll)
-        layout.getChildren().addAll(button); // welcomeText und button werden dem Layout hinzugefügt, damit es in einer Scene abgebildet werden kann
-
-
-        Scene scene1 = new Scene(layout, WINDOW_WIDTH, WINDOW_HEIGHT); //Scene wird erstellt
-
+        currentStage.setTitle("Pong Project2"); //Stage (Fenster) bekommt Titel Pong Projekt (Ist oben links zu sehen)
 
 
 
@@ -130,48 +110,57 @@ public class HelloApplication extends Application {
         currentStage.setResizable(false); //Fenstergröße bleibt fix, kann nicht verändert werden vom Endbenutzer
         currentStage.setScene(scene1); // Set gameScene as the initial scene
         currentStage.show(); //Stage wird angezeigt
+        currentStage.setScene(gameScene); //Wenn Knopf gedrückt wird, wechsel auf gameScene und stelle gameSceneIsRunning auf true
 
 
 
+        if(!paused) {
+            tl = new Timeline(new KeyFrame(Duration.millis(10), e -> {
+                paddleMovement(); //Timeline updatet diese Methoden konstant alle 10 ms --> 100FPS
+                allMovement();
+                updateCanvas();
+                updateScore();
+                if (countdown.currentCountdownValue > 0 && countdown != null) {
+                    countdown.drawCountdown(gc);
+                }
+                gameOver();
+                if (gameOver()) { //Code für Victory Screen und zurück ins GameMenu einfügen
+                    if (score.scorePlayer1 == MAX_SCORE) {
+                        Label victoryPlayer1 = new Label("Player 1 Wins!");
+                        victoryPlayer1.setStyle("-fx-background-color: white; -fx-padding: 10px;");
+                        StackPane victoryLabel = new StackPane();
+                        victoryLabel.setStyle("-fx-background-color: black;");
+                        victoryLabel.getChildren().addAll(gameCanvas, victoryPlayer1);
+                        Scene victoryScene = new Scene(victoryLabel, WINDOW_WIDTH, WINDOW_HEIGHT);
+                        currentStage.setScene(victoryScene);
+                        currentStage.show();
 
-
-        tl = new Timeline(new KeyFrame(Duration.millis(10), e -> {
-            paddleMovement(); //Timeline updatet diese Methoden konstant alle 10 ms --> 100FPS
-            allMovement();
-            updateCanvas();
-            updateScore();
-            if (countdown.currentCountdownValue >0){
-                countdown.drawCountdown(gc);
-            }
-            gameOver();
-            if (gameOver()) { //Code für Victory Screen und zurück ins GameMenu einfügen
-                if (score.scorePlayer1 == MAX_SCORE) {
-                    Label victoryPlayer1 = new Label("Player 1 Wins!");
-                    victoryPlayer1.setStyle("-fx-background-color: white; -fx-padding: 10px;");
-                    StackPane victoryLabel = new StackPane();
-                    victoryLabel.setStyle("-fx-background-color: black;");
-                    victoryLabel.getChildren().addAll(gameCanvas, victoryPlayer1);
-                    Scene victoryScene = new Scene(victoryLabel, WINDOW_WIDTH, WINDOW_HEIGHT);
-                    currentStage.setScene(victoryScene);
-                    currentStage.show();
+                    } else {
+                        Label victoryPlayer2 = new Label("Player 2 Wins!");
+                        victoryPlayer2.setStyle("-fx-background-color: white; -fx-padding: 10px;");
+                        StackPane victoryLabel = new StackPane();
+                        victoryLabel.setStyle("-fx-background-color: black;");
+                        victoryLabel.getChildren().addAll(gameCanvas, victoryPlayer2);
+                        Scene victoryScene = new Scene(victoryLabel, WINDOW_WIDTH, WINDOW_HEIGHT);
+                        currentStage.setScene(victoryScene);
+                        currentStage.show();
+                    }
 
                 }
-                else {
-                    Label victoryPlayer2 = new Label("Player 2 Wins!");
-                    victoryPlayer2.setStyle("-fx-background-color: white; -fx-padding: 10px;");
-                    StackPane victoryLabel = new StackPane();
-                    victoryLabel.setStyle("-fx-background-color: black;");
-                    victoryLabel.getChildren().addAll(gameCanvas, victoryPlayer2);
-                    Scene victoryScene = new Scene(victoryLabel, WINDOW_WIDTH, WINDOW_HEIGHT);
-                    currentStage.setScene(victoryScene);
-                    currentStage.show();
-                }
+            }));
+        }
 
-            }
-        }));
 
         tl.setCycleCount(Timeline.INDEFINITE); //Timeline wird für immer laufen bzw. wird indefinite Mal ausgeführt
+        GameMenu.reduceVolumeGradually();
+        createPaddles(); //Für Methoden für Zeile 79 bis 84 siehe Unten
+        createBall();
+        startCountdown(5, ball, gc, 100, WINDOW_WIDTH / 2, (int)WINDOW_HEIGHT / 2);
+        updateCanvas();
+        updateScore();
+        playGameMusic("C:\\Users\\lenovo\\IdeaProjects\\PROG-Projekt\\Teamarbeit\\src\\main\\resources\\com.example.teamarbeit\\happy-rock-165132.mp3");
         tl.play(); //Starte Timeline
+
         gameCanvas.requestFocus(); //Sicherheitsvorkehrung damit gameCanvas unsere Keyboard Inputs annehmen kann, weil es jetzt in Fokus ist
     }
     private void createPaddles() { //Erstelle 2 Paddles mit Konstruktor "Paddle" --> siehe Zeile 16 - 23 von Klasse Paddle
@@ -202,6 +191,12 @@ public class HelloApplication extends Application {
         boolean moveP1Down = keysPressedP1.contains(KeyCode.S);
         boolean moveP2Up = keysPressedP2.contains(KeyCode.UP);
         boolean moveP2Down = keysPressedP2.contains(KeyCode.DOWN);
+        boolean gamePaused = keysPressedP1.contains(KeyCode.ESCAPE);
+
+        if (gamePaused) {
+            setPaused(true);
+            createPauseScreen();
+        }
 
         if (moveP1Up && player1.getYPaddlePosition() >= 0) { //Wenn W gedrückt, nicht losgelassen UND wenn Paddle nicht ganz oben ist, bewege Paddle nach oben
             player1.setYDirection(-player1.getPaddleSpeed());
@@ -306,4 +301,14 @@ public class HelloApplication extends Application {
     }
 
 
+    @Override
+    public void endingPauseScreen(){
+        //setPaused(false);
+    }
+
+    public void createPauseScreen() {
+        PauseScreen pauseScreen = new PauseScreen(WINDOW_WIDTH, (int) WINDOW_HEIGHT, currentStage, this) {
+        };
+
+    }
 }

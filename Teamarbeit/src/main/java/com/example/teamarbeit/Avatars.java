@@ -8,7 +8,10 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import static com.example.teamarbeit.HelloApplication.*;
@@ -23,6 +26,7 @@ public class Avatars {
     private int windowWidth;
     private int windowHeight;
     private Stage currentStage;
+    private boolean bothPlayersSelected = false;
     private AvatarSelectionCompleteCallback callback;
 
 
@@ -35,34 +39,35 @@ public class Avatars {
         this.windowHeight = windowHeight;
 
         instructions = new Label("Player 1: Select your character");
-
+        instructions.setTextFill(Color.WHITE);
+        instructions.setFont(new Font(40));
         // Avatar Selection Screen - images layout
 
         //image1 = avatar1
         Image image1 = new Image(getClass().getResourceAsStream("/avatar1.png"));
         ImageView view1 = new ImageView(image1);
-        view1.setFitHeight(250); // Sets the height of the avatar image
+        view1.setFitHeight(230); // Sets the height of the avatar image
         view1.setPreserveRatio(true);
         Button avatar1 = new Button("", view1); //erlaubt player auf avatar zu klicken, falls er selektieren will
 
         //image2 = avatar2
         Image image2 = new Image(getClass().getResourceAsStream("/avatar2.png"));
         ImageView view2 = new ImageView(image2);
-        view2.setFitHeight(250); // Set the height of the avatar image
+        view2.setFitHeight(230); // Set the height of the avatar image
         view2.setPreserveRatio(true);
         Button avatar2 = new Button("", view2);
 
         //image3 = avatar3
         Image image3 = new Image(getClass().getResourceAsStream("/avatar3.png"));
         ImageView view3 = new ImageView(image3);
-        view3.setFitHeight(250); // Set the height of the avatar image
+        view3.setFitHeight(230); // Set the height of the avatar image
         view3.setPreserveRatio(true);
         Button avatar3 = new Button("", view3);
 
         //image4 = avatar4
         Image image4 = new Image(getClass().getResourceAsStream("/avatar4.png"));
         ImageView view4 = new ImageView(image4);
-        view4.setFitHeight(250); // Set the height of the avatar image
+        view4.setFitHeight(230); // Set the height of the avatar image
         view4.setPreserveRatio(true);
         Button avatar4 = new Button("", view4);
 
@@ -71,7 +76,10 @@ public class Avatars {
         avatar3.setOnAction(e -> selectCharacter(image3));
         avatar4.setOnAction(e -> selectCharacter(image4));
 
-        Button backButton = GameMenu.createStyledButton("Back");
+        Button backButton = new Button("Back");
+        backButton.setPrefWidth(100);
+        backButton.setPrefHeight(30);
+
         backButton.setOnAction(event -> {
             GameMenu.mediaPlayer1.stop();
             switchToGameMenu();
@@ -89,13 +97,22 @@ public class Avatars {
         grid.add(avatar2, 1, 0); // Top-right
         grid.add(avatar3, 0, 1); // Bottom-left
         grid.add(avatar4, 1, 1); // Bottom-right
+        grid.add(backButton,0,2);
 
 
 
-        VBox selectionLayout = new VBox(20); //stacks instructions and grid of avatars vertically
+        VBox selectionLayout = new VBox(10); //stacks instructions and grid of avatars vertically
         selectionLayout.setAlignment(Pos.CENTER); // Center the children of VBox
         selectionLayout.getChildren().addAll(instructions, grid, backButton);
-        Scene selectionScene = new Scene(selectionLayout, this.windowWidth, this.windowHeight); //displays avatars screen
+         //displays avatars screen
+
+        String backgroundImage = "-fx-background-image: url('/stage1.png');";
+        String backgroundSize = "-fx-background-size: 1000px 666px;";
+        String backgroundOpacity = "-fx-background-opacity: 0.3;";
+        selectionLayout.setStyle(backgroundImage + backgroundSize + backgroundOpacity);
+
+
+        Scene selectionScene = new Scene(selectionLayout, this.windowWidth, this.windowHeight);
 
         currentStage.setScene(selectionScene);
 
@@ -115,18 +132,16 @@ public class Avatars {
             playerSelecting = 2;
         } else {
             selectedImagePlayer2 = selectedImage;
+            if (!bothPlayersSelected) {
+                bothPlayersSelected = true;
             if (callback != null) {
                 callback.onSelectionComplete(); //callback saying both player have been selected
                 // Both players have selected, start the game
+                }
             }
         }
     }
-    private void createBackButton() {
-        Button backButton = new Button("Back");
-        backButton.setOnAction(e -> switchToGameMenu());
-        VBox selectionLayout = (VBox) currentStage.getScene().getRoot();
-        selectionLayout.getChildren().add(backButton);
-    }
+
     private void switchToGameMenu() {
         // Instantiate GameMenu class and switch back to its scene
         GameMenu gameMenu = new GameMenu();
