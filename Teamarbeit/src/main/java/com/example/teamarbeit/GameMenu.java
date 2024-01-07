@@ -175,8 +175,23 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
 
     @Override
     public void onSelectionComplete() {
+        Button startGameButton = new Button("Start Game");
+        startGameButton.setPrefWidth(100);
+        startGameButton.setPrefHeight(30);
+        startGameButton.setOnAction(event -> switchToGame());
+
+        // Accessing the current scene's root (assuming it's a VBox)
+        VBox root = (VBox) primaryStage.getScene().getRoot();
+
+        StackPane startGameButtonPosition = new StackPane();
+        startGameButtonPosition.getChildren().add(startGameButton);
+        startGameButtonPosition.setAlignment(Pos.BASELINE_CENTER);
+
+
+        // Adding the button to the VBox
+        root.getChildren().add(startGameButtonPosition);
         // Avatar selection is complete, start the game
-        switchToGame();
+
     }
 
 

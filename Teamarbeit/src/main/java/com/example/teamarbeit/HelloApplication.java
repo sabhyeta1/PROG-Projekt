@@ -73,33 +73,7 @@ public class HelloApplication extends Application {
 
 
         currentStage = primaryStage; //Stage wird übernommen
-        currentStage.setTitle("Pong Project"); //Stage (Fenster) bekommt Titel Pong Projekt (Ist oben links zu sehen)
-        //Create Button
-        button = new Button("Start the game!"); //Button mit "Welcome to Pong" angeschrieben
-        button.setStyle("-fx-background-color: red; -fx-text-fill: white; -fx-font-size: 20px;");
-        button.setOnAction(event -> {
-            currentStage.setScene(gameScene); //Wenn Knopf gedrückt wird, wechsel auf gameScene und stelle gameSceneIsRunning auf true
-                GameMenu.reduceVolumeGradually();
-                createPaddles(); //Für Methoden für Zeile 79 bis 84 siehe Unten
-                createBall();
-                startCountdown(5, ball, gc, 100, WINDOW_WIDTH / 2, (int)WINDOW_HEIGHT / 2);
-                updateCanvas();
-                updateScore();
-                playGameMusic("E:/Program Files/JetBrains/IntelliJ IDEA Community Edition 2023.2.1/Projects/PROG-Projekt/Teamarbeit/src/main/resources/com.example.teamarbeit/children-electro-swing-2_medium-178290.mp3");
-
-
-            });
-
-        //Create Label/Text
-
-
-
-        StackPane layout = new StackPane(); //Layout wird erstellt (ein Layout ist ein Container, der alles speichert, was abgebildet werden soll)
-        layout.getChildren().addAll(button); // welcomeText und button werden dem Layout hinzugefügt, damit es in einer Scene abgebildet werden kann
-
-
-        Scene scene1 = new Scene(layout, WINDOW_WIDTH, WINDOW_HEIGHT); //Scene wird erstellt
-
+        currentStage.setTitle("Pong Project2"); //Stage (Fenster) bekommt Titel Pong Projekt (Ist oben links zu sehen)
 
 
 
@@ -130,7 +104,7 @@ public class HelloApplication extends Application {
         currentStage.setResizable(false); //Fenstergröße bleibt fix, kann nicht verändert werden vom Endbenutzer
         currentStage.setScene(scene1); // Set gameScene as the initial scene
         currentStage.show(); //Stage wird angezeigt
-
+        currentStage.setScene(gameScene); //Wenn Knopf gedrückt wird, wechsel auf gameScene und stelle gameSceneIsRunning auf true
 
 
 
@@ -140,7 +114,7 @@ public class HelloApplication extends Application {
             allMovement();
             updateCanvas();
             updateScore();
-            if (countdown.currentCountdownValue >0){
+            if (countdown.currentCountdownValue >0 && countdown != null){
                 countdown.drawCountdown(gc);
             }
             gameOver();
@@ -170,8 +144,17 @@ public class HelloApplication extends Application {
             }
         }));
 
+
         tl.setCycleCount(Timeline.INDEFINITE); //Timeline wird für immer laufen bzw. wird indefinite Mal ausgeführt
+        GameMenu.reduceVolumeGradually();
+        createPaddles(); //Für Methoden für Zeile 79 bis 84 siehe Unten
+        createBall();
+        startCountdown(5, ball, gc, 100, WINDOW_WIDTH / 2, (int)WINDOW_HEIGHT / 2);
+        updateCanvas();
+        updateScore();
+        playGameMusic("E:/Program Files/JetBrains/IntelliJ IDEA Community Edition 2023.2.1/Projects/PROG-Projekt/Teamarbeit/src/main/resources/com.example.teamarbeit/children-electro-swing-2_medium-178290.mp3");
         tl.play(); //Starte Timeline
+
         gameCanvas.requestFocus(); //Sicherheitsvorkehrung damit gameCanvas unsere Keyboard Inputs annehmen kann, weil es jetzt in Fokus ist
     }
     private void createPaddles() { //Erstelle 2 Paddles mit Konstruktor "Paddle" --> siehe Zeile 16 - 23 von Klasse Paddle
