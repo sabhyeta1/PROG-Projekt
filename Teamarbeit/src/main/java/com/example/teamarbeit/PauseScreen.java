@@ -99,19 +99,18 @@ public class PauseScreen {
             if (exit != null){
                 exit.endingPauseScreen();
             }
-            // Code welcher zum Spiel führt
-            // code der paused auf false setzt
         });
+
         quitButton.setOnAction(e -> {
             System.out.println("Exiting the game");
             primaryStage.close();
-
-            //primaryStage.close();
         });
 
         menuButton.setOnAction(e -> {
             System.out.println("Return to Menu");
-            //GameMenu.switchToMenu();
+            GameMenu.mediaPlayer1.stop();
+            GameMenu gameMenu = new GameMenu();
+            gameMenu.start(primaryStage);
         });
 
 
@@ -145,25 +144,6 @@ public class PauseScreen {
 
     public static void main(String[] args) {
 
-    }
-
-
-    private void continuePlaying() {
-        if (exit!= null){
-            exit.endingPauseScreen();
-        }
-    }
-
-    private void quitPlaying() {
-        if (exit!= null){
-            //exit.endingGame();
-        }
-    }
-
-    private void switchToMenu() {
-        if (exit!= null){
-            //exit.openMenu();
-        }
     }
 
 }
