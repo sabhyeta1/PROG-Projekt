@@ -30,6 +30,7 @@ import java.io.InputStream;
 import static com.example.teamarbeit.HelloApplication.mediaPlayer3;
 
 public class GameMenu extends Application implements AvatarSelectionCompleteCallback {
+    //implementation of callback method for Avatar screen
 
     public Stage primaryStage;
     static final int WINDOW_WIDTH = 1000;
@@ -42,7 +43,7 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
     public static MediaPlayer mediaPlayer1;
 
     //public static void main(String[] args) {
-    //launch(args);
+        //launch(args);
     //}
 
 
@@ -58,14 +59,14 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
 
         switchToMenu();
         primaryStage.show();
-        playMenuMusic("Teamarbeit/src/main/resources/com.example.teamarbeit/happy-rock-165132.mp3");
+        playMenuMusic("/Users/sabhyeta/Documents/java/PROG-Projekt1/Teamarbeit/src/main/resources/com.example.teamarbeit/happy-rock-165132.mp3");
 
     }
 
-    // Use "file://" protocol to specify a local file path
     private void switchToMenu() {
         VBox menuLayout = createMenuLayout();
         Image image1 = loadImage("stage1.png");
+        //add background stage1 for avatar auswahl screen
         if (image1 != null) {
             StackPane root = createBackground(image1, menuLayout);
             primaryStage.setScene(new Scene (root, WINDOW_WIDTH, WINDOW_HEIGHT));
@@ -78,7 +79,8 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
 
     private void switchToSettings() {
         VBox settingsLayout = createSettingsLayout();
-        Image image2 = loadImage("stage2.png"); // Modified to use loadImage method
+        Image image2 = loadImage("stage2.png");// Modified to use loadImage method
+        //add background stage2 for settings screen
         if (image2 != null) {
             StackPane root = createBackground(image2, settingsLayout);
             primaryStage.setScene(new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT));
@@ -169,7 +171,7 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
             //Error code, falls iwann einer kommt
         });
     }
-    private void createAvatarSelection(){
+    private void createAvatarSelection(){ //selecting of the avatar
         Avatars avatarSelection = new Avatars(WINDOW_WIDTH, (int) WINDOW_HEIGHT, primaryStage, this);
     }
 
