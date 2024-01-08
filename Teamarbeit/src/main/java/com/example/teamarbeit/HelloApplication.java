@@ -22,6 +22,10 @@ import javafx.util.Duration;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import java.io.File;
+import static com.example.teamarbeit.Avatars.selectedImagePlayer1;
+import static com.example.teamarbeit.Avatars.selectedImagePlayer2;
+
+
 
 
 import java.io.IOException;
@@ -218,14 +222,6 @@ public class HelloApplication extends Application implements ExitPause{
 
     }
 
-    private void createPauseScreen() {
-        mediaPlayer2.stop();
-        GameMenu.mediaPlayer1.play();
-        tl.pause();
-        PauseScreen pauseScreen = new PauseScreen(WINDOW_WIDTH, (int) WINDOW_HEIGHT, currentStage, this) {
-        };
-    }
-
     private void createBall() { //Ball wird erstellt mit "Ball" Konstruktor, siehe Ball Klasse
 
         random = new Random(); //Random damit der Ball in eine zufällige Anfangsrichtung geht
@@ -325,6 +321,15 @@ public class HelloApplication extends Application implements ExitPause{
             return false;
         }
     }
+
+    private void createPauseScreen() {
+        mediaPlayer2.stop();
+        GameMenu.mediaPlayer1.play();
+        tl.pause();
+        PauseScreen pauseScreen = new PauseScreen(WINDOW_WIDTH, (int) WINDOW_HEIGHT, currentStage, this) {
+        };
+    }
+
     private void goToGameMenu(){
         GameMenu gameMenu = new GameMenu();
         gameMenu.start(currentStage);

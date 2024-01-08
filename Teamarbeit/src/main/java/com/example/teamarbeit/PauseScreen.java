@@ -46,7 +46,7 @@ public class PauseScreen {
 
     StackPane stackPane;
 
-    String imagePath = "file:///Users/mbilla19/IdeaProjects/GameMenu/images/WhatsApp Image 2023-12-24 at 23.43.20.jpeg";
+    String imagePath = "C:\\Users\\lenovo\\IdeaProjects5\\PROG-Projekt\\Teamarbeit\\src\\main\\resources\\stage2.png";
 
 
     public PauseScreen(int windowWidth,int windowHeight,Stage primaryStage, ExitPause exit) {
@@ -60,7 +60,7 @@ public class PauseScreen {
 
     public static void switchToPause() {
         VBox pauseLayout = createPauseLayout();
-        String imagePath = "file:///Users/mbilla19/IdeaProjects/GameMenu/images/WhatsApp Image 2023-12-24 at 23.43.20.jpeg";
+        String imagePath = "C:\\Users\\lenovo\\IdeaProjects5\\PROG-Projekt\\Teamarbeit\\src\\main\\resources\\stage2.png";
         StackPane root = createBackground(imagePath, pauseLayout);
         Scene selectionScene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
         primaryStage.setScene(selectionScene);

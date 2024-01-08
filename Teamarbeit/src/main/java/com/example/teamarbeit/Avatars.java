@@ -20,8 +20,8 @@ public class Avatars {
 
     private Stage window;
     private int playerSelecting = 1; // 1 for player one, 2 for player two
-    private Image selectedImagePlayer1;
-    private Image selectedImagePlayer2;
+    public static Image selectedImagePlayer1;
+    public static Image selectedImagePlayer2;
     private Label instructions;
     private int windowWidth;
     private int windowHeight;
