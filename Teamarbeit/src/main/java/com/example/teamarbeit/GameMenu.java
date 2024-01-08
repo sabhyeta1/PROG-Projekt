@@ -59,7 +59,7 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
 
         switchToMenu();
         primaryStage.show();
-        playMenuMusic("/Users/sabhyeta/Documents/java/PROG-Projekt1/Teamarbeit/src/main/resources/com.example.teamarbeit/happy-rock-165132.mp3");
+        playMenuMusic("C:/Users/marti/IdeaProjects/PROG-Projekt1/Teamarbeit/src/main/resources/com.example.teamarbeit/happy-rock-165132.mp3");
 
     }
 
@@ -180,7 +180,10 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
         Button startGameButton = new Button("Start Game");
         startGameButton.setPrefWidth(100);
         startGameButton.setPrefHeight(30);
-        startGameButton.setOnAction(event -> switchToGame());
+        startGameButton.setOnAction(event -> {
+
+            switchToGame();
+        });
 
         // Accessing the current scene's root (assuming it's a VBox)
         VBox root = (VBox) primaryStage.getScene().getRoot();
@@ -293,12 +296,14 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
     public static void reduceVolumeGradually() { //Fade away von Menu Music (Wenn man auf "Start The Game" drückt)
         Timeline volumeReductionTimeline = new Timeline(
                 new KeyFrame(Duration.seconds(0.1), event -> {
-                    if (mediaPlayer1.getVolume() > 0) {
-                        double currentVolume = mediaPlayer1.getVolume();
-                        mediaPlayer1.setVolume(currentVolume - 0.05); // Adjust decrement value as needed
-                    } else {
-                        mediaPlayer1.stop();
-                    }
+
+                        if (GameMenu.mediaPlayer1.getVolume() > 0) {
+                            double currentVolume = GameMenu.mediaPlayer1.getVolume();
+                            GameMenu.mediaPlayer1.setVolume(currentVolume - 0.05); // Adjust decrement value as needed
+                        } else {
+                            GameMenu.mediaPlayer1.stop();
+                        }
+
                 })
         );
         volumeReductionTimeline.setCycleCount(Timeline.INDEFINITE);

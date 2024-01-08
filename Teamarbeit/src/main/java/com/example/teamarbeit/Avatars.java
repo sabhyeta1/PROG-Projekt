@@ -81,7 +81,7 @@ public class Avatars {
         backButton.setPrefHeight(30);
 
         backButton.setOnAction(event -> {
-            GameMenu.mediaPlayer1.stop();
+
             switchToGameMenu();
         });
 
@@ -142,7 +142,7 @@ public class Avatars {
         }
     }
 
-    private void switchToGameMenu() {
+    public void switchToGameMenu() {
         // Instantiate GameMenu class and switch back to its scene
         GameMenu gameMenu = new GameMenu();
         gameMenu.start(window);

@@ -1,6 +1,7 @@
 package com.example.teamarbeit;
 
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -8,6 +9,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
+import javafx.scene.layout.VBox;
 
 
 import java.util.HashSet;
@@ -47,6 +49,7 @@ public class HelloApplication extends Application {
     double yPosPlayer1 = WINDOW_HEIGHT / 2;
     int xPosPlayer2 = WINDOW_WIDTH - PADDLE_WIDTH;
     double yPosPlayer2 = WINDOW_HEIGHT / 2;
+    public GameMenu switchToGameMenu;
     boolean gameStarted;
 
     Thread thread;
@@ -73,10 +76,9 @@ public class HelloApplication extends Application {
 
 
         currentStage = primaryStage; //Stage wird übernommen
-        currentStage.setTitle("Pong Project2"); //Stage (Fenster) bekommt Titel Pong Projekt (Ist oben links zu sehen)
+        currentStage.setTitle("Play"); //Stage (Fenster) bekommt Titel Pong Projekt (Ist oben links zu sehen)
 
-
-
+        GameMenu.mediaPlayer1.stop();
         //Create gameCanvas to draw our Game
 
         score = new Score(WINDOW_WIDTH,(int) WINDOW_HEIGHT); //Punkteanzahl wird erstellt
@@ -93,8 +95,8 @@ public class HelloApplication extends Application {
         createPaddles();
         createBall();
         currentStage.setOnCloseRequest(windowEvent -> { // Sobald Fenster geschlossen wird, stoppe die Hintergrundmusik, falls schon vorhanden
-            if (mediaPlayer1 != null) {
-                mediaPlayer1.stop();
+            if (mediaPlayer2 != null) {
+                mediaPlayer2.stop();
             }
         });
 
@@ -120,7 +122,9 @@ public class HelloApplication extends Application {
             gameOver();
             if (gameOver()) { //Code für Victory Screen und zurück ins GameMenu einfügen
                 if (score.scorePlayer1 == MAX_SCORE) {
-                    Label victoryPlayer1 = new Label("Player 1 Wins!");
+                    showVictoryScreen("Player 1 Wins!");
+                    mediaPlayer2.stop();
+                    /*Label victoryPlayer1 = new Label("Player 1 Wins!");
                     victoryPlayer1.setStyle("-fx-background-color: white; -fx-padding: 10px;");
                     StackPane victoryLabel = new StackPane();
                     victoryLabel.setStyle("-fx-background-color: black;");
@@ -128,10 +132,12 @@ public class HelloApplication extends Application {
                     Scene victoryScene = new Scene(victoryLabel, WINDOW_WIDTH, WINDOW_HEIGHT);
                     currentStage.setScene(victoryScene);
                     currentStage.show();
-
+                    */
                 }
                 else {
-                    Label victoryPlayer2 = new Label("Player 2 Wins!");
+                    showVictoryScreen("Player 2 Wins!");
+                    mediaPlayer2.stop();
+                    /*Label victoryPlayer2 = new Label("Player 2 Wins!");
                     victoryPlayer2.setStyle("-fx-background-color: white; -fx-padding: 10px;");
                     StackPane victoryLabel = new StackPane();
                     victoryLabel.setStyle("-fx-background-color: black;");
@@ -139,14 +145,14 @@ public class HelloApplication extends Application {
                     Scene victoryScene = new Scene(victoryLabel, WINDOW_WIDTH, WINDOW_HEIGHT);
                     currentStage.setScene(victoryScene);
                     currentStage.show();
-                }
+
+                */}
 
             }
         }));
 
 
         tl.setCycleCount(Timeline.INDEFINITE); //Timeline wird für immer laufen bzw. wird indefinite Mal ausgeführt
-        GameMenu.reduceVolumeGradually();
         createPaddles(); //Für Methoden für Zeile 79 bis 84 siehe Unten
         createBall();
         startCountdown(5, ball, gc, 100, WINDOW_WIDTH / 2, (int)WINDOW_HEIGHT / 2);
@@ -267,13 +273,46 @@ public class HelloApplication extends Application {
         mediaPlayer3.setCycleCount(1); //Sound wird nur einmal abgespielt
         mediaPlayer3.play();
     }
+    private void showVictoryScreen(String winnerText) {
+        Label victoryLabel = new Label(winnerText);
+        victoryLabel.setStyle("-fx-background-color: white; -fx-padding: 10px;");
+
+        Button backButton = new Button("Back to Game Menu");
+        backButton.setOnAction(event -> {
+            goToGameMenu();
+        });
+
+        VBox vbox = new VBox(10);
+        vbox.setAlignment(Pos.CENTER);
+        vbox.getChildren().addAll(victoryLabel, backButton, gameCanvas);
+
+        StackPane victoryLayout = new StackPane();
+        victoryLayout.setStyle("-fx-background-color: black;");
+        victoryLayout.getChildren().add(vbox); // Add VBox to StackPane
+
+        Scene victoryScene = new Scene(victoryLayout, WINDOW_WIDTH, WINDOW_HEIGHT);
+        currentStage.setScene(victoryScene);
+        currentStage.show();
+    }
     private boolean gameOver() {
-        if (score.scorePlayer1 == MAX_SCORE || score.scorePlayer2 == MAX_SCORE){
+        if (score.scorePlayer1 == MAX_SCORE || score.scorePlayer2 == MAX_SCORE) {
             updateCanvas();
             tl.stop();
+
+            if (score.scorePlayer1 == MAX_SCORE) {
+                System.out.println("Player 1 Wins");
+            } else {
+                System.out.println("Player 2 Wins");
+            }
+
             return true;
+        } else {
+            return false;
         }
-        else return false;
+    }
+    private void goToGameMenu(){
+        GameMenu gameMenu = new GameMenu();
+        gameMenu.start(currentStage);
     }
 
 
