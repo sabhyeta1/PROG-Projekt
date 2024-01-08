@@ -1,13 +1,11 @@
 package com.example.teamarbeit;
 
 import javafx.application.Application;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
 
@@ -75,33 +73,7 @@ public class HelloApplication extends Application {
 
 
         currentStage = primaryStage; //Stage wird übernommen
-        currentStage.setTitle("Pong Project"); //Stage (Fenster) bekommt Titel Pong Projekt (Ist oben links zu sehen)
-        //Create Button
-        button = new Button("Start the game!"); //Button mit "Welcome to Pong" angeschrieben
-        button.setStyle("-fx-background-color: red; -fx-text-fill: white; -fx-font-size: 20px;");
-        button.setOnAction(event -> {
-            currentStage.setScene(gameScene); //Wenn Knopf gedrückt wird, wechsel auf gameScene und stelle gameSceneIsRunning auf true
-            GameMenu.reduceVolumeGradually();
-            createPaddles(); //Für Methoden für Zeile 79 bis 84 siehe Unten
-            createBall();
-            startCountdown(5, ball, gc, 100, WINDOW_WIDTH / 2, (int)WINDOW_HEIGHT / 2);
-            updateCanvas();
-            updateScore();
-            playGameMusic("Teamarbeit/src/main/resources/com.example.teamarbeit/children-electro-swing-2_medium-178290.mp3");
-
-
-        });
-
-        //Create Label/Text
-
-
-
-        StackPane layout = new StackPane(); //Layout wird erstellt (ein Layout ist ein Container, der alles speichert, was abgebildet werden soll)
-        layout.getChildren().addAll(button); // welcomeText und button werden dem Layout hinzugefügt, damit es in einer Scene abgebildet werden kann
-
-
-        Scene scene1 = new Scene(layout, WINDOW_WIDTH, WINDOW_HEIGHT); //Scene wird erstellt
-
+        currentStage.setTitle("Pong Project2"); //Stage (Fenster) bekommt Titel Pong Projekt (Ist oben links zu sehen)
 
 
 
@@ -132,7 +104,7 @@ public class HelloApplication extends Application {
         currentStage.setResizable(false); //Fenstergröße bleibt fix, kann nicht verändert werden vom Endbenutzer
         currentStage.setScene(scene1); // Set gameScene as the initial scene
         currentStage.show(); //Stage wird angezeigt
-
+        currentStage.setScene(gameScene); //Wenn Knopf gedrückt wird, wechsel auf gameScene und stelle gameSceneIsRunning auf true
 
 
 
@@ -142,7 +114,7 @@ public class HelloApplication extends Application {
             allMovement();
             updateCanvas();
             updateScore();
-            if (countdown.currentCountdownValue >0){
+            if (countdown.currentCountdownValue >0 && countdown != null){
                 countdown.drawCountdown(gc);
             }
             gameOver();
@@ -172,8 +144,17 @@ public class HelloApplication extends Application {
             }
         }));
 
+
         tl.setCycleCount(Timeline.INDEFINITE); //Timeline wird für immer laufen bzw. wird indefinite Mal ausgeführt
+        GameMenu.reduceVolumeGradually();
+        createPaddles(); //Für Methoden für Zeile 79 bis 84 siehe Unten
+        createBall();
+        startCountdown(5, ball, gc, 100, WINDOW_WIDTH / 2, (int)WINDOW_HEIGHT / 2);
+        updateCanvas();
+        updateScore();
+        playGameMusic("C:/Users/marti/IdeaProjects/PROG-Projekt1/Teamarbeit/src/main/resources/com.example.teamarbeit/children-electro-swing-2_medium-178290.mp3");
         tl.play(); //Starte Timeline
+
         gameCanvas.requestFocus(); //Sicherheitsvorkehrung damit gameCanvas unsere Keyboard Inputs annehmen kann, weil es jetzt in Fokus ist
     }
     private void createPaddles() { //Erstelle 2 Paddles mit Konstruktor "Paddle" --> siehe Zeile 16 - 23 von Klasse Paddle
@@ -286,47 +267,14 @@ public class HelloApplication extends Application {
         mediaPlayer3.setCycleCount(1); //Sound wird nur einmal abgespielt
         mediaPlayer3.play();
     }
-    private void showVictoryScreen(String winnerText) {
-        Label victoryLabel = new Label(winnerText);
-        victoryLabel.setStyle("-fx-background-color: white; -fx-padding: 10px;");
-
-        Button backButton = new Button("Back to Game Menu");
-        backButton.setOnAction(event -> {
-            currentStage.setScene(scene1);
-            currentStage.show();
-        });
-
-        VBox vbox = new VBox(10);
-        vbox.setAlignment(Pos.CENTER);
-        vbox.getChildren().addAll(victoryLabel, backButton);
-
-        StackPane victoryLayout = new StackPane();
-        victoryLayout.setStyle("-fx-background-color: black;");
-        victoryLayout.getChildren().add(vbox); // Add VBox to StackPane
-
-        Scene victoryScene = new Scene(victoryLayout, WINDOW_WIDTH, WINDOW_HEIGHT);
-        currentStage.setScene(victoryScene);
-        currentStage.show();
-    }
-
-
-
     private boolean gameOver() {
-        if (score.scorePlayer1 == MAX_SCORE || score.scorePlayer2 == MAX_SCORE) {
+        if (score.scorePlayer1 == MAX_SCORE || score.scorePlayer2 == MAX_SCORE){
+            updateCanvas();
             tl.stop();
-
-            if (score.scorePlayer1 == MAX_SCORE) {
-                showVictoryScreen("Player 1 Wins!");
-            } else {
-                showVictoryScreen("Player 2 Wins!");
-            }
-
             return true;
-        } else {
-            return false;
         }
+        else return false;
     }
-
 
 
     private void run (GraphicsContext gc) {
