@@ -42,7 +42,7 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
     public static MediaPlayer mediaPlayer1;
 
     //public static void main(String[] args) {
-        //launch(args);
+    //launch(args);
     //}
 
 
@@ -58,7 +58,7 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
 
         switchToMenu();
         primaryStage.show();
-        playMenuMusic("E:/Program Files/JetBrains/IntelliJ IDEA Community Edition 2023.2.1/Projects/PROG-Projekt/Teamarbeit/src/main/resources/com.example.teamarbeit/happy-rock-165132.mp3");
+        playMenuMusic("Teamarbeit/src/main/resources/com.example.teamarbeit/happy-rock-165132.mp3");
 
     }
 
