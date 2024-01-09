@@ -22,6 +22,4 @@ Bugs to fix:
 
 There is a delayed response to the bounce sound. 
 
-Bounce sound slide bar does not work, the sound stays the same volume. 
-
 Victory screen does not show which player has won the game. 
