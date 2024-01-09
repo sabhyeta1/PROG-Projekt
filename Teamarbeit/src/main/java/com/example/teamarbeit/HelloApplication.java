@@ -45,7 +45,7 @@ public class HelloApplication extends Application implements ExitPause{
     static final int MAX_SCORE = 2;
     static final int PADDLE_HEIGHT = 100;
     static final int BALL_DIAMETER = 20;
-    static final double AVATAR_HEIGHT = 50;
+    static final double AVATAR_HEIGHT = 100;
 
     static int ballYSpeed = 1;
     static int ballXSpeed = 1;
@@ -75,7 +75,7 @@ public class HelloApplication extends Application implements ExitPause{
     static VisualCountdown countdown;
     GraphicsContext gc;
     Canvas gameCanvas;
-    AnchorPane root;
+    public static AnchorPane root;
 
     Timeline tl;
 
@@ -107,7 +107,9 @@ public class HelloApplication extends Application implements ExitPause{
         backgroundView.setFitWidth(WINDOW_WIDTH);
         backgroundView.setFitHeight(WINDOW_HEIGHT);
 
-        StackPane gcRoot = new StackPane(backgroundView,gameCanvas); //noch ein Layout wird erstellt mit StackPane
+        root = new AnchorPane();
+        createAvatars();
+        StackPane gcRoot = new StackPane(backgroundView, gameCanvas, HelloApplication.root); //noch ein Layout wird erstellt mit StackPane
         gameScene = new Scene(gcRoot, WINDOW_WIDTH, WINDOW_HEIGHT); //neue Szene wird erstellt mit gcRoot und größe WINDOW_WIDTH X WINDOW_HEIGHT
         gcRoot.setStyle("-fx-background-color: black;"); // Set the background color
         createPaddles();
@@ -244,8 +246,8 @@ public class HelloApplication extends Application implements ExitPause{
     }
 
     private void createAvatars() {
-        gameAvatar selectedPlayer1 = new gameAvatar(selectedImagePlayer1, 10, 10, AVATAR_HEIGHT, root);
-        gameAvatar selectedPlayer2 = new gameAvatar(selectedImagePlayer2, 10, 10, AVATAR_HEIGHT, root);
+        gameAvatar selectedPlayer1 = new gameAvatar(selectedImagePlayer1, 20.0, 20.0, AVATAR_HEIGHT, 1);
+        gameAvatar selectedPlayer2 = new gameAvatar(selectedImagePlayer2, 20.0, 20.0, AVATAR_HEIGHT, 2);
     }
 
     private void updateCanvas() {
