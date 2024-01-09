@@ -5,7 +5,9 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
@@ -22,13 +24,17 @@ import javafx.util.Duration;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import java.io.File;
+import static com.example.teamarbeit.Avatars.selectedImagePlayer1;
+import static com.example.teamarbeit.Avatars.selectedImagePlayer2;
+
+
 
 
 import java.io.IOException;
 import java.util.Set;
 
 
-public class HelloApplication extends Application {
+public class HelloApplication extends Application implements ExitPause{
     static Stage currentStage;
     Scene scene1, gameScene;
     Button button;
@@ -39,6 +45,8 @@ public class HelloApplication extends Application {
     static final int MAX_SCORE = 2;
     static final int PADDLE_HEIGHT = 100;
     static final int BALL_DIAMETER = 20;
+    static final double AVATAR_HEIGHT = 150;
+
     static int ballYSpeed = 1;
     static int ballXSpeed = 1;
 
@@ -51,6 +59,10 @@ public class HelloApplication extends Application {
     double yPosPlayer2 = WINDOW_HEIGHT / 2;
     public GameMenu switchToGameMenu;
     boolean gameStarted;
+    String backgroundImagePath;
+    Image backgroundImage;
+    ImageView backgroundView;
+
 
     Thread thread;
     Image image;
@@ -63,7 +75,10 @@ public class HelloApplication extends Application {
     static VisualCountdown countdown;
     GraphicsContext gc;
     Canvas gameCanvas;
+    public static AnchorPane root;
+
     Timeline tl;
+
     private final Set<KeyCode> keysPressedP1 = new HashSet<>(); //HashSet für Input Player 1
     private final Set<KeyCode> keysPressedP2 = new HashSet<>(); //HashSet für Input Player 2
     public static MediaPlayer mediaPlayer1 ,mediaPlayer2, mediaPlayer3;
@@ -86,10 +101,15 @@ public class HelloApplication extends Application {
         gameCanvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGHT); //Ein Canvas wird erstellt (Ein Canvas ist wie eine Szene, nur können dort Objekte wie Rechtecke oder Kreise gezeichnet werden)
         gc = gameCanvas.getGraphicsContext2D(); //unser Zeichenobjekt wird als gc gespeichert, so können wir Funktionen ausführen, die das Objekt betreffen (z.B. Farbe, Größe etc. ändern).
 
+        String backgroundImagePath = "C:\\Users\\lenovo\\IdeaProjects9\\PROG-Projekt\\Teamarbeit\\src\\main\\resources\\Background_FINALE.jpg";
+        Image backgroundImage = new Image(backgroundImagePath);
+        ImageView backgroundView = new ImageView(backgroundImage);
+        backgroundView.setFitWidth(WINDOW_WIDTH);
+        backgroundView.setFitHeight(WINDOW_HEIGHT);
 
-
-
-        StackPane gcRoot = new StackPane(gameCanvas); //noch ein Layout wird erstellt mit StackPane
+        root = new AnchorPane();
+        createAvatars();
+        StackPane gcRoot = new StackPane(backgroundView, HelloApplication.root,gameCanvas); //noch ein Layout wird erstellt mit StackPane
         gameScene = new Scene(gcRoot, WINDOW_WIDTH, WINDOW_HEIGHT); //neue Szene wird erstellt mit gcRoot und größe WINDOW_WIDTH X WINDOW_HEIGHT
         gcRoot.setStyle("-fx-background-color: black;"); // Set the background color
         createPaddles();
@@ -158,7 +178,7 @@ public class HelloApplication extends Application {
         startCountdown(5, ball, gc, 100, WINDOW_WIDTH / 2, (int)WINDOW_HEIGHT / 2);
         updateCanvas();
         updateScore();
-        playGameMusic("C:/Users/marti/IdeaProjects/PROG-Projekt1/Teamarbeit/src/main/resources/com.example.teamarbeit/children-electro-swing-2_medium-178290.mp3");
+        playGameMusic("C:\\Users\\lenovo\\IdeaProjects5\\PROG-Projekt\\Teamarbeit\\src\\main\\resources\\com.example.teamarbeit\\children-electro-swing-2_medium-178290.mp3");
         tl.play(); //Starte Timeline
 
         gameCanvas.requestFocus(); //Sicherheitsvorkehrung damit gameCanvas unsere Keyboard Inputs annehmen kann, weil es jetzt in Fokus ist
@@ -170,7 +190,7 @@ public class HelloApplication extends Application {
     private void paddleMovement() {
         gameScene.setOnKeyPressed(event -> {
             KeyCode keyPressed = event.getCode(); //Gedrückte Taste wird als keyPressed gespeichert
-            if (keyPressed == KeyCode.W || keyPressed == KeyCode.S) { //Wenn keyPressed W oder S ist, dann füge es ins HashSet von Player 1 hinzu
+            if (keyPressed == KeyCode.W || keyPressed == KeyCode.S|| keyPressed == KeyCode.ESCAPE) { //Wenn keyPressed W oder S ist, dann füge es ins HashSet von Player 1 hinzu
                 keysPressedP1.add(keyPressed);
             } else if (keyPressed == KeyCode.UP || keyPressed == KeyCode.DOWN) { //Wenn keyPressed UP oder down ist, dann füge es ins HashSet von Player 2 hinzu
                 keysPressedP2.add(keyPressed);
@@ -191,6 +211,12 @@ public class HelloApplication extends Application {
         boolean moveP1Down = keysPressedP1.contains(KeyCode.S);
         boolean moveP2Up = keysPressedP2.contains(KeyCode.UP);
         boolean moveP2Down = keysPressedP2.contains(KeyCode.DOWN);
+        boolean gamePaused = keysPressedP1.contains(KeyCode.ESCAPE);
+
+        if (gamePaused){
+            keysPressedP1.remove(KeyCode.ESCAPE);
+            createPauseScreen();
+        }
 
         if (moveP1Up && player1.getYPaddlePosition() >= 0) { //Wenn W gedrückt, nicht losgelassen UND wenn Paddle nicht ganz oben ist, bewege Paddle nach oben
             player1.setYDirection(-player1.getPaddleSpeed());
@@ -211,11 +237,17 @@ public class HelloApplication extends Application {
         }
 
     }
+
     private void createBall() { //Ball wird erstellt mit "Ball" Konstruktor, siehe Ball Klasse
 
         random = new Random(); //Random damit der Ball in eine zufällige Anfangsrichtung geht
         ball = new Ball(WINDOW_WIDTH / 2, (int)WINDOW_HEIGHT / 2, BALL_DIAMETER,random.nextInt(2) * 2 - 1, random.nextInt(2) * 2 - 1, player1, player2 );
 
+    }
+
+    private void createAvatars() {
+        gameAvatar selectedPlayer1 = new gameAvatar(selectedImagePlayer1, 20.0, 20.0, AVATAR_HEIGHT, 1);
+        gameAvatar selectedPlayer2 = new gameAvatar(selectedImagePlayer2, 20.0, 20.0, AVATAR_HEIGHT, 2);
     }
 
     private void updateCanvas() {
@@ -310,6 +342,15 @@ public class HelloApplication extends Application {
             return false;
         }
     }
+
+    private void createPauseScreen() {
+        mediaPlayer2.stop();
+        GameMenu.mediaPlayer1.play();
+        tl.pause();
+        PauseScreen pauseScreen = new PauseScreen(WINDOW_WIDTH, (int) WINDOW_HEIGHT, currentStage, this) {
+        };
+    }
+
     private void goToGameMenu(){
         GameMenu gameMenu = new GameMenu();
         gameMenu.start(currentStage);
@@ -325,6 +366,17 @@ public class HelloApplication extends Application {
 
     public static void main(String[] args) {
         launch();
+    }
+
+    @Override
+    public void endingPauseScreen() {
+        System.out.println("Ending PauseScreen");
+        GameMenu.mediaPlayer1.stop();
+        mediaPlayer2.play();
+        tl.play();
+        currentStage.show();
+        currentStage.setScene(gameScene);
+
     }
 
 

@@ -42,10 +42,6 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
     public HelloApplication game;
     public static MediaPlayer mediaPlayer1;
 
-    //public static void main(String[] args) {
-        //launch(args);
-    //}
-
 
     public GameMenu() {
         this.game = new HelloApplication();
@@ -59,7 +55,7 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
 
         switchToMenu();
         primaryStage.show();
-        playMenuMusic("C:/Users/marti/IdeaProjects/PROG-Projekt1/Teamarbeit/src/main/resources/com.example.teamarbeit/happy-rock-165132.mp3");
+        playMenuMusic("C:\\Users\\lenovo\\IdeaProjects5\\PROG-Projekt\\Teamarbeit\\src\\main\\resources\\com.example.teamarbeit\\happy-rock-165132.mp3");
 
     }
 

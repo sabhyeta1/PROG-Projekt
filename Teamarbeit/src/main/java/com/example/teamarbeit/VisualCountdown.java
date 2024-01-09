@@ -59,10 +59,10 @@ public class VisualCountdown {
         isCountdownStarted = true;
     }
     public void drawCountdown(GraphicsContext gc) {
-        gc.setFill(Color.BLACK); // Clear the countdown area with a background color
+        gc.setFill(Color.TRANSPARENT); // Clear the countdown area with a background color
         gc.fillRect(fontXPos, fontYPos - fontSize, fontSize * 2, fontSize); // Adjust the dimensions as needed
 
-        gc.setFill(Color.WHITE);
+        gc.setFill(Color.BLACK);
         gc.setFont(new Font(fontSize));
         gc.fillText(Integer.toString(currentCountdownValue), fontXPos, fontYPos);
 

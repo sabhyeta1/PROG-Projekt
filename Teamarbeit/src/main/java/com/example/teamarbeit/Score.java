@@ -31,7 +31,7 @@ public class Score {
         Score.GAME_HEIGHT = GAME_HEIGHT;
     }
     public void draw(GraphicsContext gc) {
-        gc.setFill(Color.GOLDENROD);
+        gc.setFill(Color.BLACK);
         gc.setFont(new Font("Quicksand Bold",60)); //Zeichne Score mit Font "Quicksand Bold" und Größe 60
 
         gc.fillText(String.format("%02d", scorePlayer1), ((double) GAME_WIDTH / 2) - 120, 75);

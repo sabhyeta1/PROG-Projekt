@@ -46,7 +46,7 @@ public class PauseScreen {
 
     StackPane stackPane;
 
-    String imagePath = "file:///Users/mbilla19/IdeaProjects/GameMenu/images/WhatsApp Image 2023-12-24 at 23.43.20.jpeg";
+    String imagePath = "C:\\Users\\lenovo\\IdeaProjects5\\PROG-Projekt\\Teamarbeit\\src\\main\\resources\\stage2.png";
 
 
     public PauseScreen(int windowWidth,int windowHeight,Stage primaryStage, ExitPause exit) {
@@ -60,7 +60,7 @@ public class PauseScreen {
 
     public static void switchToPause() {
         VBox pauseLayout = createPauseLayout();
-        String imagePath = "file:///Users/mbilla19/IdeaProjects/GameMenu/images/WhatsApp Image 2023-12-24 at 23.43.20.jpeg";
+        String imagePath = "C:\\Users\\lenovo\\IdeaProjects5\\PROG-Projekt\\Teamarbeit\\src\\main\\resources\\stage2.png";
         StackPane root = createBackground(imagePath, pauseLayout);
         Scene selectionScene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
         primaryStage.setScene(selectionScene);
@@ -99,19 +99,18 @@ public class PauseScreen {
             if (exit != null){
                 exit.endingPauseScreen();
             }
-            // Code welcher zum Spiel führt
-            // code der paused auf false setzt
         });
+
         quitButton.setOnAction(e -> {
             System.out.println("Exiting the game");
             primaryStage.close();
-
-            //primaryStage.close();
         });
 
         menuButton.setOnAction(e -> {
             System.out.println("Return to Menu");
-            //GameMenu.switchToMenu();
+            GameMenu.mediaPlayer1.stop();
+            GameMenu gameMenu = new GameMenu();
+            gameMenu.start(primaryStage);
         });
 
 
@@ -145,25 +144,6 @@ public class PauseScreen {
 
     public static void main(String[] args) {
 
-    }
-
-
-    private void continuePlaying() {
-        if (exit!= null){
-            exit.endingPauseScreen();
-        }
-    }
-
-    private void quitPlaying() {
-        if (exit!= null){
-            //exit.endingGame();
-        }
-    }
-
-    private void switchToMenu() {
-        if (exit!= null){
-            //exit.openMenu();
-        }
     }
 
 }

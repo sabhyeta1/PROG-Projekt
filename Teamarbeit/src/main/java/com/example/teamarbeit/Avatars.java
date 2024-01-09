@@ -20,14 +20,19 @@ public class Avatars {
 
     private Stage window;
     private int playerSelecting = 1; // 1 for player one, 2 for player two
-    private Image selectedImagePlayer1;
-    private Image selectedImagePlayer2;
+    public static Image selectedImagePlayer1;
+    public static Image selectedImagePlayer2;
     private Label instructions;
     private int windowWidth;
     private int windowHeight;
     private Stage currentStage;
     private boolean bothPlayersSelected = false;
     private AvatarSelectionCompleteCallback callback;
+    Image screenImage1 = new Image ("C:\\Users\\lenovo\\IdeaProjects9\\PROG-Projekt\\Teamarbeit\\src\\main\\resources\\avatar1-removebg-preview.png");
+    Image screenImage2 = new Image ("C:\\Users\\lenovo\\IdeaProjects9\\PROG-Projekt\\Teamarbeit\\src\\main\\resources\\avatar2-removebg-preview.png");
+    Image screenImage3 = new Image ("C:\\Users\\lenovo\\IdeaProjects9\\PROG-Projekt\\Teamarbeit\\src\\main\\resources\\avatar3-removebg-preview.png");
+    Image screenImage4 = new Image ("C:\\Users\\lenovo\\IdeaProjects9\\PROG-Projekt\\Teamarbeit\\src\\main\\resources\\avatar4-removebg-preview.png");
+
 
 
     //contructor that sets up avatar selection screen, dimensions and stage where avatars will be displayed
@@ -71,10 +76,10 @@ public class Avatars {
         view4.setPreserveRatio(true);
         Button avatar4 = new Button("", view4);
 
-        avatar1.setOnAction(e -> selectCharacter(image1));
-        avatar2.setOnAction(e -> selectCharacter(image2));
-        avatar3.setOnAction(e -> selectCharacter(image3));
-        avatar4.setOnAction(e -> selectCharacter(image4));
+        avatar1.setOnAction(e -> selectCharacter(screenImage1));
+        avatar2.setOnAction(e -> selectCharacter(screenImage2));
+        avatar3.setOnAction(e -> selectCharacter(screenImage3));
+        avatar4.setOnAction(e -> selectCharacter(screenImage4));
 
         Button backButton = new Button("Back");
         backButton.setPrefWidth(100);
