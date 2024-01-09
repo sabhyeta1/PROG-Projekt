@@ -45,14 +45,14 @@ public class PauseScreen {
 
     public static void switchToPause() {
         VBox pauseLayout = createPauseLayout();
-        String imagePath = "C:\\Users\\lenovo\\IdeaProjects5\\PROG-Projekt\\Teamarbeit\\src\\main\\resources\\stage2.png";
+        String imagePath = "/stage2.png";
         StackPane root = createBackground(imagePath, pauseLayout);
         Scene selectionScene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
         primaryStage.setScene(selectionScene);
     }
 
     private static StackPane createBackground(String imagePath, VBox content) {
-        Image backgroundImage = new Image(imagePath);
+        Image backgroundImage = new Image(PauseScreen.class.getResourceAsStream(imagePath));
         ImageView backgroundImageView = new ImageView(backgroundImage);
         backgroundImageView.setFitWidth(WINDOW_WIDTH);
         backgroundImageView.setFitHeight(WINDOW_HEIGHT);

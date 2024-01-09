@@ -55,7 +55,7 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
 
         switchToMenu();
         primaryStage.show();
-        playMenuMusic("C:\\Users\\marti\\IdeaProjects\\PROG-Projekt1\\Teamarbeit\\src\\main\\resources\\com.example.teamarbeit\\happy-rock-165132.mp3");
+        playMenuMusic("C:\\Users\\marti\\IdeaProjects\\PROG-Projekt1\\Teamarbeit\\src\\main\\resources\\com.example.teamarbeit\\menu_music.mp3");
 
     }
 
