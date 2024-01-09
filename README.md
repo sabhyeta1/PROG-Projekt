@@ -18,4 +18,10 @@ Note:
 
 Although all of us worked on the code, Masud couldn't commit his code regularly due to technical issues, which is why the rest of us commited his parts for him. 
 
+Bugs to fix: 
+
 There is a delayed response to the bounce sound. 
+
+Bounce sound slide bar does not work, the sound stays the same volume. 
+
+Victory screen does not show which player has won the game. 
