@@ -5,7 +5,9 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
@@ -43,6 +45,8 @@ public class HelloApplication extends Application implements ExitPause{
     static final int MAX_SCORE = 2;
     static final int PADDLE_HEIGHT = 100;
     static final int BALL_DIAMETER = 20;
+    static final double AVATAR_HEIGHT = 50;
+
     static int ballYSpeed = 1;
     static int ballXSpeed = 1;
 
@@ -55,6 +59,10 @@ public class HelloApplication extends Application implements ExitPause{
     double yPosPlayer2 = WINDOW_HEIGHT / 2;
     public GameMenu switchToGameMenu;
     boolean gameStarted;
+    String backgroundImagePath;
+    Image backgroundImage;
+    ImageView backgroundView;
+
 
     Thread thread;
     Image image;
@@ -67,7 +75,10 @@ public class HelloApplication extends Application implements ExitPause{
     static VisualCountdown countdown;
     GraphicsContext gc;
     Canvas gameCanvas;
+    AnchorPane root;
+
     Timeline tl;
+
     private final Set<KeyCode> keysPressedP1 = new HashSet<>(); //HashSet für Input Player 1
     private final Set<KeyCode> keysPressedP2 = new HashSet<>(); //HashSet für Input Player 2
     public static MediaPlayer mediaPlayer1 ,mediaPlayer2, mediaPlayer3;
@@ -90,10 +101,13 @@ public class HelloApplication extends Application implements ExitPause{
         gameCanvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGHT); //Ein Canvas wird erstellt (Ein Canvas ist wie eine Szene, nur können dort Objekte wie Rechtecke oder Kreise gezeichnet werden)
         gc = gameCanvas.getGraphicsContext2D(); //unser Zeichenobjekt wird als gc gespeichert, so können wir Funktionen ausführen, die das Objekt betreffen (z.B. Farbe, Größe etc. ändern).
 
+        String backgroundImagePath = "C:\\Users\\lenovo\\IdeaProjects9\\PROG-Projekt\\Teamarbeit\\src\\main\\resources\\Background_FINALE.jpg";
+        Image backgroundImage = new Image(backgroundImagePath);
+        ImageView backgroundView = new ImageView(backgroundImage);
+        backgroundView.setFitWidth(WINDOW_WIDTH);
+        backgroundView.setFitHeight(WINDOW_HEIGHT);
 
-
-
-        StackPane gcRoot = new StackPane(gameCanvas); //noch ein Layout wird erstellt mit StackPane
+        StackPane gcRoot = new StackPane(backgroundView,gameCanvas); //noch ein Layout wird erstellt mit StackPane
         gameScene = new Scene(gcRoot, WINDOW_WIDTH, WINDOW_HEIGHT); //neue Szene wird erstellt mit gcRoot und größe WINDOW_WIDTH X WINDOW_HEIGHT
         gcRoot.setStyle("-fx-background-color: black;"); // Set the background color
         createPaddles();
@@ -227,6 +241,11 @@ public class HelloApplication extends Application implements ExitPause{
         random = new Random(); //Random damit der Ball in eine zufällige Anfangsrichtung geht
         ball = new Ball(WINDOW_WIDTH / 2, (int)WINDOW_HEIGHT / 2, BALL_DIAMETER,random.nextInt(2) * 2 - 1, random.nextInt(2) * 2 - 1, player1, player2 );
 
+    }
+
+    private void createAvatars() {
+        gameAvatar selectedPlayer1 = new gameAvatar(selectedImagePlayer1, 10, 10, AVATAR_HEIGHT, root);
+        gameAvatar selectedPlayer2 = new gameAvatar(selectedImagePlayer2, 10, 10, AVATAR_HEIGHT, root);
     }
 
     private void updateCanvas() {
