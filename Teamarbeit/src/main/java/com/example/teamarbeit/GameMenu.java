@@ -55,7 +55,7 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
 
         switchToMenu();
         primaryStage.show();
-        playMenuMusic("C:\\Users\\lenovo\\IdeaProjects5\\PROG-Projekt\\Teamarbeit\\src\\main\\resources\\com.example.teamarbeit\\happy-rock-165132.mp3");
+        playMenuMusic("C:\\Users\\marti\\IdeaProjects\\PROG-Projekt1\\Teamarbeit\\src\\main\\resources\\com.example.teamarbeit\\happy-rock-165132.mp3");
 
     }
 
@@ -159,8 +159,13 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
     public static void playMenuMusic(String filePath) { //Hintergrundmusik
         Media backgroundMusic = new Media(new File(filePath).toURI().toString());
         mediaPlayer1 = new MediaPlayer(backgroundMusic);
-        mediaPlayer1.setCycleCount(MediaPlayer.INDEFINITE); //Musik soll unendlich lang geloopt werden
-        mediaPlayer1.setVolume(0.5); //50% Lautstärke
+        mediaPlayer1.setCycleCount(MediaPlayer.INDEFINITE);//Musik soll unendlich lang geloopt werden
+        if(GameMenu.mediaPlayer1 != null){
+            mediaPlayer1.setVolume(getSliderValue(musicSlider));
+        }
+        else {
+            mediaPlayer1.setVolume(0.50);////50% Lautstärke
+        }
         mediaPlayer1.play();
         mediaPlayer1.setOnError(() -> {
             System.out.println("Media error occurred: " + mediaPlayer1.getError());
@@ -312,7 +317,7 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
         return label;
     }
 
-    private Image loadImage(String resourceName) {
+    public Image loadImage(String resourceName) {
         InputStream stream = getClass().getResourceAsStream("/" + resourceName); // note the slash at the beginning
         if (stream == null) {
             System.out.println("Resource not found: " + resourceName);
