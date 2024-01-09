@@ -43,7 +43,7 @@ public class HelloApplication extends Application implements ExitPause{
     static final double WINDOW_HEIGHT = WINDOW_WIDTH * (0.666666666);
 
     static final int PADDLE_WIDTH = 25;
-    static final int MAX_SCORE = 1;
+    static final int MAX_SCORE = 3;
     static final int PADDLE_HEIGHT = 100;
     static final int BALL_DIAMETER = 20;
     static final double AVATAR_HEIGHT = 150;
