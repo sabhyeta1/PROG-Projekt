@@ -14,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 
 
+import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Random;
 import javafx.animation.KeyFrame;
@@ -101,8 +102,7 @@ public class HelloApplication extends Application implements ExitPause{
         gameCanvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGHT); //Ein Canvas wird erstellt (Ein Canvas ist wie eine Szene, nur können dort Objekte wie Rechtecke oder Kreise gezeichnet werden)
         gc = gameCanvas.getGraphicsContext2D(); //unser Zeichenobjekt wird als gc gespeichert, so können wir Funktionen ausführen, die das Objekt betreffen (z.B. Farbe, Größe etc. ändern).
 
-        String backgroundImagePath = "C:\\Users\\marti\\IdeaProjects\\PROG-Projekt1\\Teamarbeit\\src\\main\\resources\\Background_FINALE.jpg";
-        Image backgroundImage = new Image(backgroundImagePath);
+        Image backgroundImage = new Image(getClass().getResourceAsStream("Background_FINALE.jpg"));
         ImageView backgroundView = new ImageView(backgroundImage);
         backgroundView.setFitWidth(WINDOW_WIDTH);
         backgroundView.setFitHeight(WINDOW_HEIGHT);
@@ -178,7 +178,7 @@ public class HelloApplication extends Application implements ExitPause{
         startCountdown(5, ball, gc, 100, WINDOW_WIDTH / 2, (int)WINDOW_HEIGHT / 2);
         updateCanvas();
         updateScore();
-        playGameMusic("C:\\Users\\marti\\IdeaProjects\\PROG-Projekt1\\Teamarbeit\\src\\main\\resources\\com.example.teamarbeit\\children-electro-swing-2_medium-178290.mp3");
+        playGameMusic("C:\\Users\\lenovo\\IdeaProjects5\\PROG-Projekt\\Teamarbeit\\src\\main\\resources\\com.example.teamarbeit\\children-electro-swing-2_medium-178290.mp3");
         tl.play(); //Starte Timeline
 
         gameCanvas.requestFocus(); //Sicherheitsvorkehrung damit gameCanvas unsere Keyboard Inputs annehmen kann, weil es jetzt in Fokus ist
@@ -246,8 +246,8 @@ public class HelloApplication extends Application implements ExitPause{
     }
 
     private void createAvatars() {
-        gameAvatar selectedPlayer1 = new gameAvatar(selectedImagePlayer1, 20.0, 20.0, AVATAR_HEIGHT, 1, root);
-        gameAvatar selectedPlayer2 = new gameAvatar(selectedImagePlayer2, 20.0, 20.0, AVATAR_HEIGHT, 2, root);
+        gameAvatar selectedPlayer1 = new gameAvatar(selectedImagePlayer1, 20.0, 20.0, AVATAR_HEIGHT, 1, HelloApplication.root);
+        gameAvatar selectedPlayer2 = new gameAvatar(selectedImagePlayer2, 20.0, 20.0, AVATAR_HEIGHT, 2, HelloApplication.root);
     }
 
     private void updateCanvas() {
@@ -307,30 +307,22 @@ public class HelloApplication extends Application implements ExitPause{
     }
     private void showVictoryScreen(String winnerText) {
         Label victoryLabel = new Label(winnerText);
-        victoryLabel.setStyle("-fx-text-fill: white; -fx-padding: 10px; -fx-font-size: 24px;");
-         // Set the font size to 24px
+        victoryLabel.setStyle("-fx-background-color: white; -fx-padding: 10px;");
 
         Button backButton = new Button("Back to Game Menu");
         backButton.setOnAction(event -> {
             goToGameMenu();
         });
-        backButton.setStyle("-fx-font-size: 18px;"); // Set the font size to 18px
-        Image backgroundVictoryScreen = new Image("C:\\Users\\marti\\IdeaProjects\\PROG-Projekt1\\Teamarbeit\\src\\main\\resources\\Background_FINALE.jpg");
-        ImageView victoryScreenView = new ImageView(backgroundVictoryScreen);
 
-        VBox victoryContent = new VBox(20); // Increased spacing between nodes
-        victoryContent.setAlignment(Pos.CENTER);
-        victoryContent.getChildren().addAll(victoryLabel, backButton);
+        VBox vbox = new VBox(10);
+        vbox.setAlignment(Pos.CENTER);
+        vbox.getChildren().addAll(victoryLabel, backButton, gameCanvas);
 
-        StackPane overlay = new StackPane();
-        overlay.setStyle("-fx-background-color: rgba(0, 0, 0, 0.7);"); // Semi-transparent black background
-        overlay.getChildren().add(victoryContent);
+        StackPane victoryLayout = new StackPane();
+        victoryLayout.setStyle("-fx-background-color: black;");
+        victoryLayout.getChildren().add(vbox); // Add VBox to StackPane
 
-        // StackPane to overlay on top of the gameCanvas
-        StackPane root = new StackPane();
-        root.getChildren().addAll(victoryScreenView, gameCanvas,HelloApplication.root, overlay);
-
-        Scene victoryScene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+        Scene victoryScene = new Scene(victoryLayout, WINDOW_WIDTH, WINDOW_HEIGHT);
         currentStage.setScene(victoryScene);
         currentStage.show();
     }
@@ -385,6 +377,14 @@ public class HelloApplication extends Application implements ExitPause{
         currentStage.show();
         currentStage.setScene(gameScene);
 
+    }
+    public Image loadImage(String resourceName) {
+        InputStream stream = getClass().getResourceAsStream("/" + resourceName); // note the slash at the beginning
+        if (stream == null) {
+            System.out.println("Resource not found: " + resourceName);
+            return null;
+        }
+        return new Image(stream);
     }
 
 

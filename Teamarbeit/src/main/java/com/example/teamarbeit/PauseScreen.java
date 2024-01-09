@@ -1,31 +1,17 @@
 package com.example.teamarbeit;
 
-import javafx.application.Application;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import com.example.teamarbeit.GameMenu;
-import javafx.application.Application;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import static com.example.teamarbeit.HelloApplication.*;
 
 import static com.example.teamarbeit.HelloApplication.WINDOW_HEIGHT;
 import static com.example.teamarbeit.HelloApplication.WINDOW_WIDTH;
@@ -46,7 +32,6 @@ public class PauseScreen {
 
     StackPane stackPane;
 
-    String imagePath = "C:\\Users\\marti\\IdeaProjects\\PROG-Projekt1\\Teamarbeit\\src\\main\\resources\\stage2.png";
 
 
     public PauseScreen(int windowWidth,int windowHeight,Stage primaryStage, ExitPause exit) {
@@ -60,7 +45,7 @@ public class PauseScreen {
 
     public static void switchToPause() {
         VBox pauseLayout = createPauseLayout();
-        String imagePath = "C:\\Users\\marti\\IdeaProjects\\PROG-Projekt1\\Teamarbeit\\src\\main\\resources\\stage2.png";
+        String imagePath = "C:\\Users\\lenovo\\IdeaProjects5\\PROG-Projekt\\Teamarbeit\\src\\main\\resources\\stage2.png";
         StackPane root = createBackground(imagePath, pauseLayout);
         Scene selectionScene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
         primaryStage.setScene(selectionScene);

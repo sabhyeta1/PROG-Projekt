@@ -1,17 +1,5 @@
 package com.example.teamarbeit;
 
-import javafx.scene.Node;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-
-import static com.example.teamarbeit.Avatars.selectedImagePlayer1;
-import static com.example.teamarbeit.Avatars.selectedImagePlayer2;
-
-
 import javafx.animation.TranslateTransition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;

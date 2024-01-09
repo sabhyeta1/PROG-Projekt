@@ -9,16 +9,8 @@ import javafx.stage.Stage;
 import javafx.scene.control.Button;
 
 import java.util.Random;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.TextAlignment;
-import javafx.util.Duration;
-
-import java.io.IOException;
 
 import static com.example.teamarbeit.HelloApplication.*;
 

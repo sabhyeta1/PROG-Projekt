@@ -1,7 +1,6 @@
 package com.example.teamarbeit;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 
 public class Paddle {
