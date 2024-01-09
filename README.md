@@ -13,3 +13,9 @@ How to play:
 The game is started via the class "GameMenu". 
 It is a local two-player game using the keyboard keys combination of either "W"&"S" or the "UP"&"DOWN" arrow keys to move the paddles. 
 Player 1 uses the "W"&"S" key combination and Player 2 uses the "UP"&"DOWN" arrow keys. 
+
+Note: 
+
+Although all of us worked on the code, Masud couldn't commit his code regularly due to technical issues, which is why the rest of us commited his parts for him. 
+
+There is a delayed response to the bounce sound. 
