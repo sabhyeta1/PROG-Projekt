@@ -28,10 +28,10 @@ public class Avatars {
     private Stage currentStage;
     private boolean bothPlayersSelected = false;
     private AvatarSelectionCompleteCallback callback;
-    Image screenImage1 = new Image ("C:\\Users\\lenovo\\IdeaProjects9\\PROG-Projekt\\Teamarbeit\\src\\main\\resources\\avatar1-removebg-preview.png");
-    Image screenImage2 = new Image ("C:\\Users\\lenovo\\IdeaProjects9\\PROG-Projekt\\Teamarbeit\\src\\main\\resources\\avatar2-removebg-preview.png");
-    Image screenImage3 = new Image ("C:\\Users\\lenovo\\IdeaProjects9\\PROG-Projekt\\Teamarbeit\\src\\main\\resources\\avatar3-removebg-preview.png");
-    Image screenImage4 = new Image ("C:\\Users\\lenovo\\IdeaProjects9\\PROG-Projekt\\Teamarbeit\\src\\main\\resources\\avatar4-removebg-preview.png");
+    Image screenImage1 = new Image(getClass().getResourceAsStream("avatar1-removebg-preview.png"));
+    Image screenImage2 = new Image (getClass().getResourceAsStream("avatar2-removebg-preview.png"));
+    Image screenImage3 = new Image (getClass().getResourceAsStream("avatar3-removebg-preview.png"));
+    Image screenImage4 = new Image (getClass().getResourceAsStream("avatar4-removebg-preview.png"));
 
 
 
@@ -172,4 +172,5 @@ public class Avatars {
 
         window.setScene(gameScene);
     }
+
 }

@@ -2,21 +2,12 @@ package com.example.teamarbeit;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Application;
-import javafx.geometry.Pos;
-import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import static com.example.teamarbeit.HelloApplication.WINDOW_HEIGHT;
-import static com.example.teamarbeit.HelloApplication.WINDOW_WIDTH;
 
 public class VisualCountdown {
     public int countdownStartValue;

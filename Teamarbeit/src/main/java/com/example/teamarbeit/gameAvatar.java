@@ -18,7 +18,6 @@ public class gameAvatar {
         this.topAnchor = topAnchor;
         this.sideAnchor = sideAnchor;
         this.ImageHeight = ImageHeight;
-        this.
 
         selectedPlayerView = new ImageView(playerImage);
 

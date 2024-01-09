@@ -14,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 
 
+import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Random;
 import javafx.animation.KeyFrame;
@@ -101,8 +102,7 @@ public class HelloApplication extends Application implements ExitPause{
         gameCanvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGHT); //Ein Canvas wird erstellt (Ein Canvas ist wie eine Szene, nur können dort Objekte wie Rechtecke oder Kreise gezeichnet werden)
         gc = gameCanvas.getGraphicsContext2D(); //unser Zeichenobjekt wird als gc gespeichert, so können wir Funktionen ausführen, die das Objekt betreffen (z.B. Farbe, Größe etc. ändern).
 
-        String backgroundImagePath = "C:\\Users\\lenovo\\IdeaProjects9\\PROG-Projekt\\Teamarbeit\\src\\main\\resources\\Background_FINALE.jpg";
-        Image backgroundImage = new Image(backgroundImagePath);
+        Image backgroundImage = new Image(getClass().getResourceAsStream("Background_FINALE.jpg"));
         ImageView backgroundView = new ImageView(backgroundImage);
         backgroundView.setFitWidth(WINDOW_WIDTH);
         backgroundView.setFitHeight(WINDOW_HEIGHT);
@@ -377,6 +377,14 @@ public class HelloApplication extends Application implements ExitPause{
         currentStage.show();
         currentStage.setScene(gameScene);
 
+    }
+    public Image loadImage(String resourceName) {
+        InputStream stream = getClass().getResourceAsStream("/" + resourceName); // note the slash at the beginning
+        if (stream == null) {
+            System.out.println("Resource not found: " + resourceName);
+            return null;
+        }
+        return new Image(stream);
     }
 
 

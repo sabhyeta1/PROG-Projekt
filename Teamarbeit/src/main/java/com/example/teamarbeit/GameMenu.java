@@ -312,7 +312,7 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
         return label;
     }
 
-    private Image loadImage(String resourceName) {
+    public Image loadImage(String resourceName) {
         InputStream stream = getClass().getResourceAsStream("/" + resourceName); // note the slash at the beginning
         if (stream == null) {
             System.out.println("Resource not found: " + resourceName);
