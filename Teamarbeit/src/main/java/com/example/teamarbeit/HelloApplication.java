@@ -246,8 +246,8 @@ public class HelloApplication extends Application implements ExitPause{
     }
 
     private void createAvatars() {
-        gameAvatar selectedPlayer1 = new gameAvatar(selectedImagePlayer1, 20.0, 20.0, AVATAR_HEIGHT, 1);
-        gameAvatar selectedPlayer2 = new gameAvatar(selectedImagePlayer2, 20.0, 20.0, AVATAR_HEIGHT, 2);
+        gameAvatar selectedPlayer1 = new gameAvatar(selectedImagePlayer1, 20.0, 20.0, AVATAR_HEIGHT, 1, HelloApplication.root);
+        gameAvatar selectedPlayer2 = new gameAvatar(selectedImagePlayer2, 20.0, 20.0, AVATAR_HEIGHT, 2, HelloApplication.root);
     }
 
     private void updateCanvas() {
