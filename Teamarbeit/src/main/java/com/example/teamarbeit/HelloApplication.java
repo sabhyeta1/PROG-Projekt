@@ -12,9 +12,6 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
-
-
-import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Random;
 import javafx.animation.KeyFrame;
@@ -25,20 +22,20 @@ import javafx.util.Duration;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import java.io.File;
-import static com.example.teamarbeit.Avatars.selectedImagePlayer1;
-import static com.example.teamarbeit.Avatars.selectedImagePlayer2;
-
-
-
-
 import java.io.IOException;
 import java.util.Set;
 
+import static com.example.teamarbeit.Avatars.*;
+import static com.example.teamarbeit.Ball.*;
+
+
+
 
 public class HelloApplication extends Application implements ExitPause{
+
+    // The instances of the class
     static Stage currentStage;
     Scene scene1, gameScene;
-    Button button;
     static final int WINDOW_WIDTH = 1000;
     static final double WINDOW_HEIGHT = WINDOW_WIDTH * (0.666666666);
 
@@ -47,7 +44,24 @@ public class HelloApplication extends Application implements ExitPause{
     static final int PADDLE_HEIGHT = 100;
     static final int BALL_DIAMETER = 20;
     static final double AVATAR_HEIGHT = 150;
+    Random random;
+    Paddle player1;
+    Paddle player2;
+    Ball ball;
+    Score score;
+    static VisualCountdown countdown;
+    static String mediaPlayer2Path;
+    GraphicsContext gc;
+    Canvas gameCanvas;
+    public static AnchorPane root;
 
+    Timeline tl;
+
+    private final Set<KeyCode> keysPressedP1 = new HashSet<>(); //"HashSet" (list) für Input Player 1
+    private final Set<KeyCode> keysPressedP2 = new HashSet<>(); //"HashSet" (list) für Input Player 2
+
+    // Placeholders:
+    Button button;
     static int ballYSpeed = 1;
     static int ballXSpeed = 1;
 
@@ -58,81 +72,59 @@ public class HelloApplication extends Application implements ExitPause{
     double yPosPlayer1 = WINDOW_HEIGHT / 2;
     int xPosPlayer2 = WINDOW_WIDTH - PADDLE_WIDTH;
     double yPosPlayer2 = WINDOW_HEIGHT / 2;
+
     public GameMenu switchToGameMenu;
     boolean gameStarted;
     String backgroundImagePath;
     Image backgroundImage;
     ImageView backgroundView;
 
-
     Thread thread;
     Image image;
     GraphicsContext graphics;
-    Random random;
-    Paddle player1;
-    Paddle player2;
-    Ball ball;
-    Score score;
-    static VisualCountdown countdown;
-    GraphicsContext gc;
-    Canvas gameCanvas;
-    public static AnchorPane root;
-
-    Timeline tl;
-
-    private final Set<KeyCode> keysPressedP1 = new HashSet<>(); //HashSet für Input Player 1
-    private final Set<KeyCode> keysPressedP2 = new HashSet<>(); //HashSet für Input Player 2
-    public static MediaPlayer mediaPlayer1 ,mediaPlayer2, mediaPlayer3;
-
 
 
 
     @Override
     public void start(Stage primaryStage) throws IOException {
 
+        currentStage = primaryStage; //stage is taken over
+        currentStage.setTitle("Play"); //stage gets title Pong Project (you can see it up on the left side)
+        mediaPlayer2Path = "./Teamarbeit/src/main/resources/com.example.teamarbeit/game_music.mp3";
 
-        currentStage = primaryStage; //Stage wird übernommen
-        currentStage.setTitle("Play"); //Stage (Fenster) bekommt Titel Pong Projekt (Ist oben links zu sehen)
+        Music.mediaPlayer1.stop();
 
-        GameMenu.mediaPlayer1.stop();
-        //Create gameCanvas to draw our Game
+        // Create the canvas "gameCanvas "to draw our Game (a canvas is like a scene, but you can draw objects here like rectangles and circles)
+        score = new Score(WINDOW_WIDTH,(int) WINDOW_HEIGHT); //score is created
 
-        score = new Score(WINDOW_WIDTH,(int) WINDOW_HEIGHT); //Punkteanzahl wird erstellt
+        gameCanvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGHT); //a canvas is created
+        gc = gameCanvas.getGraphicsContext2D(); //the objects we have drawn are saved as "gc", they can execute functions for the objects (change colors, sizes and so on)
 
-        gameCanvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGHT); //Ein Canvas wird erstellt (Ein Canvas ist wie eine Szene, nur können dort Objekte wie Rechtecke oder Kreise gezeichnet werden)
-        gc = gameCanvas.getGraphicsContext2D(); //unser Zeichenobjekt wird als gc gespeichert, so können wir Funktionen ausführen, die das Objekt betreffen (z.B. Farbe, Größe etc. ändern).
-
-        Image backgroundImage = new Image(getClass().getResourceAsStream("/Background_FINALE.jpg"));
+        Image backgroundImage = GameMenu.loadImage("Background_FINALE.jpg");
         ImageView backgroundView = new ImageView(backgroundImage);
         backgroundView.setFitWidth(WINDOW_WIDTH);
         backgroundView.setFitHeight(WINDOW_HEIGHT);
 
         root = new AnchorPane();
         createAvatars();
-        StackPane gcRoot = new StackPane(backgroundView, HelloApplication.root,gameCanvas); //noch ein Layout wird erstellt mit StackPane
-        gameScene = new Scene(gcRoot, WINDOW_WIDTH, WINDOW_HEIGHT); //neue Szene wird erstellt mit gcRoot und größe WINDOW_WIDTH X WINDOW_HEIGHT
-        gcRoot.setStyle("-fx-background-color: black;"); // Set the background color
+        StackPane gcRoot = new StackPane(backgroundView, HelloApplication.root, gameCanvas); //another layout is created with the class "StackPane"
+        gameScene = new Scene(gcRoot, WINDOW_WIDTH, WINDOW_HEIGHT); //a new scene is created with the "StackPane" "gcRoot" in the size "WINDOW_WIDTH" X "WINDOW_HEIGHT"
+        gcRoot.setStyle("-fx-background-color: black;"); //setting the background color
         createPaddles();
         createBall();
-        currentStage.setOnCloseRequest(windowEvent -> { // Sobald Fenster geschlossen wird, stoppe die Hintergrundmusik, falls schon vorhanden
-            if (mediaPlayer2 != null) {
-                mediaPlayer2.stop();
+        currentStage.setOnCloseRequest(windowEvent -> { //as soon as the window closes the background music stops (if there already is a background music)
+            if (Music.mediaPlayer2 != null) {
+                Music.mediaPlayer2.stop();
             }
         });
 
+        currentStage.setResizable(false); //window size stays the same - it can not be changed by the end user
+        currentStage.setScene(scene1); //set "gameScene" as the initial scene
+        currentStage.show(); //stage is shown
+        currentStage.setScene(gameScene); //when this button is pressed, the scene is changed to "gameScene" and "gameSceneIsRunning" is set to true
 
-
-
-        currentStage.setResizable(false); //Fenstergröße bleibt fix, kann nicht verändert werden vom Endbenutzer
-        currentStage.setScene(scene1); // Set gameScene as the initial scene
-        currentStage.show(); //Stage wird angezeigt
-        currentStage.setScene(gameScene); //Wenn Knopf gedrückt wird, wechsel auf gameScene und stelle gameSceneIsRunning auf true
-
-
-
-
-        tl = new Timeline(new KeyFrame(Duration.millis(10), e -> {
-            paddleMovement(); //Timeline updatet diese Methoden konstant alle 10 ms --> 100FPS
+        tl = new Timeline(new KeyFrame(Duration.millis(10), e -> { //timeline updates these methods constantly every 10 ms --> 100FPS
+            paddleMovement();
             allMovement();
             updateCanvas();
             updateScore();
@@ -140,200 +132,108 @@ public class HelloApplication extends Application implements ExitPause{
                 countdown.drawCountdown(gc);
             }
             gameOver();
-            if (gameOver()) { //Code für Victory Screen und zurück ins GameMenu einfügen
+            if (gameOver()) {
                 if (score.scorePlayer1 == MAX_SCORE) {
                     showVictoryScreen("Player 1 Wins!");
-                    mediaPlayer2.stop();
-                    /*Label victoryPlayer1 = new Label("Player 1 Wins!");
-                    victoryPlayer1.setStyle("-fx-background-color: white; -fx-padding: 10px;");
-                    StackPane victoryLabel = new StackPane();
-                    victoryLabel.setStyle("-fx-background-color: black;");
-                    victoryLabel.getChildren().addAll(gameCanvas, victoryPlayer1);
-                    Scene victoryScene = new Scene(victoryLabel, WINDOW_WIDTH, WINDOW_HEIGHT);
-                    currentStage.setScene(victoryScene);
-                    currentStage.show();
-                    */
+                    Music.mediaPlayer2.stop();
                 }
                 else {
                     showVictoryScreen("Player 2 Wins!");
-                    mediaPlayer2.stop();
-                    /*Label victoryPlayer2 = new Label("Player 2 Wins!");
-                    victoryPlayer2.setStyle("-fx-background-color: white; -fx-padding: 10px;");
-                    StackPane victoryLabel = new StackPane();
-                    victoryLabel.setStyle("-fx-background-color: black;");
-                    victoryLabel.getChildren().addAll(gameCanvas, victoryPlayer2);
-                    Scene victoryScene = new Scene(victoryLabel, WINDOW_WIDTH, WINDOW_HEIGHT);
-                    currentStage.setScene(victoryScene);
-                    currentStage.show();
-
-                */}
-
+                    Music.mediaPlayer2.stop();
+                    }
             }
         }));
 
-
-        tl.setCycleCount(Timeline.INDEFINITE); //Timeline wird für immer laufen bzw. wird indefinite Mal ausgeführt
-        createPaddles(); //Für Methoden für Zeile 79 bis 84 siehe Unten
+        tl.setCycleCount(Timeline.INDEFINITE); //timeline is executed indefinite times - runs forever, except it is interrupted
+        createPaddles(); //for methods for row 79 to 84 (see more below)
         createBall();
         startCountdown(5, ball, gc, 100, WINDOW_WIDTH / 2, (int)WINDOW_HEIGHT / 2);
         updateCanvas();
         updateScore();
-        playGameMusic("C:\\Users\\marti\\IdeaProjects\\PROG-Projekt1\\Teamarbeit\\src\\main\\resources\\com.example.teamarbeit\\game_music.mp3");
-        tl.play(); //Starte Timeline
+        Music.playGameMusic(mediaPlayer2Path);
+        tl.play(); //starts timeline
 
-        gameCanvas.requestFocus(); //Sicherheitsvorkehrung damit gameCanvas unsere Keyboard Inputs annehmen kann, weil es jetzt in Fokus ist
+        gameCanvas.requestFocus(); //safety precaution so "gameCanvas" receive our keyboard inputs - canvas is focused now
     }
-    private void createPaddles() { //Erstelle 2 Paddles mit Konstruktor "Paddle" --> siehe Zeile 16 - 23 von Klasse Paddle
+
+
+    // Create functions (and function for exiting/ending)
+    private void createPaddles() { //creates two paddles with the "Paddle" constructor --> see row 17 - 23 (class "Paddle")
         player1 = new Paddle(0, (double) ((WINDOW_HEIGHT / 2) - (PADDLE_HEIGHT / 2)), PADDLE_WIDTH, PADDLE_HEIGHT, 1);
         player2 = new Paddle(WINDOW_WIDTH - PADDLE_WIDTH, (double) ((WINDOW_HEIGHT / 2) - (PADDLE_HEIGHT / 2)), PADDLE_WIDTH, PADDLE_HEIGHT, 2);
     }
-    private void paddleMovement() {
-        gameScene.setOnKeyPressed(event -> {
-            KeyCode keyPressed = event.getCode(); //Gedrückte Taste wird als keyPressed gespeichert
-            if (keyPressed == KeyCode.W || keyPressed == KeyCode.S|| keyPressed == KeyCode.ESCAPE) { //Wenn keyPressed W oder S ist, dann füge es ins HashSet von Player 1 hinzu
-                keysPressedP1.add(keyPressed);
-            } else if (keyPressed == KeyCode.UP || keyPressed == KeyCode.DOWN) { //Wenn keyPressed UP oder down ist, dann füge es ins HashSet von Player 2 hinzu
-                keysPressedP2.add(keyPressed);
-            }
-        });
 
-        gameScene.setOnKeyReleased(event -> { //losgelassene Tasten werden aus HashSet entfernt
-            KeyCode keyReleased = event.getCode();
-            if (keyReleased == KeyCode.W || keyReleased == KeyCode.S) {
-                keysPressedP1.remove(keyReleased);
-            } else if (keyReleased == KeyCode.UP || keyReleased == KeyCode.DOWN) {
-                keysPressedP2.remove(keyReleased);
-            }
-        });
 
-        //boolean werte bestimmen ob ein Paddle sich bewegt
-        boolean moveP1Up = keysPressedP1.contains(KeyCode.W);
-        boolean moveP1Down = keysPressedP1.contains(KeyCode.S);
-        boolean moveP2Up = keysPressedP2.contains(KeyCode.UP);
-        boolean moveP2Down = keysPressedP2.contains(KeyCode.DOWN);
-        boolean gamePaused = keysPressedP1.contains(KeyCode.ESCAPE);
+    private void createBall() { //ball is created with "Ball" constructor (see ball class)
 
-        if (gamePaused){
-            keysPressedP1.remove(KeyCode.ESCAPE);
-            createPauseScreen();
-        }
-
-        if (moveP1Up && player1.getYPaddlePosition() >= 0) { //Wenn W gedrückt, nicht losgelassen UND wenn Paddle nicht ganz oben ist, bewege Paddle nach oben
-            player1.setYDirection(-player1.getPaddleSpeed());
-
-        } else if (moveP1Down && player1.getYPaddlePosition() <= WINDOW_HEIGHT - PADDLE_HEIGHT) { //Wenn S gedrückt, nicht losgelassen UND wenn Paddle nicht ganz unten ist, bewege Paddle nach unten
-            player1.setYDirection(player1.getPaddleSpeed());
-
-        } else {
-            player1.setYDirection(0);
-        }
-
-        if (moveP2Up && player2.getYPaddlePosition() >= 0) { //Kopie der Zeilen 145-153 aber für Player 2
-            player2.setYDirection(-player2.getPaddleSpeed());
-        } else if (moveP2Down && player2.getYPaddlePosition() <= WINDOW_HEIGHT - PADDLE_HEIGHT) {
-            player2.setYDirection(player2.getPaddleSpeed());
-        } else {
-            player2.setYDirection(0);
-        }
-
-    }
-
-    private void createBall() { //Ball wird erstellt mit "Ball" Konstruktor, siehe Ball Klasse
-
-        random = new Random(); //Random damit der Ball in eine zufällige Anfangsrichtung geht
+        random = new Random(); //the "Random" class is used so the ball starts in a random direction in the beginning
         ball = new Ball(WINDOW_WIDTH / 2, (int)WINDOW_HEIGHT / 2, BALL_DIAMETER,random.nextInt(2) * 2 - 1, random.nextInt(2) * 2 - 1, player1, player2 );
 
     }
 
     private void createAvatars() {
-        gameAvatar selectedPlayer1 = new gameAvatar(selectedImagePlayer1, 20.0, 20.0, AVATAR_HEIGHT, 1, HelloApplication.root);
-        gameAvatar selectedPlayer2 = new gameAvatar(selectedImagePlayer2, 20.0, 20.0, AVATAR_HEIGHT, 2, HelloApplication.root);
+        GameAvatar selectedPlayer1 = new GameAvatar(selectedImagePlayer1, 20.0, 20.0, AVATAR_HEIGHT, 1, HelloApplication.root);
+        GameAvatar selectedPlayer2 = new GameAvatar(selectedImagePlayer2, 20.0, 20.0, AVATAR_HEIGHT, 2, HelloApplication.root);
     }
 
-    private void updateCanvas() {
-        GraphicsContext gc = gameCanvas.getGraphicsContext2D();
-        gc.clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT); // Clear the canvas
-        player1.draw(gc); // Redraw player 1 paddle
-        player2.draw(gc); // Redraw player 2 paddle
-        ball.draw(gc); // Draw Ball
-        score.draw(gc); // Draw Score
-    }
-    private void updateScore() { // Score Bedingungen
-        if (ball.getXPosBall() <= 0) { // Wenn Ball ganz links, dann bekommt Spiele 2 einen Punkt
-            score.scorePlayer2++;
-            if (score.scorePlayer1 < MAX_SCORE && score.scorePlayer2 < MAX_SCORE) {
-                createBall(); //Ball soll wieder in der Mitte erstellt werden und Countdown von 3 Sek wird gestartet
-                startCountdown(3, ball, gc, 100, WINDOW_WIDTH / 2, (int) WINDOW_HEIGHT / 2);
-            }
-        }
-        else if (ball.getXPosBall() >= WINDOW_WIDTH ) { //Wenn Ball ganz rechts, bekommt Spieler 1 einen Punkt
-            score.scorePlayer1++;
-
-
-            if (score.scorePlayer1 < MAX_SCORE && score.scorePlayer2 < MAX_SCORE) {
-                createBall();
-                startCountdown(3, ball, gc, 100, WINDOW_WIDTH / 2, (int) WINDOW_HEIGHT / 2);
-            }
-        }
-    }
 
     private static void startCountdown(int duration, Ball ball, GraphicsContext gc, int fontSize, int fontXPos, int fontYPos) { //siehe Visual Countdown Klasse
         countdown = new VisualCountdown(duration, ball, gc, fontSize, fontXPos, fontYPos);
         countdown.countdownLogic();
     }
 
-    private void allMovement(){
-        player1.move(); //siehe Klasse Paddle Zeile 87
-        player2.move();
-        ball.move(); //siehe Klasse Ball Zeile 62 - 95
+
+    private void createPauseScreen() {
+        Music.mediaPlayer2.pause(); //pausing the game music so -->
+        Music.mediaPlayer1.play(); //--> the menu music can start again
+        tl.pause(); //pausing the timeline so the game can be continued exactly where it was left when the pause screen is opened
+        PauseScreen pauseScreen = new PauseScreen(WINDOW_WIDTH, (int) WINDOW_HEIGHT, currentStage, this) { //pause screen is created with the constructor of the "PauseScreen" class
+        };
     }
 
-    public static void playGameMusic(String filePath) {
-        Media backgroundMusic = new Media(new File(filePath).toURI().toString());
-        mediaPlayer2 = new MediaPlayer(backgroundMusic);
-        mediaPlayer2.setCycleCount(MediaPlayer.INDEFINITE); //Musik soll unendlich lang geloopt werden
-        mediaPlayer2.setVolume(GameMenu.getSliderValue(GameMenu.getMusicSlider())); //50% Lautstärke
-        mediaPlayer2.play();
-        mediaPlayer2.setOnError(() -> {
-            System.out.println("Media error occurred: " + mediaPlayer1.getError());
-            //Error code, falls iwann einer kommt
-        });
+
+    @Override
+    public void endingPauseScreen() { //method that is executed when the switch from the pause screen back to the game happens
+        System.out.println("Ending PauseScreen");
+        Music.mediaPlayer1.stop(); //stop the menu music -->
+        Music.mediaPlayer2.play(); //--> so the game music can continue
+        tl.play(); //timeline continues (the indefinite loop)
+        currentStage.show(); //showing the stage
+        currentStage.setScene(gameScene); // setting the scene for the game
+
     }
-    public static void playBounceSound(String filePath) { //Methode für Ballsound, wenn er gegen Paddle abprallt
-        Media bounceSound = new Media(new File(filePath).toURI().toString());
-        mediaPlayer3 = new MediaPlayer(bounceSound);
-        mediaPlayer3.setCycleCount(1); //Sound wird nur einmal abgespielt
-        mediaPlayer3.play();
-    }
+
+
+
+    // Functions for the victory screen, when the game is over
     private void showVictoryScreen (String winnerText){
         Label victoryLabel = new Label(winnerText);
-        victoryLabel.setStyle("-fx-background-color: white; -fx-padding: 10px;");
-        victoryLabel.setStyle("-fx-font-size: 24px;"); // Set the font size to 24px
-        Image winnerBackground = new Image(getClass().getResourceAsStream("/Background_FINALE.jpg"));
+        victoryLabel.setStyle("-fx-background-color: transparent; -fx-padding: 150px; -fx-font-size: 48px; -fx-text-fill: white;"); //set the font size to 24px
+        Image winnerBackground = GameMenu.loadImage("Background_FINALE.jpg");
         ImageView winnerBackgroundView = new ImageView(winnerBackground);
 
         Button backButton = new Button("Back to Game Menu");
-        backButton.setOnAction(event -> {
-            goToGameMenu();
-        });
-        backButton.setStyle("-fx-font-size: 18px; -fx-background-color: white"); // Set the font size to 18px
+        backButton.setOnAction(event -> goToGameMenu());
+        GameMenu.addGlowEffectOnHover(backButton);
+        backButton.setStyle("-fx-font-size: 18px; -fx-background-color: white"); //set the font size to 18px
 
-        VBox victoryContent = new VBox(20); // Increased spacing between nodes
+        VBox victoryContent = new VBox(); //increased spacing between nodes
         victoryContent.setAlignment(Pos.CENTER);
-        victoryContent.getChildren().add(victoryLabel);
+        victoryContent.getChildren().addAll(victoryLabel, backButton);
 
         StackPane overlay = new StackPane();
-        overlay.setStyle("-fx-background-color: rgba(0, 0, 0, 0.7);"); // Semi-transparent black background
-        overlay.getChildren().addAll(winnerBackgroundView, HelloApplication.root, victoryLabel);
+        overlay.setStyle("-fx-background-color: rgba(0, 0, 0, 0.7);"); //semi-transparent black background
 
         // StackPane to overlay on top of the gameCanvas
-        StackPane root = new StackPane();
-        root.getChildren().addAll(overlay,gameCanvas, backButton);
+        StackPane victoryRoot = new StackPane();
+        victoryRoot.getChildren().addAll(winnerBackgroundView, HelloApplication.root, gameCanvas, overlay, victoryContent);
 
-        Scene victoryScene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+        Scene victoryScene = new Scene(victoryRoot, WINDOW_WIDTH, WINDOW_HEIGHT);
         currentStage.setScene(victoryScene);
         currentStage.show();
     }
+
+
     private boolean gameOver() {
         if (score.scorePlayer1 == MAX_SCORE || score.scorePlayer2 == MAX_SCORE) {
             updateCanvas();
@@ -351,24 +251,102 @@ public class HelloApplication extends Application implements ExitPause{
         }
     }
 
-    private void createPauseScreen() {
-        mediaPlayer2.stop();
-        GameMenu.mediaPlayer1.play();
-        tl.pause();
-        PauseScreen pauseScreen = new PauseScreen(WINDOW_WIDTH, (int) WINDOW_HEIGHT, currentStage, this) {
-        };
-    }
 
-    private void goToGameMenu(){
+    private void goToGameMenu(){ //function for the back button at the victory screen
         GameMenu gameMenu = new GameMenu();
         gameMenu.start(currentStage);
     }
 
 
-    private void run (GraphicsContext gc) {
 
+    // Functions for updating (the game scene)
+    private void updateCanvas() {
+        GraphicsContext gc = gameCanvas.getGraphicsContext2D();
+        gc.clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT); //clear the canvas
+        player1.draw(gc); //redraw player 1 paddle
+        player2.draw(gc); //redraw player 2 paddle
+        ball.draw(gc); //draw Ball
+        score.draw(gc); //draw Score
     }
 
+
+    private void updateScore() { //score conditions
+        if (ball.getXPosBall() <= 0) { //when the ball is all to the left, player 2 gets a score
+            score.scorePlayer2++;
+            if (score.scorePlayer1 < MAX_SCORE && score.scorePlayer2 < MAX_SCORE) {
+                createBall(); //ball is recreated in the middle of the screen and a countdown of 3 seconds is started
+                startCountdown(3, ball, gc, 100, WINDOW_WIDTH / 2, (int) WINDOW_HEIGHT / 2);
+            }
+        }
+        else if (ball.getXPosBall() >= WINDOW_WIDTH ) { //when the ball is all to the right, player 1 gets a score
+            score.scorePlayer1++;
+
+
+            if (score.scorePlayer1 < MAX_SCORE && score.scorePlayer2 < MAX_SCORE) {
+                createBall(); //ball is recreated in the middle of the screen and a countdown of 3 seconds is started
+                startCountdown(3, ball, gc, 100, WINDOW_WIDTH / 2, (int) WINDOW_HEIGHT / 2);
+            }
+        }
+    }
+
+
+    // Movement functions
+    private void paddleMovement() {
+
+        // Adding the key (value) of the pressed key to the "HashSets" from the players
+        gameScene.setOnKeyPressed(event -> {
+            KeyCode keyPressed = event.getCode(); //the pressed key is saved as "keyPressed"
+            if (keyPressed == KeyCode.W || keyPressed == KeyCode.S|| keyPressed == KeyCode.ESCAPE) { //when the "keyPressed" is "W" or "S" then it is added to the "HashSet" of player 1
+                keysPressedP1.add(keyPressed);
+            } else if (keyPressed == KeyCode.UP || keyPressed == KeyCode.DOWN) { //when the "keyPressed" is "UP" or "DOWN" then it is added to the "HashSet" of player 2
+                keysPressedP2.add(keyPressed);
+            }
+        });
+        // Removing the key (value) of the pressed key of the "HashSets" from the players
+        gameScene.setOnKeyReleased(event -> { //the released key is saved as "keyReleased"
+            KeyCode keyReleased = event.getCode();
+            if (keyReleased == KeyCode.W || keyReleased == KeyCode.S) {//when the "keyReleased" is "W" or "S" then it is added to the "HashSet" of player 1
+                keysPressedP1.remove(keyReleased);
+            } else if (keyReleased == KeyCode.UP || keyReleased == KeyCode.DOWN) {//when the "keyReleased" is "UP" or "DOWN" then it is added to the "HashSet" of player 2
+                keysPressedP2.remove(keyReleased);
+            }
+        });
+
+        // Boolean values decide if a paddle moves or not (they are true if the named value are added to the "HashSets")
+        boolean moveP1Up = keysPressedP1.contains(KeyCode.W);
+        boolean moveP1Down = keysPressedP1.contains(KeyCode.S);
+        boolean moveP2Up = keysPressedP2.contains(KeyCode.UP);
+        boolean moveP2Down = keysPressedP2.contains(KeyCode.DOWN);
+        boolean gamePaused = keysPressedP1.contains(KeyCode.ESCAPE);
+
+        if (moveP1Up && player1.getYPaddlePosition() >= 0) { //if the "W" key is pressed (and not released) and the paddle is not on top of the screen - move paddle up
+            player1.setYDirection(-player1.getPaddleSpeed());
+        } else if (moveP1Down && player1.getYPaddlePosition() <= WINDOW_HEIGHT - PADDLE_HEIGHT) { //if the "S" key is pressed (and not released) and the paddle is not on top of the screen - move paddle up
+            player1.setYDirection(player1.getPaddleSpeed());
+        } else {
+            player1.setYDirection(0);
+        }
+
+        if (moveP2Up && player2.getYPaddlePosition() >= 0) { //same code as rows 145 - 153 (above) but for player 2
+            player2.setYDirection(-player2.getPaddleSpeed());
+        } else if (moveP2Down && player2.getYPaddlePosition() <= WINDOW_HEIGHT - PADDLE_HEIGHT) {
+            player2.setYDirection(player2.getPaddleSpeed());
+        } else {
+            player2.setYDirection(0);
+        }
+
+        if (gamePaused){
+            keysPressedP1.remove(KeyCode.ESCAPE);
+            createPauseScreen();
+        }
+    }
+
+
+    private void allMovement(){
+        player1.move(); //see row 87 of the "Paddle" class
+        player2.move();
+        ball.move(); ////see rows 62 -95 of the "Ball" class
+    }
 
 
 
@@ -376,24 +354,13 @@ public class HelloApplication extends Application implements ExitPause{
         launch();
     }
 
-    @Override
-    public void endingPauseScreen() {
-        System.out.println("Ending PauseScreen");
-        GameMenu.mediaPlayer1.stop();
-        mediaPlayer2.play();
-        tl.play();
-        currentStage.show();
-        currentStage.setScene(gameScene);
 
+
+    // Placeholder
+    private void run (GraphicsContext gc) {
     }
-    public Image loadImage(String resourceName) {
-        InputStream stream = getClass().getResourceAsStream("/" + resourceName); // note the slash at the beginning
-        if (stream == null) {
-            System.out.println("Resource not found: " + resourceName);
-            return null;
-        }
-        return new Image(stream);
-    }
+
 
 
 }
+

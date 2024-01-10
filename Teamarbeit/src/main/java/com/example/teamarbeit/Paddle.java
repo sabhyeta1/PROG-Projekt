@@ -3,7 +3,12 @@ package com.example.teamarbeit;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
+
+
+
 public class Paddle {
+
+    // Instances of the class
     private int playerID;
     private int yPaddleVelocity;
     private double xPaddlePosition;
@@ -12,7 +17,12 @@ public class Paddle {
     private int paddleHeight;
     private int paddleSpeed;
 
+
+
+    // Constructor of the class "Paddle"
     public Paddle(double xPaddlePosition, double yPaddlePosition, int paddleWidth, int paddleHeight, int playerID) {
+
+        // Initializing instances
         this.xPaddlePosition = xPaddlePosition;
         this.yPaddlePosition = yPaddlePosition;
         this.paddleWidth = paddleWidth;
@@ -24,6 +34,22 @@ public class Paddle {
 
 
     // Getters and Setters
+    public int getPaddleSpeed() {
+        return paddleSpeed;
+    }
+
+
+    public void setYDirection(int yDirection) {
+        this.yPaddleVelocity = yDirection;
+    }
+
+
+    public double getYPaddlePosition() {
+        return yPaddlePosition;
+    }
+
+
+    // Placeholders
     public int getPlayerID() {
         return playerID;
     }
@@ -48,10 +74,6 @@ public class Paddle {
         this.xPaddlePosition = xPaddlePosition;
     }
 
-    public double getYPaddlePosition() {
-        return yPaddlePosition;
-    }
-
     public void setYPaddlePosition(double yPaddlePosition) {
         this.yPaddlePosition = yPaddlePosition;
     }
@@ -72,20 +94,20 @@ public class Paddle {
         this.paddleHeight = paddleHeight;
     }
 
-    public int getPaddleSpeed() {
-        return paddleSpeed;
-    }
-
     public void setPaddleSpeed(int paddleSpeed) {
         this.paddleSpeed = paddleSpeed;
     }
 
-    public void setYDirection(int yDirection) {
-        this.yPaddleVelocity = yDirection;
-    }
+
+
+    // Function to move the paddle
     public void move() {
         yPaddlePosition += yPaddleVelocity;
     }
+
+
+
+    // Function to draw the paddle
     public void draw (GraphicsContext gc) {
         if (playerID == 1) {
             gc.setFill(Color.HOTPINK);
@@ -95,5 +117,7 @@ public class Paddle {
         }
         gc.fillRect(xPaddlePosition, yPaddlePosition, paddleWidth, paddleHeight);
     }
+
+
 
 }
