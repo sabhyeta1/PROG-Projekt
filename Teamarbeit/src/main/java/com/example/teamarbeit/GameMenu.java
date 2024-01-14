@@ -29,7 +29,7 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
     //the window (scenes, stages) is always the same size so these two Instances are constant
     static final int WINDOW_WIDTH = 1000;
     static final double WINDOW_HEIGHT = 666;
-    public static String mneuMusicPath = "./Teamarbeit/src/main/resources/com.example.teamarbeit/menu_music.mp3";
+    public static String menuMusicPath = "./Teamarbeit/src/main/resources/com.example.teamarbeit/menu_music.mp3";
 
     public HelloApplication game;
     StackPane root;
@@ -49,7 +49,7 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
 
         switchToMenu();
         primaryStage.show();
-        Music.playMenuMusic(GameMenu.mneuMusicPath);
+        Music.playMenuMusic(GameMenu.menuMusicPath);
     }
 
 

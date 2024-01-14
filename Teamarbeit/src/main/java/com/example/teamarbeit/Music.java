@@ -21,7 +21,7 @@ public class Music {
     public static double gameSoundSliderValue = 50.0;
     public static double musicSliderValue = 50.0;
 
-    public static MediaPlayer mediaPlayer1, mediaPlayer2;
+    public static MediaPlayer mediaPlayer1, mediaPlayer2, mediaPlayer3;
 
 
 
@@ -89,9 +89,9 @@ public class Music {
             mediaPlayer2.setVolume(getSliderValue(getMusicSlider()));
             System.out.println("Ändert gameMusic Läutstärke");
         }
-        if (Ball.mediaPlayer3 != null) {
+        if (mediaPlayer3 != null) {
             System.out.println("Ändert bounceSound Lautstärke");
-            Ball.mediaPlayer3.setVolume(getSliderValue(getGameSoundSlider()));
+            mediaPlayer3.setVolume(getSliderValue(getGameSoundSlider()));
         }
     }
 
@@ -108,8 +108,8 @@ public class Music {
             System.out.println("Media error occurred: " + mediaPlayer1.getError());
             //Error code, falls iwann einer kommt
         });
-        Media ballMusic = new Media(new File(Ball.mediaPlayer3Path).toURI().toString());
-        Ball.mediaPlayer3 = new MediaPlayer(ballMusic);
+        /*Media ballMusic = new Media(new File(Ball.mediaPlayer3Path).toURI().toString());
+        Ball.mediaPlayer3 = new MediaPlayer(ballMusic);*/
         Ball.mediaPlayer3.setVolume(getSliderValue(getGameSoundSlider())); //50% of the volume
     }
 
@@ -131,6 +131,13 @@ public class Music {
         });
     }
 
+
+    // Setting the sound of the Ball
+    public static void playBounceSound(MediaPlayer mediaPlayer) { //method plays the sound of the ball when he bounces off the paddle
+        mediaPlayer.setVolume(getSliderValue(gameSoundSlider)); //50% of the volume
+        //mediaPlayer.setCycleCount(1); //sound is only played once
+        mediaPlayer.play();
+    }
 
 
     // Placeholders

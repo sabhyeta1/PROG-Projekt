@@ -31,8 +31,9 @@ public class Ball {
     private final int BALL_DIAMETER;
     private double ballSpeed = 2;
     public boolean gameSceneIsRunning = false;
-    static MediaPlayer mediaPlayer3;
-    static String mediaPlayer3Path;
+    public static String mediaPlayer3Path = "./Teamarbeit/src/main/resources/com.example.teamarbeit/single_bounce.mp3";
+    public static Media bounceSound = new Media(new File(mediaPlayer3Path).toURI().toString());
+    public static MediaPlayer mediaPlayer3 = new MediaPlayer(bounceSound);
 
 
 
@@ -49,8 +50,6 @@ public class Ball {
 
         setXDirection(initialXVelocity);
         setYDirection(initialYVelocity);
-
-        mediaPlayer3Path = "./Teamarbeit/src/main/resources/com.example.teamarbeit/single_bounce.mp3";
     }
 
 
@@ -86,9 +85,10 @@ public class Ball {
 
             // Check for collisions with player 1
             if (xPosBall <= PADDLE_WIDTH && yPosBall >= player1.getYPaddlePosition() && yPosBall <= player1.getYPaddlePosition() + PADDLE_HEIGHT && xBallVelocity < 0) {
-                xBallVelocity = -xBallVelocity; //change horizontal direction
                 // Function for when ball bounces of the paddle a sound is played
-                playBounceSound();
+                mediaPlayer3.seek(mediaPlayer3.getStartTime());
+                Music.playBounceSound(mediaPlayer3);
+                xBallVelocity = -xBallVelocity; //change horizontal direction
                 if (ballSpeed <= 7) { //speed is only increased to the value 7
                     ballSpeed = ballSpeed + 0.5;
                 }
@@ -97,21 +97,14 @@ public class Ball {
 
             // Check for collisions with player 2
             if (xPosBall >= WINDOW_WIDTH - PADDLE_WIDTH - BALL_DIAMETER && yPosBall >= player2.getYPaddlePosition() && yPosBall <= player2.getYPaddlePosition() + PADDLE_HEIGHT && xBallVelocity > 0) {
+                mediaPlayer3.seek(mediaPlayer3.getStartTime());
+                Music.playBounceSound(mediaPlayer3);
                 xBallVelocity = -xBallVelocity;//change horizontal direction
-                playBounceSound();
                 if (ballSpeed <= 7) {
                     ballSpeed = ballSpeed + 0.5;
                 }
             }
         }
-    }
-
-
-
-    // Setting the sound of the Ball
-    public static void playBounceSound() { //method plays the sound of the ball when he bounces off the paddle
-        mediaPlayer3.setCycleCount(1); //sound is only played once
-        mediaPlayer3.play();
     }
 
 
