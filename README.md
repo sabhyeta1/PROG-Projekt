@@ -2,12 +2,7 @@ Welome to our PONG Project! This is our version of the classic PONG game.
 
 Before playing you will need to: 
 
-Copy the absolute file paths for the audio files under our "resources" folder and paste it into these lines of code:
-1. game_music.mp3 --> Class "HelloApplication.java", Line 181, playGameMusic(paste your absolute path here)
-2. menu_music.mp3 --> Class "GameMenu.java", Line 58, playMenuMusic(paste your absolute path here)
-3. single_bounce.mp3 --> Class "Ball.java", Lines 69 & 79, playBounceSound(paste your absolute path here)
-
-You will need to use Java Version 20 to run this game. 
+Make sure you are using Java Version 20 to run this game. 
 
 If you want to increase the maximum score of the game, you can change it as so: 
 Class "HelloApplication.java", Line 43, static final int MAX_SCORE = 3; (in place of the 3, write the number of points you would like to play for).
