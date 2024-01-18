@@ -7,6 +7,7 @@ Copy the absolute file paths for the audio files under our "resources" folder an
 2. menu_music.mp3 --> Class "GameMenu.java", Line 58, playMenuMusic(paste your absolute path here)
 3. single_bounce.mp3 --> Class "Ball.java", Lines 69 & 79, playBounceSound(paste your absolute path here)
 
+You will need to use Java Version 20 to run this game. 
    
 How to play: 
 
