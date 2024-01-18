@@ -31,13 +31,13 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
     static final double WINDOW_HEIGHT = 666;
     public static String menuMusicPath = "./Teamarbeit/src/main/resources/com.example.teamarbeit/menu_music.mp3";
 
-    public HelloApplication game;
+    public GameLogik game;
     StackPane root;
 
 
     // Constructor for the "GameMenu" class
     public GameMenu() {
-        this.game = new HelloApplication();
+        this.game = new GameLogik();
     }
 
 

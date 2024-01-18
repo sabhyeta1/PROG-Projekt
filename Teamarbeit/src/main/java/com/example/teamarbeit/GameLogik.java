@@ -19,19 +19,14 @@ import javafx.animation.Timeline;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.util.Duration;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import java.io.File;
+
 import java.io.IOException;
 import java.util.Set;
 
 import static com.example.teamarbeit.Avatars.*;
-import static com.example.teamarbeit.Ball.*;
 
 
-
-
-public class HelloApplication extends Application implements ExitPause{
+public class GameLogik extends Application implements ExitPause{
 
     // The instances of the class
     static Stage currentStage;
@@ -107,7 +102,7 @@ public class HelloApplication extends Application implements ExitPause{
 
         root = new AnchorPane();
         createAvatars();
-        StackPane gcRoot = new StackPane(backgroundView, HelloApplication.root, gameCanvas); //another layout is created with the class "StackPane"
+        StackPane gcRoot = new StackPane(backgroundView, GameLogik.root, gameCanvas); //another layout is created with the class "StackPane"
         gameScene = new Scene(gcRoot, WINDOW_WIDTH, WINDOW_HEIGHT); //a new scene is created with the "StackPane" "gcRoot" in the size "WINDOW_WIDTH" X "WINDOW_HEIGHT"
         gcRoot.setStyle("-fx-background-color: black;"); //setting the background color
         createPaddles();
@@ -172,8 +167,8 @@ public class HelloApplication extends Application implements ExitPause{
     }
 
     private void createAvatars() {
-        GameAvatar selectedPlayer1 = new GameAvatar(selectedImagePlayer1, 20.0, 20.0, AVATAR_HEIGHT, 1, HelloApplication.root);
-        GameAvatar selectedPlayer2 = new GameAvatar(selectedImagePlayer2, 20.0, 20.0, AVATAR_HEIGHT, 2, HelloApplication.root);
+        GameAvatar selectedPlayer1 = new GameAvatar(selectedImagePlayer1, 20.0, 20.0, AVATAR_HEIGHT, 1, GameLogik.root);
+        GameAvatar selectedPlayer2 = new GameAvatar(selectedImagePlayer2, 20.0, 20.0, AVATAR_HEIGHT, 2, GameLogik.root);
     }
 
 
@@ -226,7 +221,7 @@ public class HelloApplication extends Application implements ExitPause{
 
         // StackPane to overlay on top of the gameCanvas
         StackPane victoryRoot = new StackPane();
-        victoryRoot.getChildren().addAll(winnerBackgroundView, HelloApplication.root, gameCanvas, overlay, victoryContent);
+        victoryRoot.getChildren().addAll(winnerBackgroundView, GameLogik.root, gameCanvas, overlay, victoryContent);
 
         Scene victoryScene = new Scene(victoryRoot, WINDOW_WIDTH, WINDOW_HEIGHT);
         currentStage.setScene(victoryScene);

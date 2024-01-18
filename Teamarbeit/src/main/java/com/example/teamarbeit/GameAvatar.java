@@ -1,7 +1,6 @@
 package com.example.teamarbeit;
 
 import javafx.animation.TranslateTransition;
-import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -47,7 +46,7 @@ public class GameAvatar {
 
 
         root.getChildren().addAll(selectedPlayerView);
-        HelloApplication.root = root;
+        GameLogik.root = root;
     }
 
 

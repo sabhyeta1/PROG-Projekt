@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
-import static com.example.teamarbeit.HelloApplication.*;
+import static com.example.teamarbeit.GameLogik.*;
 
 
 

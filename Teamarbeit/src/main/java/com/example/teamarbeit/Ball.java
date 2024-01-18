@@ -1,21 +1,14 @@
 package com.example.teamarbeit;
 
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.stage.Stage;
-import javafx.scene.control.Button;
 
 import java.io.File;
-import java.util.Random;
+
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-import static com.example.teamarbeit.HelloApplication.*;
+import static com.example.teamarbeit.GameLogik.*;
 
 
 

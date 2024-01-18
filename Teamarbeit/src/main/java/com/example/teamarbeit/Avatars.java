@@ -1,10 +1,10 @@
 package com.example.teamarbeit;
 
-import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -13,7 +13,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import static com.example.teamarbeit.HelloApplication.*;
+import static com.example.teamarbeit.GameLogik.*;
 
 
 
@@ -73,7 +73,7 @@ public class Avatars {
         ImageView view1 = new ImageView(image1);
         view1.setFitHeight(230); //sets the height of the avatar image
         view1.setPreserveRatio(true);
-        Button avatar1 = new Button("", view1); //cretes buttons of the pictures so the avatar can be selected
+        Button avatar1 = new Button("", view1); //creates buttons of the pictures so the avatar can be selected
 
         // "image2" = "avatar2"
         Image image2 = GameMenu.loadImage("avatar2.png");
@@ -98,9 +98,16 @@ public class Avatars {
 
 
         avatar1.setOnAction(e -> selectCharacter(gameImage1));
+        addGlowEffectOnButtonHover(avatar1, 1);
+
         avatar2.setOnAction(e -> selectCharacter(gameImage2));
+        addGlowEffectOnButtonHover(avatar2, 2);
+
         avatar3.setOnAction(e -> selectCharacter(gameImage3));
+        addGlowEffectOnButtonHover(avatar3, 3);
+
         avatar4.setOnAction(e -> selectCharacter(gameImage4));
+        addGlowEffectOnButtonHover(avatar4, 4);
 
 
         // Creating the back button
@@ -149,6 +156,7 @@ public class Avatars {
     // Player selection
     private void selectCharacter(Image selectedImage) {
         if (playerSelecting == 1) {
+
             selectedImagePlayer1 = selectedImage;
             instructions.setText("Player 2: Select your character");
             playerSelecting = 2;
@@ -171,6 +179,31 @@ public class Avatars {
         // Instantiate "GameMenu" class and switch back to its scene
         GameMenu gameMenu = new GameMenu();
         gameMenu.start(window);
+    }
+    public void addGlowEffectOnButtonHover(Button button, int value) {
+        DropShadow glow = new DropShadow();
+
+        if (value == 1){
+            button.setStyle("-fx-background-color: palegreen;");
+        glow.setColor(Color.PALEGREEN);
+        }
+        if (value == 2){
+            button.setStyle("-fx-background-color: hotpink;");
+            glow.setColor(Color.HOTPINK);
+        }
+        if (value == 3){
+            button.setStyle("-fx-background-color: deepskyblue;");
+            glow.setColor(Color.DEEPSKYBLUE);
+        }
+        else if (value == 4){
+            button.setStyle("-fx-background-color: darkorchid;");
+            glow.setColor(Color.DARKORCHID);
+        }
+        glow.setWidth(20);
+        glow.setHeight(20);
+
+        button.setOnMouseEntered(e -> button.setEffect(glow));
+        button.setOnMouseExited(e -> button.setEffect(null));
     }
 
 
