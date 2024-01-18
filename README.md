@@ -8,6 +8,9 @@ Copy the absolute file paths for the audio files under our "resources" folder an
 3. single_bounce.mp3 --> Class "Ball.java", Lines 69 & 79, playBounceSound(paste your absolute path here)
 
 You will need to use Java Version 20 to run this game. 
+
+If you want to increase the maximum score of the game, you can change it as so: 
+Class "HelloApplication.java", Line 43, static final int MAX_SCORE = 3; (in place of the 3, write the number of points you would like to play for).
    
 How to play: 
 
