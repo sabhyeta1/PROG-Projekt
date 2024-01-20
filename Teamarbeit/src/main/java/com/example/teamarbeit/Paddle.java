@@ -109,11 +109,20 @@ public class Paddle {
 
     // Function to draw the paddle
     public void draw (GraphicsContext gc) {
-        if (playerID == 1) {
+        if (playerID == 1){
+            gc.setFill(Color.PALEGREEN);
+        }
+        else if (playerID == 2){
             gc.setFill(Color.HOTPINK);
         }
+        else if (playerID == 3){
+            gc.setFill(Color.DEEPSKYBLUE);
+        }
+        else if (playerID == 4){
+            gc.setFill(Color.DARKORCHID);
+        }
         else {
-            gc.setFill(Color.HOTPINK);
+            gc.setFill(Color.YELLOW);
         }
         gc.fillRect(xPaddlePosition, yPaddlePosition, paddleWidth, paddleHeight);
     }

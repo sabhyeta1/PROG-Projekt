@@ -31,7 +31,9 @@ public class Avatars {
     private boolean bothPlayersSelected = false;
 
     public static Image selectedImagePlayer1;
+    public static int player1_ID;
     public static Image selectedImagePlayer2;
+    public static int player2_ID;
     Image gameImage1;
     Image gameImage2;
     Image gameImage3;
@@ -97,16 +99,16 @@ public class Avatars {
         Button avatar4 = new Button("", view4);
 
 
-        avatar1.setOnAction(e -> selectCharacter(gameImage1));
+        avatar1.setOnAction(e -> selectCharacter(gameImage1,1));
         addGlowEffectOnButtonHover(avatar1, 1);
 
-        avatar2.setOnAction(e -> selectCharacter(gameImage2));
+        avatar2.setOnAction(e -> selectCharacter(gameImage2,2));
         addGlowEffectOnButtonHover(avatar2, 2);
 
-        avatar3.setOnAction(e -> selectCharacter(gameImage3));
+        avatar3.setOnAction(e -> selectCharacter(gameImage3,3));
         addGlowEffectOnButtonHover(avatar3, 3);
 
-        avatar4.setOnAction(e -> selectCharacter(gameImage4));
+        avatar4.setOnAction(e -> selectCharacter(gameImage4,4));
         addGlowEffectOnButtonHover(avatar4, 4);
 
 
@@ -154,14 +156,17 @@ public class Avatars {
 
 
     // Player selection
-    private void selectCharacter(Image selectedImage) {
+    private void selectCharacter(Image selectedImage, int playerID) {
         if (playerSelecting == 1) {
 
             selectedImagePlayer1 = selectedImage;
+            player1_ID = playerID;
+
             instructions.setText("Player 2: Select your character");
             playerSelecting = 2;
         } else {
             selectedImagePlayer2 = selectedImage;
+            player2_ID = playerID;
             if (!bothPlayersSelected) {
                 bothPlayersSelected = true;
             if (callback != null) {

@@ -3,9 +3,11 @@ package com.example.teamarbeit;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -129,6 +131,7 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
             primaryStage.setScene(new Scene(new Label("Failed to load resources"), WINDOW_WIDTH, WINDOW_HEIGHT));
         }
     }
+
 
 
     public VBox createSettingsLayout() {
