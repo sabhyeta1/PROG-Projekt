@@ -172,7 +172,7 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
 
     // Function that is invoked in the "Avatars" class
     @Override
-    public void onSelectionComplete() {
+    public void onSelectionComplete(Button backButton) {
         Button startGameButton = new Button("Start Game");
         startGameButton.setPrefWidth(100);
         startGameButton.setPrefHeight(30);
@@ -185,8 +185,10 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
         startGameButtonPosition.getChildren().add(startGameButton);
         startGameButtonPosition.setAlignment(Pos.BASELINE_CENTER);
 
+        int indexOfBackButton = root.getChildren().indexOf(backButton);
+
         // Adding the button to the "VBox"
-        root.getChildren().add(startGameButtonPosition);
+        root.getChildren().add(indexOfBackButton, startGameButtonPosition);
         // Avatar selection is complete, start the game
     }
 

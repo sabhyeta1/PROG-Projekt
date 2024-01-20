@@ -38,6 +38,7 @@ public class Avatars {
     Image gameImage2;
     Image gameImage3;
     Image gameImage4;
+    Button backButton;
 
     AvatarSelectionCompleteCallback callback;
 
@@ -113,7 +114,7 @@ public class Avatars {
 
 
         // Creating the back button
-        Button backButton = new Button("Back");
+        backButton = new Button("Back");
         backButton.setPrefWidth(100);
         backButton.setPrefHeight(30);
 
@@ -170,7 +171,7 @@ public class Avatars {
             if (!bothPlayersSelected) {
                 bothPlayersSelected = true;
             if (callback != null) {
-                callback.onSelectionComplete(); //callback expressing that both players have been selected
+                callback.onSelectionComplete(backButton); //callback expressing that both players have been selected
                 // Both players have been selected, start the game
                 }
             }
@@ -222,7 +223,7 @@ public class Avatars {
         startGameButton.setStyle("-fx-background-color: red; -fx-text-fill: white; -fx-font-size: 50px; -fx-pref-width: 400px; -fx-pref-height: 80px;");
         startGameButton.setOnAction(e -> {
             if (callback != null) {
-                callback.onSelectionComplete();
+                callback.onSelectionComplete(backButton);
             }
         });
 
