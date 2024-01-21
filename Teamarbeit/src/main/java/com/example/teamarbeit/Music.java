@@ -8,6 +8,8 @@ import javafx.scene.media.MediaPlayer;
 
 import java.io.File;
 
+//learned how to use Mediaplayer at https://stackoverflow.com/questions/52024412/javafx-media-loop & https://www.javatpoint.com/javafx-playing-video
+
 
 
 
