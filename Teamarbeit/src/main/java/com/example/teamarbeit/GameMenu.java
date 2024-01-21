@@ -19,10 +19,11 @@ import javafx.stage.Stage;
 import java.io.InputStream;
 
 
+// learned how to use Layout Panes: https://docs.oracle.com/javafx/2/layout/builtin_layouts.htm
 
 
 // Creates the class "GameMenu" which has the superclass "Application" and implements the interface "AvatarSelectionCompleteCallback"
-public class GameMenu extends Application implements AvatarSelectionCompleteCallback { //implementation of callback method for the  for avatar selection
+public class GameMenu extends Application implements AvatarSelectionCompleteCallback { //implementation of callback method for avatar selection
 
     // The instances of the class
     public static Stage primaryStage; //this object is also used in other classes (so it is static)
@@ -183,10 +184,10 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
         startGameButtonPosition.getChildren().add(startGameButton);
         startGameButtonPosition.setAlignment(Pos.BASELINE_CENTER);
 
-        int indexOfBackButton = root.getChildren().indexOf(backButton);
+        int indexOfBackButton = root.getChildren().indexOf(backButton); // Index of backButton is needed, so that startGameButton can take its position
 
         // Adding the button to the "VBox"
-        root.getChildren().add(indexOfBackButton, startGameButtonPosition);
+        root.getChildren().add(indexOfBackButton, startGameButtonPosition); // startGameButton is added to the root at the index of backButton
         // Avatar selection is complete, start the game
     }
 
@@ -252,7 +253,5 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
         }
         return new Image(stream);
     }
-
-
 
 }

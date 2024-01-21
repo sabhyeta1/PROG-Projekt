@@ -54,12 +54,17 @@ public class GameAvatar {
 
 
 
+    /**
+     * The following 7 lines (row 66 - 72) of Code have been inspired by the Internet: https://stackoverflow.com/questions/56203717/java-fx-translatetransition-duration-change
+     */
+
+
     // Function for moving the avatars
     public void avatarMovement () {
-        TranslateTransition avatarTransition = new TranslateTransition(Duration.seconds(1), selectedPlayerView);
-        avatarTransition.setByY(10); //avatar moves 10 px up and down
-        avatarTransition.setCycleCount(TranslateTransition.INDEFINITE); //movement repeats indefinitely
-        avatarTransition.setAutoReverse(true); //automatically reversing the movement
-        avatarTransition.play(); // start the animation
+        TranslateTransition floating = new TranslateTransition(Duration.seconds(1), selectedPlayerView);
+        floating.setByY(10); //set th movement 10px up and down
+        floating.setCycleCount(TranslateTransition.INDEFINITE); //the movement repeats in an infinite loop
+        floating.setAutoReverse(true); //movement is automatically reversed
+        floating.play(); // starts the movement
     }
 }

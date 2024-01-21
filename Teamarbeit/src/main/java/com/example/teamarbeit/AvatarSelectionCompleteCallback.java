@@ -11,5 +11,4 @@ public interface AvatarSelectionCompleteCallback {
     void onSelectionComplete(Button backButton);
     //onSelectionComplete = method that does not return any value --> void
     //called after avatar has been selected
-    //backButton as parameter; able to switch back to main Menu after the avatar selection is complete.
 }

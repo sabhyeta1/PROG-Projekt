@@ -80,7 +80,7 @@ public class PauseScreen {
         VBox layout = new VBox(20);
         layout.setAlignment(Pos.TOP_CENTER);
         layout.getChildren().addAll(pauseTitleLabel, continueButton, settingsButton, quitButton);
-        layout.setPadding(new Insets(50, 0, 0, 0));
+        layout.setPadding(new Insets(150, 0, 0, 0));
 
         // Sets format for all the buttons
         continueButton.setStyle("-fx-background-color: red; -fx-text-fill: white; -fx-font-size: 20px;");

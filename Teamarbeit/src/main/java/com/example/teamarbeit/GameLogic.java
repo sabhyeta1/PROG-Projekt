@@ -25,6 +25,8 @@ import java.util.Set;
 
 import static com.example.teamarbeit.Avatars.*;
 
+// Videos used as a reference: https://www.youtube.com/watch?v=oLirZqJFKPE (Java Swing), https://youtu.be/HsQSqFuSTGE?si=035cSO8y2lUWKOno
+
 
 public class GameLogic extends Application implements ExitPause{
 
@@ -57,7 +59,7 @@ public class GameLogic extends Application implements ExitPause{
 
 
     @Override
-    public void start(Stage primaryStage) throws IOException {
+    public void start(Stage primaryStage) {
 
         currentStage = primaryStage; //stage is taken over
         currentStage.setTitle("Play"); //stage gets title Pong Project (you can see it up on the left side)
@@ -65,7 +67,7 @@ public class GameLogic extends Application implements ExitPause{
 
         Music.mediaPlayer1.stop();
 
-        // Create the canvas "gameCanvas "to draw our Game (a canvas is like a scene, but you can draw objects here like rectangles and circles)
+        // Create the canvas "gameCanvas "to draw our Game (a canvas is like a scene, but you can draw objects like rectangles and circles onto it)
         score = new Score(); //score is created
 
         gameCanvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGHT); //a canvas is created
@@ -94,6 +96,8 @@ public class GameLogic extends Application implements ExitPause{
         currentStage.show(); //stage is shown
         currentStage.setScene(gameScene); //when this button is pressed, the scene is changed to "gameScene" and "gameSceneIsRunning" is set to true
 
+
+        // functions of timelines: https://www.educba.com/javafx-timeline/ & https://www.tabnine.com/code/java/methods/javafx.animation.Timeline/<init>
         tl = new Timeline(new KeyFrame(Duration.millis(10), e -> { //timeline updates these methods constantly every 10 ms --> 100FPS
             paddleMovement();
             allMovement();
@@ -129,7 +133,7 @@ public class GameLogic extends Application implements ExitPause{
 
 
     // Create functions (and function for exiting/ending)
-    private void createPaddles() { //creates two paddles with the "Paddle" constructor --> see row 17 - 23 (class "Paddle")
+    private void createPaddles() { //creates two paddles with the "Paddle" constructor
         player1 = new Paddle(0, (double) ((WINDOW_HEIGHT / 2) - (PADDLE_HEIGHT / 2)), PADDLE_WIDTH, PADDLE_HEIGHT, player1_ID);
         player2 = new Paddle(WINDOW_WIDTH - PADDLE_WIDTH, (double) ((WINDOW_HEIGHT / 2) - (PADDLE_HEIGHT / 2)), PADDLE_WIDTH, PADDLE_HEIGHT, player2_ID);
     }
@@ -271,6 +275,7 @@ public class GameLogic extends Application implements ExitPause{
 
     // Movement functions
     private void paddleMovement() {
+        //How to use HashSet: https://ioflood.com/blog/java-hashset/
 
         // Adding the key (value) of the pressed key to the "HashSets" from the players
         gameScene.setOnKeyPressed(event -> {
