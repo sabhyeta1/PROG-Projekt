@@ -5,6 +5,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
+import static com.example.teamarbeit.Avatars.*;
 
 
 
@@ -17,11 +18,12 @@ public class GameAvatar {
     double sideAnchor;
     double ImageHeight;
     ImageView selectedPlayerView;
+    int timeSleep;
 
 
 
     // Constructor of the class "GameAvatar"
-    public GameAvatar(Image playerImage, double topAnchor, double sideAnchor, double ImageHeight, int playerNumber, AnchorPane root) {
+    public GameAvatar(Image playerImage, double topAnchor, double sideAnchor, double ImageHeight, AnchorPane temporaryRoot) {
 
         // Initializing instances
         this.playerImage = playerImage;
@@ -29,24 +31,27 @@ public class GameAvatar {
         this.sideAnchor = sideAnchor;
         this.ImageHeight = ImageHeight;
 
-
         selectedPlayerView = new ImageView(playerImage);
         selectedPlayerView.setFitWidth(ImageHeight); //set the width of the image
         selectedPlayerView.setPreserveRatio(true); //keeping the side ratio of the image
 
         AnchorPane.setTopAnchor(selectedPlayerView, topAnchor); //sets the anchor at the top
-        if (playerNumber == 1) {
+        if (playerImage == selectedImagePlayer1) {
             AnchorPane.setLeftAnchor(selectedPlayerView, sideAnchor); //sets the anchor on the left
         }
-        if (playerNumber == 2) {
+        if (playerImage == selectedImagePlayer2) {
             AnchorPane.setRightAnchor(selectedPlayerView, sideAnchor); //sets the anchor of the right
         }
 
         avatarMovement();
 
 
-        root.getChildren().addAll(selectedPlayerView);
-        GameLogik.root = root;
+        if (temporaryRoot == GameLogik.root) {
+            GameLogik.root.getChildren().add(selectedPlayerView);
+        }
+        if (temporaryRoot == GameLogik.secondRoot) {
+            GameLogik.secondRoot.getChildren().add(selectedPlayerView);
+        }
     }
 
 

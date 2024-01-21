@@ -48,7 +48,7 @@ public class GameLogik extends Application implements ExitPause{
     static String mediaPlayer2Path;
     GraphicsContext gc;
     Canvas gameCanvas;
-    public static AnchorPane root;
+    public static AnchorPane root, secondRoot;
 
     Timeline tl;
 
@@ -129,11 +129,11 @@ public class GameLogik extends Application implements ExitPause{
             gameOver();
             if (gameOver()) {
                 if (score.scorePlayer1 == MAX_SCORE) {
-                    showVictoryScreen("Player 1 Wins!");
+                    showVictoryScreen("Player 1 Wins!", selectedImagePlayer1, selectedImagePlayer2);
                     Music.mediaPlayer2.stop();
                 }
                 else {
-                    showVictoryScreen("Player 2 Wins!");
+                    showVictoryScreen("Player 2 Wins!", selectedImagePlayer2, selectedImagePlayer1);
                     Music.mediaPlayer2.stop();
                     }
             }
@@ -167,8 +167,8 @@ public class GameLogik extends Application implements ExitPause{
     }
 
     private void createAvatars() {
-        GameAvatar selectedPlayer1 = new GameAvatar(selectedImagePlayer1, 20.0, 20.0, AVATAR_HEIGHT, 1, GameLogik.root);
-        GameAvatar selectedPlayer2 = new GameAvatar(selectedImagePlayer2, 20.0, 20.0, AVATAR_HEIGHT, 2, GameLogik.root);
+        GameAvatar selectedPlayer1 = new GameAvatar(selectedImagePlayer1, 20.0, 20.0, AVATAR_HEIGHT, root);
+        GameAvatar selectedPlayer2 = new GameAvatar(selectedImagePlayer2, 20.0, 20.0, AVATAR_HEIGHT, root);
     }
 
 
@@ -201,9 +201,9 @@ public class GameLogik extends Application implements ExitPause{
 
 
     // Functions for the victory screen, when the game is over
-    private void showVictoryScreen (String winnerText){
+    private void showVictoryScreen(String winnerText, Image winnerImage, Image loserImage) {
         Label victoryLabel = new Label(winnerText);
-        victoryLabel.setStyle("-fx-background-color: transparent; -fx-padding: 150px; -fx-font-size: 48px; -fx-text-fill: white;"); //set the font size to 24px
+        victoryLabel.setStyle("-fx-background-color: transparent; -fx-padding: 100px; -fx-font-size: 48px; -fx-text-fill: white;"); //set the font size to 24px
         Image winnerBackground = GameMenu.loadImage("Background_FINALE.jpg");
         ImageView winnerBackgroundView = new ImageView(winnerBackground);
 
@@ -211,6 +211,12 @@ public class GameLogik extends Application implements ExitPause{
         backButton.setOnAction(event -> goToGameMenu());
         GameMenu.addGlowEffectOnHover(backButton);
         backButton.setStyle("-fx-font-size: 18px; -fx-background-color: white"); //set the font size to 18px
+
+        root.getChildren().clear();
+        secondRoot = new AnchorPane();
+        GameAvatar winnerAvatar = new GameAvatar(winnerImage, 20.0, 20.0, AVATAR_HEIGHT, secondRoot);
+        GameAvatar loserAvatar = new GameAvatar(loserImage, 20.0, 20.0, AVATAR_HEIGHT, root);
+
 
         VBox victoryContent = new VBox(); //increased spacing between nodes
         victoryContent.setAlignment(Pos.CENTER);
@@ -221,7 +227,7 @@ public class GameLogik extends Application implements ExitPause{
 
         // StackPane to overlay on top of the gameCanvas
         StackPane victoryRoot = new StackPane();
-        victoryRoot.getChildren().addAll(winnerBackgroundView, GameLogik.root, gameCanvas, overlay, victoryContent);
+        victoryRoot.getChildren().addAll(winnerBackgroundView, gameCanvas, root, overlay, secondRoot, victoryContent);
 
         Scene victoryScene = new Scene(victoryRoot, WINDOW_WIDTH, WINDOW_HEIGHT);
         currentStage.setScene(victoryScene);

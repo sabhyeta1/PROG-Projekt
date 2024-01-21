@@ -14,20 +14,24 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import static com.example.teamarbeit.GameLogik.*;
+//static import of the class GameLogik, allows direct use of static members from the GameLogik class
 
 
 
 
-public class Avatars {
+public class Avatars { //selection of avatars function in this class
 
     // The instances of the class
     private Label instructions;
+    //label = displays the instructions (Player XYZ select your character) on the screen
 
-    private Stage window;
+    private Stage window; //settings for the stage
     private int windowWidth;
     private int windowHeight;
 
-    private int playerSelecting = 1; // "1" for player 1, "2" for player 2
+    private int playerSelecting = 1;
+    //selection for which avatar the player will choose
+    //"1" for player 1, "2" for player 2
     private boolean bothPlayersSelected = false;
 
     public static Image selectedImagePlayer1;
@@ -186,21 +190,29 @@ public class Avatars {
         GameMenu gameMenu = new GameMenu();
         gameMenu.start(window);
     }
+
+    //Glow Effect when mouse is hovering over the button
+    //color of glow depends on the value int of the method aka the avatar which is picked
     public void addGlowEffectOnButtonHover(Button button, int value) {
         DropShadow glow = new DropShadow();
 
+        //setting certain colors for each of the value options
+        //for avatar 1 = palegreen
         if (value == 1){
             button.setStyle("-fx-background-color: palegreen;");
         glow.setColor(Color.PALEGREEN);
         }
+        //avatar 2 = hotpink
         if (value == 2){
             button.setStyle("-fx-background-color: hotpink;");
             glow.setColor(Color.HOTPINK);
         }
+        //avatar 3 = deepskyblue
         if (value == 3){
             button.setStyle("-fx-background-color: deepskyblue;");
             glow.setColor(Color.DEEPSKYBLUE);
         }
+        //avatar 4 = darkorchid
         else if (value == 4){
             button.setStyle("-fx-background-color: darkorchid;");
             glow.setColor(Color.DARKORCHID);
