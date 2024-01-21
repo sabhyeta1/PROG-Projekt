@@ -136,21 +136,21 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
         Label settingsTitleLabel = new Label("SETTINGS");
         settingsTitleLabel.setStyle("-fx-font-size: 50px; -fx-text-fill: white;");
 
-        Label gameSoundLabel = createStyledLabel("Game Sound");  // Creating label for game sound
-        Label musicLabel = createStyledLabel("Music");  // Creating label for music
+        Label gameSoundLabel = createStyledLabel("Game Sound");
+        Label musicLabel = createStyledLabel("Music");
 
         Music.createSettingsSliders();  // Creating sliders for adjusting game sound and music
 
-        Button backButton = createStyledButton("Back");  // Creating button for returning to the menu
+        Button backButton = createStyledButton("Back");
 
         // Setting the action to be performed when the backButton is clicked
         backButton.setOnAction(e -> {
-            switchToMenu();  // Switching to the menu (assuming there's a method switchToMenu() defined elsewhere)
+            switchToMenu();  //
             Music.setVolume();  // Adjusting the volume using the setVolume() method from the Music class
         });
 
         VBox layout = new VBox(20);  // Creating a VBox layout with vertical spacing
-        layout.setAlignment(Pos.CENTER);  // Setting alignment to center
+        layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(50));  // Setting padding around the layout
 
         // Setting the background color
@@ -159,9 +159,9 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
         // Adding the elements
         layout.getChildren().addAll(settingsTitleLabel, gameSoundLabel, Music.gameSoundSlider, musicLabel, Music.musicSlider, backButton);
 
-        backButton.setStyle("-fx-background-color: red; -fx-text-fill: white; -fx-font-size: 20px;");  // Styling the backButton
-        gameSoundLabel.setStyle("-fx-background-color: transparent; -fx-font-size: 24px; -fx-text-fill: white;");  // Styling the gameSoundLabel
-        musicLabel.setStyle("-fx-background-color: transparent; -fx-font-size: 24px; -fx-text-fill: white;");  // Styling the musicLabel
+        backButton.setStyle("-fx-background-color: red; -fx-text-fill: white; -fx-font-size: 20px;");
+        gameSoundLabel.setStyle("-fx-background-color: transparent; -fx-font-size: 24px; -fx-text-fill: white;");
+        musicLabel.setStyle("-fx-background-color: transparent; -fx-font-size: 24px; -fx-text-fill: white;");
 
         return layout;  // Returning the VBox layout
     }
@@ -179,15 +179,15 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
     @Override
     public void onSelectionComplete(Button backButton) {
         Button startGameButton = new Button("Start Game");  // Creating a new Button for starting the game
-        startGameButton.setPrefWidth(100);  // Setting width for the startGameButton
-        startGameButton.setPrefHeight(30);  // Setting height for the startGameButton
+        startGameButton.setPrefWidth(100);
+        startGameButton.setPrefHeight(30);
         startGameButton.setOnAction(event -> switchToGame());  // Setting action for when startGameButton is clicked
 
-        VBox root = (VBox) primaryStage.getScene().getRoot();  // Accessing the current scene's root (assuming primaryStage is the instance of your Stage)
+        VBox root = (VBox) primaryStage.getScene().getRoot();  // Accessing the current scene's root
 
         StackPane startGameButtonPosition = new StackPane();  // Creating a StackPane to position the startGameButton
-        startGameButtonPosition.getChildren().add(startGameButton);  // Adding the startGameButton to the StackPane
-        startGameButtonPosition.setAlignment(Pos.BASELINE_CENTER);  // Aligning the StackPane containing the startGameButton to the baseline center
+        startGameButtonPosition.getChildren().add(startGameButton);
+        startGameButtonPosition.setAlignment(Pos.BASELINE_CENTER);
 
         int indexOfBackButton = root.getChildren().indexOf(backButton);  // Finding the index of the backButton in the root's children
 
@@ -215,8 +215,8 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
         glow.setWidth(20);
         glow.setHeight(20);
 
-        button.setOnMouseEntered(e -> button.setEffect(glow)); // Attaches the glow effect when the mouse hovers the Button.
-        button.setOnMouseExited(e -> button.setEffect(null));   // Removes the glow effect when the mouse exits the Button.
+        button.setOnMouseEntered(e -> button.setEffect(glow)); // Attaches the glow effect
+        button.setOnMouseExited(e -> button.setEffect(null));   // Removes the glow effect
     }
 
 
@@ -225,8 +225,8 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
 
         // Creates an ImageView to hold the background image.
         ImageView backgroundImageView = new ImageView(backgroundImage);
-        backgroundImageView.setFitWidth(WINDOW_WIDTH); // Sets the width to match the window width.
-        backgroundImageView.setFitHeight(WINDOW_HEIGHT); // Sets the height to match the window height.
+        backgroundImageView.setFitWidth(WINDOW_WIDTH);
+        backgroundImageView.setFitHeight(WINDOW_HEIGHT);
         StackPane stackPane = new StackPane(); // Creates a new StackPane to organize elements in a layered manner.
         stackPane.getChildren().addAll(backgroundImageView, content); // Adds the background image and additional content to the StackPane.
 
