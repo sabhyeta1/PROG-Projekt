@@ -6,4 +6,5 @@ module com.example.teamarbeit {
 
     opens com.example.teamarbeit to javafx.fxml;
     exports com.example.teamarbeit;
+
 }

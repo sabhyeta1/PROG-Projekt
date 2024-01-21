@@ -3,7 +3,6 @@ package com.example.teamarbeit;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
@@ -16,7 +15,6 @@ public class VisualCountdown {
     // Instances of the class
     public int countdownStartValue;
     public int currentCountdownValue;
-    private Label countdownLabel;
     private Timeline tl;
     private GraphicsContext gc;
     private Ball ball;

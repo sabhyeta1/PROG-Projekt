@@ -13,7 +13,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import static com.example.teamarbeit.GameLogik.*;
+import static com.example.teamarbeit.GameLogic.*;
 //static import of the class GameLogik, allows direct use of static members from the GameLogik class
 
 

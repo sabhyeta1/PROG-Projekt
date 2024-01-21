@@ -1,7 +1,5 @@
 package com.example.teamarbeit;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -13,9 +11,8 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.layout.VBox;
-import javafx.util.Duration;
 
-import static com.example.teamarbeit.GameLogik.*;
+import static com.example.teamarbeit.GameLogic.*;
 
 
 
@@ -29,7 +26,6 @@ public class PauseScreen {
     Image backgroundImage;
     ImageView backgroundImageView;
 
-    // Placeholders
     private int windowWidth;
     private int windowHeight;
 
@@ -197,23 +193,7 @@ public class PauseScreen {
 
 
 
-    //Placeholder
-    public void reduceVolumeGradually() { //Fade away von Menu Music (Wenn man auf "Start The Game" drückt)
-        Timeline volumeReductionTimeline = new Timeline(
-                new KeyFrame(Duration.seconds(0.1), event -> {
 
-                    if (Music.mediaPlayer1.getVolume() > 0) {
-                        double currentVolume = Music.mediaPlayer1.getVolume();
-                        Music.mediaPlayer1.setVolume(currentVolume - 0.05); // Adjust decrement value as needed
-                    } else {
-                        Music.mediaPlayer1.stop();
-                    }
-
-                })
-        );
-        volumeReductionTimeline.setCycleCount(Timeline.INDEFINITE);
-        volumeReductionTimeline.play();
-    }
 
 
 

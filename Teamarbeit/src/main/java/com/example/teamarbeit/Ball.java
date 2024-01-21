@@ -8,7 +8,7 @@ import java.io.File;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-import static com.example.teamarbeit.GameLogik.*;
+import static com.example.teamarbeit.GameLogic.*;
 
 
 
@@ -25,7 +25,7 @@ public class Ball {
     private double ballSpeed = 2;
     public boolean gameSceneIsRunning = false;
     public static String mediaPlayer3Path = "./Teamarbeit/src/main/resources/com.example.teamarbeit/single_bounce.mp3";
-    public static Media bounceSound = new Media(new File(mediaPlayer3Path).toURI().toString());
+    public static Media bounceSound = new Media(new File("./Teamarbeit/src/main/resources/com.example.teamarbeit/single_bounce.mp3").toURI().toString());
     public static MediaPlayer mediaPlayer3 = new MediaPlayer(bounceSound);
 
 
@@ -77,7 +77,7 @@ public class Ball {
             }
 
             // Check for collisions with player 1
-            if (xPosBall <= PADDLE_WIDTH && yPosBall >= player1.getYPaddlePosition() && yPosBall <= player1.getYPaddlePosition() + PADDLE_HEIGHT && xBallVelocity < 0) {
+            if (xPosBall <= PADDLE_WIDTH && yPosBall >= player1.getYPaddlePosition() && yPosBall <= player1.getYPaddlePosition() + player1.getPaddleHeight() && xBallVelocity < 0) {
                 // Function for when ball bounces of the paddle a sound is played
                 mediaPlayer3.seek(mediaPlayer3.getStartTime());
                 Music.playBounceSound(mediaPlayer3);
@@ -89,7 +89,7 @@ public class Ball {
             }
 
             // Check for collisions with player 2
-            if (xPosBall >= WINDOW_WIDTH - PADDLE_WIDTH - BALL_DIAMETER && yPosBall >= player2.getYPaddlePosition() && yPosBall <= player2.getYPaddlePosition() + PADDLE_HEIGHT && xBallVelocity > 0) {
+            if (xPosBall >= WINDOW_WIDTH - PADDLE_WIDTH - BALL_DIAMETER && yPosBall >= player2.getYPaddlePosition() && yPosBall <= player2.getYPaddlePosition() + player2.getPaddleHeight() && xBallVelocity > 0) {
                 mediaPlayer3.seek(mediaPlayer3.getStartTime());
                 Music.playBounceSound(mediaPlayer3);
                 xBallVelocity = -xBallVelocity;//change horizontal direction
@@ -104,7 +104,7 @@ public class Ball {
 
     // Function to "draw" the ball to the game scene (parameter) and give it a color
     public void draw (GraphicsContext gc){
-        gc.setFill(Color.WHITE);
+        gc.setFill(Color.DARKORANGE);
         gc.fillOval(xPosBall, yPosBall, BALL_DIAMETER, BALL_DIAMETER);
     }
 }

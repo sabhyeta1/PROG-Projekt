@@ -4,18 +4,16 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 
-
-
 public class Paddle {
 
     // Instances of the class
     private int playerID;
-    private int yPaddleVelocity;
+    private double yPaddleVelocity;
     private double xPaddlePosition;
     double yPaddlePosition;
     private int paddleWidth;
     private int paddleHeight;
-    private int paddleSpeed;
+    private double paddleSpeed = 2.5;
 
 
 
@@ -23,23 +21,35 @@ public class Paddle {
     public Paddle(double xPaddlePosition, double yPaddlePosition, int paddleWidth, int paddleHeight, int playerID) {
 
         // Initializing instances
+        this.playerID = playerID;
         this.xPaddlePosition = xPaddlePosition;
         this.yPaddlePosition = yPaddlePosition;
         this.paddleWidth = paddleWidth;
         this.paddleHeight = paddleHeight;
-        this.playerID = playerID;
-        this.paddleSpeed = 5;
+
+        if (playerID == 2){
+            this.paddleHeight = (int) (GameLogic.PADDLE_HEIGHT * 1.2);
+            this.paddleSpeed = 0.9 * paddleSpeed;
+        }
+        if (playerID == 3){
+            this.paddleHeight = (int) (GameLogic.PADDLE_HEIGHT * 1.5);
+            this.paddleSpeed = 0.7 * paddleSpeed;
+        }
+        if (playerID == 4){
+            this.paddleHeight = (int) (GameLogic.PADDLE_HEIGHT * 0.8);
+            this.paddleSpeed = 1.3 * paddleSpeed;
+        }
     }
 
 
 
     // Getters and Setters
-    public int getPaddleSpeed() {
+    public double getPaddleSpeed() {
         return paddleSpeed;
     }
 
 
-    public void setYDirection(int yDirection) {
+    public void setYDirection(double yDirection) {
         this.yPaddleVelocity = yDirection;
     }
 
@@ -58,7 +68,7 @@ public class Paddle {
         this.playerID = playerID;
     }
 
-    public int getYPaddleVelocity() {
+    public double getYPaddleVelocity() {
         return yPaddleVelocity;
     }
 
@@ -87,7 +97,7 @@ public class Paddle {
     }
 
     public int getPaddleHeight() {
-        return paddleHeight;
+        return this.paddleHeight;
     }
 
     public void setPaddleHeight(int paddleHeight) {
@@ -102,7 +112,7 @@ public class Paddle {
 
     // Function to move the paddle
     public void move() {
-        yPaddlePosition += yPaddleVelocity;
+        yPaddlePosition += (yPaddleVelocity * paddleSpeed);
     }
 
 

@@ -46,11 +46,11 @@ public class GameAvatar {
         avatarMovement();
 
 
-        if (temporaryRoot == GameLogik.root) {
-            GameLogik.root.getChildren().add(selectedPlayerView);
+        if (temporaryRoot == GameLogic.root) {
+            GameLogic.root.getChildren().add(selectedPlayerView);
         }
-        if (temporaryRoot == GameLogik.secondRoot) {
-            GameLogik.secondRoot.getChildren().add(selectedPlayerView);
+        if (temporaryRoot == GameLogic.secondRoot) {
+            GameLogic.secondRoot.getChildren().add(selectedPlayerView);
         }
     }
 

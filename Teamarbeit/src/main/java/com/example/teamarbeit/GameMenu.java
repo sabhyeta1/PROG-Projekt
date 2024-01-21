@@ -3,11 +3,9 @@ package com.example.teamarbeit;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -33,13 +31,13 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
     static final double WINDOW_HEIGHT = 666;
     public static String menuMusicPath = "./Teamarbeit/src/main/resources/com.example.teamarbeit/menu_music.mp3";
 
-    public GameLogik game;
+    public GameLogic game;
     StackPane root;
 
 
     // Constructor for the "GameMenu" class
     public GameMenu() {
-        this.game = new GameLogik();
+        this.game = new GameLogic();
     }
 
 
