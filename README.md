@@ -19,7 +19,7 @@ Although all of us worked on the code, Masud couldn't commit his code regularly 
 
 Sources: 
 Audio: music from pixaby: https://pixabay.com/
-Images: AI Generated: DALLE - 3 for the Avatars, Adobe Firefly for the stages and backgrounds. 
+Images: AI Generated: DALLE - 3 for the Avatars, Adobe Firefly for the stages and backgrounds and remove.bg to remove the backgrounds of the Avatar images. 
 
 Bugs to fix: 
 
