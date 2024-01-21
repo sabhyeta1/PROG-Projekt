@@ -1,12 +1,10 @@
 package com.example.teamarbeit;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
+
 import javafx.geometry.Orientation;
 import javafx.scene.control.Slider;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.util.Duration;
 
 import java.io.File;
 
@@ -56,6 +54,7 @@ public class Music {
         slider.setMajorTickUnit(50);
         slider.setMinorTickCount(5);
         slider.setBlockIncrement(10);
+
         return slider;
     }
 
@@ -136,26 +135,5 @@ public class Music {
         mediaPlayer.setVolume(getSliderValue(gameSoundSlider)); //50% of the volume
         mediaPlayer.play();
     }
-
-
-    // Placeholders
-    public static void reduceVolumeGradually() { //Fade away von menu music (when "Start The Game" button is pressed)
-        Timeline volumeReductionTimeline = new Timeline(
-                new KeyFrame(Duration.seconds(0.1), event -> {
-
-                    if (mediaPlayer1.getVolume() > 0) {
-                        double currentVolume = mediaPlayer1.getVolume();
-                        mediaPlayer1.setVolume(currentVolume - 0.05); // Adjust decrement value as needed
-                    } else {
-                        mediaPlayer1.stop();
-                    }
-
-                })
-        );
-        volumeReductionTimeline.setCycleCount(Timeline.INDEFINITE);
-        volumeReductionTimeline.play();
-    }
-
-
 
 }

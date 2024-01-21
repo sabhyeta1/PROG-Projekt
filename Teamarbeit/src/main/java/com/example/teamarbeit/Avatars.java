@@ -13,7 +13,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import static com.example.teamarbeit.GameLogic.*;
 //static import of the class GameLogik, allows direct use of static members from the GameLogik class
 
 
@@ -22,12 +21,10 @@ import static com.example.teamarbeit.GameLogic.*;
 public class Avatars { //selection of avatars function in this class
 
     // The instances of the class
-    private Label instructions;
+    private final Label instructions;
     //label = displays the instructions (Player XYZ select your character) on the screen
 
-    private Stage window; //settings for the stage
-    private int windowWidth;
-    private int windowHeight;
+    private final Stage window; //settings for the stage
 
     private int playerSelecting = 1;
     //selection for which avatar the player will choose
@@ -47,11 +44,6 @@ public class Avatars { //selection of avatars function in this class
     AvatarSelectionCompleteCallback callback;
 
 
-    // Placeholder
-    private Stage currentStage;
-
-
-
 
     // Constructor that sets up avatar selection screen dimensions and stage where avatars will be displayed
     // Callback = an instance that is used to declare when the avatar selection is over
@@ -60,8 +52,6 @@ public class Avatars { //selection of avatars function in this class
         // Initializing instances
         this.callback = callback;
         this.window = currentStage;
-        this.windowWidth = windowWidth;
-        this.windowHeight = windowHeight;
 
 
         instructions = new Label("Player 1: Select your character");
@@ -153,7 +143,7 @@ public class Avatars { //selection of avatars function in this class
         selectionLayout.setStyle(backgroundImage + backgroundSize + backgroundOpacity);
 
 
-        Scene selectionScene = new Scene(selectionLayout, this.windowWidth, this.windowHeight);
+        Scene selectionScene = new Scene(selectionLayout, windowWidth, windowHeight);
 
         currentStage.setScene(selectionScene);
     }
@@ -226,32 +216,8 @@ public class Avatars { //selection of avatars function in this class
 
 
 
-    // Placeholder
-    private void startGame() {
-        // Game screen
-        Label player1Label = new Label("Player 1 character selected!");
-        Label player2Label = new Label("Player 2 character selected!");
-        Button startGameButton = new Button("Start Game");
-        startGameButton.setStyle("-fx-background-color: red; -fx-text-fill: white; -fx-font-size: 50px; -fx-pref-width: 400px; -fx-pref-height: 80px;");
-        startGameButton.setOnAction(e -> {
-            if (callback != null) {
-                callback.onSelectionComplete(backButton);
-            }
-        });
-
-        VBox gameLayout = new VBox(10);
-        gameLayout.getChildren().addAll(startGameButton, player1Label, player2Label);
-        gameLayout.setAlignment(Pos.CENTER);
-        Scene gameScene = new Scene(gameLayout, WINDOW_WIDTH, WINDOW_HEIGHT);
-
-        window.setScene(gameScene);
-    }
-
-
 
     public static void main(String[] args) {
     }
-
-
 
 }

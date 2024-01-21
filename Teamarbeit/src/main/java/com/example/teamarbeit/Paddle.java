@@ -28,15 +28,15 @@ public class Paddle {
         this.paddleHeight = paddleHeight;
 
         if (playerID == 2){
-            this.paddleHeight = (int) (GameLogic.PADDLE_HEIGHT * 1.2);
-            this.paddleSpeed = 0.9 * paddleSpeed;
+            this.paddleHeight = (int) (GameLogic.PADDLE_HEIGHT * 1.3);
+            this.paddleSpeed = 0.85 * paddleSpeed;
         }
         if (playerID == 3){
-            this.paddleHeight = (int) (GameLogic.PADDLE_HEIGHT * 1.5);
-            this.paddleSpeed = 0.7 * paddleSpeed;
+            this.paddleHeight = (int) (GameLogic.PADDLE_HEIGHT * 1.7);
+            this.paddleSpeed = 0.75 * paddleSpeed;
         }
         if (playerID == 4){
-            this.paddleHeight = (int) (GameLogic.PADDLE_HEIGHT * 0.8);
+            this.paddleHeight = (int) (GameLogic.PADDLE_HEIGHT * 0.75);
             this.paddleSpeed = 1.3 * paddleSpeed;
         }
     }
@@ -112,7 +112,9 @@ public class Paddle {
 
     // Function to move the paddle
     public void move() {
+        if (Ball.gameSceneIsRunning){
         yPaddlePosition += (yPaddleVelocity * paddleSpeed);
+        }
     }
 
 

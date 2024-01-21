@@ -55,32 +55,18 @@ public class GameLogic extends Application implements ExitPause{
     private final Set<KeyCode> keysPressedP1 = new HashSet<>(); //"HashSet" (list) für Input Player 1
     private final Set<KeyCode> keysPressedP2 = new HashSet<>(); //"HashSet" (list) für Input Player 2
 
-    // Placeholders:
-    static int ballYSpeed = 1;
-    static int ballXSpeed = 1;
-
-    int scorePlayer1 = 0;
-    int scorePlayer2 = 0;
-
-    int xPosPlayer1 = 0;
-    double yPosPlayer1 = WINDOW_HEIGHT / 2;
-    int xPosPlayer2 = WINDOW_WIDTH - PADDLE_WIDTH;
-    double yPosPlayer2 = WINDOW_HEIGHT / 2;
-
-
-
 
     @Override
     public void start(Stage primaryStage) throws IOException {
 
         currentStage = primaryStage; //stage is taken over
         currentStage.setTitle("Play"); //stage gets title Pong Project (you can see it up on the left side)
-        mediaPlayer2Path = "./Teamarbeit/src/main/resources/com.example.teamarbeit/game_music.mp3";
+        mediaPlayer2Path = "./Teamarbeit/src/main/resources/game_music.mp3";
 
         Music.mediaPlayer1.stop();
 
         // Create the canvas "gameCanvas "to draw our Game (a canvas is like a scene, but you can draw objects here like rectangles and circles)
-        score = new Score(WINDOW_WIDTH,(int) WINDOW_HEIGHT); //score is created
+        score = new Score(); //score is created
 
         gameCanvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGHT); //a canvas is created
         gc = gameCanvas.getGraphicsContext2D(); //the objects we have drawn are saved as "gc", they can execute functions for the objects (change colors, sizes and so on)
@@ -113,7 +99,7 @@ public class GameLogic extends Application implements ExitPause{
             allMovement();
             updateCanvas();
             updateScore();
-            if (countdown.currentCountdownValue >0 && countdown != null){
+            if (countdown.currentCountdownValue >0){
                 countdown.drawCountdown(gc);
             }
             gameOver();
@@ -130,7 +116,7 @@ public class GameLogic extends Application implements ExitPause{
         }));
 
         tl.setCycleCount(Timeline.INDEFINITE); //timeline is executed indefinite times - runs forever, except it is interrupted
-        createPaddles(); //for methods for row 79 to 84 (see more below)
+        createPaddles();
         createBall();
         startCountdown(5, ball, gc, 100, WINDOW_WIDTH / 2, (int)WINDOW_HEIGHT / 2);
         updateCanvas();
@@ -162,7 +148,7 @@ public class GameLogic extends Application implements ExitPause{
     }
 
 
-    private static void startCountdown(int duration, Ball ball, GraphicsContext gc, int fontSize, int fontXPos, int fontYPos) { //siehe Visual Countdown Klasse
+    public static void startCountdown(int duration, Ball ball, GraphicsContext gc, int fontSize, int fontXPos, int fontYPos) { //siehe Visual Countdown Klasse
         countdown = new VisualCountdown(duration, ball, gc, fontSize, fontXPos, fontYPos);
         countdown.countdownLogic();
     }
@@ -172,7 +158,8 @@ public class GameLogic extends Application implements ExitPause{
         Music.mediaPlayer2.pause(); //pausing the game music so -->
         Music.mediaPlayer1.play(); //--> the menu music can start again
         tl.pause(); //pausing the timeline so the game can be continued exactly where it was left when the pause screen is opened
-        PauseScreen pauseScreen = new PauseScreen(WINDOW_WIDTH, (int) WINDOW_HEIGHT, currentStage, this) { //pause screen is created with the constructor of the "PauseScreen" class
+        Ball.gameSceneIsRunning = false;
+        new PauseScreen(currentStage, this, ball, gc) { //pause screen is created with the constructor of the "PauseScreen" class
         };
     }
 
@@ -204,8 +191,8 @@ public class GameLogic extends Application implements ExitPause{
 
         root.getChildren().clear();
         secondRoot = new AnchorPane();
-        GameAvatar winnerAvatar = new GameAvatar(winnerImage, 20.0, 20.0, AVATAR_HEIGHT, secondRoot);
-        GameAvatar loserAvatar = new GameAvatar(loserImage, 20.0, 20.0, AVATAR_HEIGHT, root);
+        new GameAvatar(winnerImage, 20.0, 20.0, AVATAR_HEIGHT, secondRoot);
+        new GameAvatar(loserImage, 20.0, 20.0, AVATAR_HEIGHT, root);
 
 
         VBox victoryContent = new VBox(); //increased spacing between nodes
@@ -265,15 +252,16 @@ public class GameLogic extends Application implements ExitPause{
         if (ball.getXPosBall() <= 0) { //when the ball is all to the left, player 2 gets a score
             score.scorePlayer2++;
             if (score.scorePlayer1 < MAX_SCORE && score.scorePlayer2 < MAX_SCORE) {
+                createPaddles();
                 createBall(); //ball is recreated in the middle of the screen and a countdown of 3 seconds is started
                 startCountdown(3, ball, gc, 100, WINDOW_WIDTH / 2, (int) WINDOW_HEIGHT / 2);
             }
         }
+
         else if (ball.getXPosBall() >= WINDOW_WIDTH ) { //when the ball is all to the right, player 1 gets a score
             score.scorePlayer1++;
-
-
             if (score.scorePlayer1 < MAX_SCORE && score.scorePlayer2 < MAX_SCORE) {
+                createPaddles();
                 createBall(); //ball is recreated in the middle of the screen and a countdown of 3 seconds is started
                 startCountdown(3, ball, gc, 100, WINDOW_WIDTH / 2, (int) WINDOW_HEIGHT / 2);
             }
@@ -347,9 +335,7 @@ public class GameLogic extends Application implements ExitPause{
 
 
 
-    // Placeholder
-    private void run (GraphicsContext gc) {
-    }
+
 
 
 

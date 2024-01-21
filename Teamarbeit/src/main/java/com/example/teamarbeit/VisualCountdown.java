@@ -16,11 +16,11 @@ public class VisualCountdown {
     public int countdownStartValue;
     public int currentCountdownValue;
     private Timeline tl;
-    private GraphicsContext gc;
-    private Ball ball;
-    private double fontSize;
-    private int fontXPos;
-    private int fontYPos;
+    private final GraphicsContext gc;
+    public final Ball ball;
+    private final double fontSize;
+    private final int fontXPos;
+    private final int fontYPos;
     public static boolean isCountdownStarted;
 
 
@@ -44,14 +44,16 @@ public class VisualCountdown {
 
     void countdownLogic() {
         tl = new Timeline(); //create a timeline so the execution of the code can be repeated
+        Ball.gameSceneIsRunning = false;
         tl.setCycleCount(countdownStartValue); //timeline is executed as many times as the countdown needs to be finished (5s countdown --> Timeline is executed 5 times)
         tl.getKeyFrames().add(new KeyFrame(Duration.seconds(1), event -> { //every second comes a keyframe/update
             currentCountdownValue--; //countdown decreases by one and is drawn
             drawCountdown(gc);
+            Ball.gameSceneIsRunning = false;
             if (currentCountdownValue <= 0 && tl != null) { //if a countdown exists, and it reaches the value 0, the timeline is topped
                 tl.stop();
 
-                ball.gameSceneIsRunning = true; //when countdown reached value 0 the ball can move
+                Ball.gameSceneIsRunning = true; //when countdown reached value 0 the ball can move
             }
         }));
         tl.play();

@@ -23,9 +23,8 @@ public class Ball {
     private int yPosBall;
     private final int BALL_DIAMETER;
     private double ballSpeed = 2;
-    public boolean gameSceneIsRunning = false;
-    public static String mediaPlayer3Path = "./Teamarbeit/src/main/resources/com.example.teamarbeit/single_bounce.mp3";
-    public static Media bounceSound = new Media(new File("./Teamarbeit/src/main/resources/com.example.teamarbeit/single_bounce.mp3").toURI().toString());
+    public static boolean gameSceneIsRunning = false;
+    public static Media bounceSound = new Media(new File("./Teamarbeit/src/main/resources/single_bounce.mp3").toURI().toString());
     public static MediaPlayer mediaPlayer3 = new MediaPlayer(bounceSound);
 
 

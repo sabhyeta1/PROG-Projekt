@@ -18,8 +18,6 @@ public class GameAvatar {
     double sideAnchor;
     double ImageHeight;
     ImageView selectedPlayerView;
-    int timeSleep;
-
 
 
     // Constructor of the class "GameAvatar"

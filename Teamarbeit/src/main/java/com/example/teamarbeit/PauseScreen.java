@@ -3,6 +3,7 @@ package com.example.teamarbeit;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -26,36 +27,30 @@ public class PauseScreen {
     Image backgroundImage;
     ImageView backgroundImageView;
 
-    private int windowWidth;
-    private int windowHeight;
-
-
 
     // Constructor of the "PauseScreen" class
-    public PauseScreen(int windowWidth,int windowHeight,Stage primaryStage, ExitPause exit) {
+    public PauseScreen(Stage primaryStage, ExitPause exit, Ball ball, GraphicsContext gc) {
 
         // Initializing instances
 
         PauseScreen.exit = exit;
         PauseScreen.primaryStage = primaryStage;
-        this.windowWidth = windowWidth;
-        this.windowHeight = windowHeight;
 
-        switchToPause(); //function to open the pause screen
+        switchToPause(ball, gc); //function to open the pause screen
     }
 
 
 
     // Functions to create the pause screen
-    public void switchToPause() { //function to open the pause screen
-        VBox pauseLayout = createPauseLayout(); //method to create the Layout in form of a "vbox"
+    public void switchToPause(Ball ball, GraphicsContext gc) { //function to open the pause screen
+        VBox pauseLayout = createPauseLayout(ball, gc); //method to create the Layout in form of a "vbox"
         StackPane root = createBackground(imagePath, pauseLayout); //a background Picture is added to a "stackpane" named "root" and overlayed with the "pauseLayout"
         Scene selectionScene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT); //the Scene for the pause screen is created with the elements root and the window size
         primaryStage.setScene(selectionScene); //the scene is set as the current scene
     }
 
 
-    private VBox createPauseLayout() { //method to create the layout for the pause screen
+    private VBox createPauseLayout(Ball ball, GraphicsContext gc) { //method to create the layout for the pause screen
         Label pauseTitleLabel = new Label("Pause"); //creates the label for the pause screen
         pauseTitleLabel.setStyle("-fx-font-size: 50px; -fx-text-fill: white;"); //sets the format for the label
         // Creates button for the pause screen with the method "createStyledButton"
@@ -67,12 +62,12 @@ public class PauseScreen {
         // Adding the events to the Buttons (to make them function)
         continueButton.setOnAction(e -> {
             System.out.println("Continue Playing"); //text that is displayed on the console
-            switchToGame(); //the method to go back to the game (and continue)
+            switchToGame(ball, gc); //the method to go back to the game (and continue)
         });
 
         settingsButton.setOnAction(e -> {
             System.out.println("Switch to Settings"); //text that is displayed on the console
-            switchToSettings(); //the method the settings scene
+            switchToSettings(ball, gc); //the method the settings scene
         });
 
         quitButton.setOnAction(e -> {
@@ -98,14 +93,15 @@ public class PauseScreen {
 
 
     // Functions for the buttons of the pause screen
-    public static void switchToGame() { //a function to go back to the game (function for the "continueButton")
+    public static void switchToGame(Ball ball, GraphicsContext gc) { //a function to go back to the game (function for the "continueButton")
         if (exit != null) {
             exit.endingPauseScreen();
+            GameLogic.startCountdown(3, ball, gc, 100, WINDOW_WIDTH / 2, (int) WINDOW_HEIGHT / 2);
         }
     }
 
-    public void switchToSettings() { //opens the scene to change the settings (function for the "settingsButton")
-        VBox settingsLayout = createSettingsLayout(); //method to create the Layout in form of a "vbox"
+    public void switchToSettings(Ball ball, GraphicsContext gc) { //opens the scene to change the settings (function for the "settingsButton")
+        VBox settingsLayout = createSettingsLayout(ball, gc); //method to create the Layout in form of a "vbox"
         if (imagePath != null) { //function to throw an exception if the load of the background picture doesn't work
             StackPane root = createBackground(PauseScreen.imagePath, settingsLayout); //a background Picture is added to a "stackpane" named "root" and overlayed with the "settingsLayout"
             primaryStage.setScene(new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT)); //a new scene is created (with the elements root and the window size) and set
@@ -129,7 +125,7 @@ public class PauseScreen {
 
 
     // Functions to create the settings screen
-    public VBox createSettingsLayout() { //method to create the layout for the settings scene
+    public VBox createSettingsLayout(Ball ball, GraphicsContext gc) { //method to create the layout for the settings scene
         Label settingsTitleLabel = new Label("SETTINGS"); //creates the label for the settings scene
         settingsTitleLabel.setStyle("-fx-font-size: 50px; -fx-text-fill: white;"); //sets the format for the label
 
@@ -140,7 +136,7 @@ public class PauseScreen {
 
         Button backButton = GameMenu.createStyledButton("Back"); //creates a button to go back to the pause screen
         backButton.setOnAction(e -> { //adds an event to the button
-            switchToPause(); //function to open the pause screen
+            switchToPause(ball, gc); //function to open the pause screen
         });
 
         // Creates a "vbox" where the labels the sliders and the buttons are added
