@@ -20,7 +20,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.util.Duration;
 
-import java.io.IOException;
 import java.util.Set;
 
 import static com.example.teamarbeit.Avatars.*;
@@ -32,7 +31,7 @@ public class GameLogic extends Application implements ExitPause{
 
     // The instances of the class
     static Stage currentStage;
-    Scene scene1, gameScene;
+    Scene gameScene;
     public static final int WINDOW_WIDTH = 1000;
     public static final double WINDOW_HEIGHT = WINDOW_WIDTH * (0.666666666);
 
@@ -73,13 +72,15 @@ public class GameLogic extends Application implements ExitPause{
         gameCanvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGHT); //a canvas is created
         gc = gameCanvas.getGraphicsContext2D(); //the objects we have drawn are saved as "gc", they can execute functions for the objects (change colors, sizes and so on)
 
+        //generate Background
         Image backgroundImage = GameMenu.loadImage("Background_FINALE.jpg");
         ImageView backgroundView = new ImageView(backgroundImage);
         backgroundView.setFitWidth(WINDOW_WIDTH);
         backgroundView.setFitHeight(WINDOW_HEIGHT);
 
-        root = new AnchorPane();
+        root = new AnchorPane(); //For floating Avatars
         createAvatars();
+
         StackPane gcRoot = new StackPane(backgroundView, GameLogic.root, gameCanvas); //another layout is created with the class "StackPane"
         gameScene = new Scene(gcRoot, WINDOW_WIDTH, WINDOW_HEIGHT); //a new scene is created with the "StackPane" "gcRoot" in the size "WINDOW_WIDTH" X "WINDOW_HEIGHT"
         gcRoot.setStyle("-fx-background-color: black;"); //setting the background color
@@ -92,7 +93,6 @@ public class GameLogic extends Application implements ExitPause{
         });
 
         currentStage.setResizable(false); //window size stays the same - it can not be changed by the end user
-        currentStage.setScene(scene1); //set "gameScene" as the initial scene
         currentStage.show(); //stage is shown
         currentStage.setScene(gameScene); //when this button is pressed, the scene is changed to "gameScene" and "gameSceneIsRunning" is set to true
 
@@ -157,30 +157,6 @@ public class GameLogic extends Application implements ExitPause{
         countdown.countdownLogic();
     }
 
-
-    private void createPauseScreen() {
-        Music.mediaPlayer2.pause(); //pausing the game music so -->
-        Music.mediaPlayer1.play(); //--> the menu music can start again
-        tl.pause(); //pausing the timeline so the game can be continued exactly where it was left when the pause screen is opened
-        Ball.gameSceneIsRunning = false;
-        new PauseScreen(currentStage, this, ball, gc) { //pause screen is created with the constructor of the "PauseScreen" class
-        };
-    }
-
-
-    @Override
-    public void endingPauseScreen() { //method that is executed when the switch from the pause screen back to the game happens
-        System.out.println("Ending PauseScreen");
-        Music.mediaPlayer1.stop(); //stop the menu music -->
-        Music.mediaPlayer2.play(); //--> so the game music can continue
-        tl.play(); //timeline continues (the indefinite loop)
-        currentStage.show(); //showing the stage
-        currentStage.setScene(gameScene); // setting the scene for the game
-
-    }
-
-
-
     // Functions for the victory screen, when the game is over
     private void showVictoryScreen(String winnerText, Image winnerImage, Image loserImage) {
         Label victoryLabel = new Label(winnerText);
@@ -193,7 +169,7 @@ public class GameLogic extends Application implements ExitPause{
         GameMenu.addGlowEffectOnHover(backButton);
         backButton.setStyle("-fx-font-size: 18px; -fx-background-color: white"); //set the font size to 18px
 
-        root.getChildren().clear();
+        root.getChildren().clear(); //clear floating avatars
         secondRoot = new AnchorPane();
         new GameAvatar(winnerImage, 20.0, 20.0, AVATAR_HEIGHT, secondRoot);
         new GameAvatar(loserImage, 20.0, 20.0, AVATAR_HEIGHT, root);
@@ -331,7 +307,24 @@ public class GameLogic extends Application implements ExitPause{
         player2.move();
         ball.move(); ////see rows 62 -95 of the "Ball" class
     }
+    private void createPauseScreen() {
+        Music.mediaPlayer2.pause(); //pausing the game music so -->
+        Music.mediaPlayer1.play(); //--> the menu music can start again
+        tl.pause(); //pausing the timeline so the game can be continued exactly where it was left when the pause screen is opened
+        Ball.gameSceneIsRunning = false;
+        new PauseScreen(currentStage, this, ball, gc) { //pause screen is created with the constructor of the "PauseScreen" class
+        };
+    }
+    @Override
+    public void endingPauseScreen() { //method that is executed when the switch from the pause screen back to the game happens
+        System.out.println("Ending PauseScreen");
+        Music.mediaPlayer1.stop(); //stop the menu music -->
+        Music.mediaPlayer2.play(); //--> so the game music can continue
+        tl.play(); //timeline continues (the indefinite loop)
+        currentStage.show(); //showing the stage
+        currentStage.setScene(gameScene); // setting the scene for the game
 
+    }
 
 
     public static void main(String[] args) {

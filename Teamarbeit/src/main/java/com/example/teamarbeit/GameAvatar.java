@@ -5,10 +5,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
-import static com.example.teamarbeit.Avatars.*;
 
-
-
+import static com.example.teamarbeit.Avatars.selectedImagePlayer1;
+import static com.example.teamarbeit.Avatars.selectedImagePlayer2;
 
 public class GameAvatar {
 
@@ -53,14 +52,13 @@ public class GameAvatar {
     }
 
 
-
     /**
      * The following 7 lines (row 66 - 72) of Code have been inspired by the Internet: https://stackoverflow.com/questions/56203717/java-fx-translatetransition-duration-change
      */
 
 
     // Function for moving the avatars
-    public void avatarMovement () {
+    public void avatarMovement() {
         TranslateTransition floating = new TranslateTransition(Duration.seconds(1), selectedPlayerView);
         floating.setByY(10); //set th movement 10px up and down
         floating.setCycleCount(TranslateTransition.INDEFINITE); //the movement repeats in an infinite loop

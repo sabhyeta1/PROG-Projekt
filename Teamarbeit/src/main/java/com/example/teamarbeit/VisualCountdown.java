@@ -50,13 +50,13 @@ public class VisualCountdown {
             currentCountdownValue--; //countdown decreases by one and is drawn
             drawCountdown(gc);
             Ball.gameSceneIsRunning = false;
-            if (currentCountdownValue <= 0 && tl != null) { //if a countdown exists, and it reaches the value 0, the timeline is topped
+            if (currentCountdownValue <= 0 && tl != null) { //if a countdown exists, and it reaches the value 0, the timeline is stopped
                 tl.stop();
 
                 Ball.gameSceneIsRunning = true; //when countdown reached value 0 the ball can move
             }
         }));
-        tl.play();
+        tl.play(); //Start countdown
         isCountdownStarted = true;
     }
 
@@ -65,7 +65,7 @@ public class VisualCountdown {
     // Function for drawing the countdown
     public void drawCountdown(GraphicsContext gc) {
         gc.setFill(Color.TRANSPARENT); //clear the countdown area with a background color
-        gc.fillRect(fontXPos, fontYPos - fontSize, fontSize * 2, fontSize); //adjust the dimensions as needed
+        gc.fillRect(fontXPos, fontYPos - fontSize, fontSize * 2, fontSize);
 
         gc.setFill(Color.BLACK);
         gc.setFont(new Font(fontSize));

@@ -23,7 +23,6 @@ import java.io.InputStream;
 
 // Creates the class "GameMenu" which has the superclass "Application" and implements the interface "AvatarSelectionCompleteCallback"
 public class GameMenu extends Application implements AvatarSelectionCompleteCallback { //implementation of callback method for the  for avatar selection
-
     // The instances of the class
     public static Stage primaryStage; //this object is also used in other classes (so it is static)
     //the window (scenes, stages) is always the same size so these two Instances are constant
@@ -47,6 +46,7 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
         switchToMenu();  // Switching to the main menu
         primaryStage.show();  // Displaying the primary stage
         Music.playMenuMusic(GameMenu.menuMusicPath);  // Playing menu background music
+        primaryStage.setResizable(false);
     }
 
     // Functions for going back to the game menu
@@ -77,13 +77,6 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
         startButton.setOnAction(e -> {
             createAvatarSelection();  // Creating avatar selection screen
             System.out.println("Navigating to Avatar Selection Screen");
-            // Creating GameScene layout
-            Label labelGameScene = new Label("This is the Gamescene!");
-            Button buttonGameScene = new Button("Gamescene");
-            VBox layoutGameScene = new VBox();
-            layoutGameScene.getChildren().addAll(labelGameScene, buttonGameScene);
-            buttonGameScene.setOnAction(event -> GameMenu.primaryStage.setScene(new Scene(layoutGameScene, WINDOW_WIDTH, WINDOW_HEIGHT)));
-            layoutGameScene.setStyle("-fx-background-color: black;");
         });
 
         // Adding events to the menu buttons
@@ -173,41 +166,6 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
     private void createAvatarSelection(){ //selecting of the avatar
         new Avatars(WINDOW_WIDTH, (int) WINDOW_HEIGHT, primaryStage, this);
     }
-
-
-    // Function that is invoked in the "Avatars" class
-    @Override
-    public void onSelectionComplete(Button backButton) {
-        Button startGameButton = new Button("Start Game");  // Creating a new Button for starting the game
-        startGameButton.setPrefWidth(100);
-        startGameButton.setPrefHeight(30);
-        startGameButton.setOnAction(event -> switchToGame());  // Setting action for when startGameButton is clicked
-
-        VBox root = (VBox) primaryStage.getScene().getRoot();  // Accessing the current scene's root
-
-        StackPane startGameButtonPosition = new StackPane();  // Creating a StackPane to position the startGameButton
-        startGameButtonPosition.getChildren().add(startGameButton);
-        startGameButtonPosition.setAlignment(Pos.BASELINE_CENTER);
-
-        int indexOfBackButton = root.getChildren().indexOf(backButton);  // Finding the index of the backButton in the root's children
-
-        root.getChildren().add(indexOfBackButton, startGameButtonPosition);  // Adding the startGameButton at the same index as the backButton to the "VBox"
-        // Avatar selection is complete, start the game
-    }
-
-
-
-    // Function for starting the game
-    private void switchToGame() {
-        try {
-            game.start(primaryStage); // Attempt to start the game
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Error starting the game.");  // issue running the game
-        }
-    }
-
-
     // Adds a glow effect to a Button when the mouse hovers over it.
     public static void addGlowEffectOnHover(Button button) {
         DropShadow glow = new DropShadow(); // Creates a new DropShadow effect for the glow.
@@ -263,6 +221,34 @@ public class GameMenu extends Application implements AvatarSelectionCompleteCall
         return new Image(stream);
     }
 
+    // Function that is invoked in the "Avatars" class
+    @Override
+    public void onSelectionComplete(Button backButton) {
+        Button startGameButton = new Button("Start Game");  // Creating a new Button for starting the game
+        startGameButton.setPrefWidth(100);
+        startGameButton.setPrefHeight(30);
+        startGameButton.setOnAction(event -> switchToGame());  // Setting action for when startGameButton is clicked
 
+        VBox root = (VBox) primaryStage.getScene().getRoot();  // Accessing the current scene's root
+
+        StackPane startGameButtonPosition = new StackPane();  // Creating a StackPane to position the startGameButton
+        startGameButtonPosition.getChildren().add(startGameButton);
+        startGameButtonPosition.setAlignment(Pos.BASELINE_CENTER);
+
+        int indexOfBackButton = root.getChildren().indexOf(backButton);  // Finding the index of the backButton in the root's children
+
+        root.getChildren().add(indexOfBackButton, startGameButtonPosition);  // Adding the startGameButton at the same index as the backButton to the "VBox"
+        // Avatar selection is complete, start the game
+    }
+
+    // Function for starting the game
+    private void switchToGame() {
+        try {
+            game.start(primaryStage); // Attempt to start the game
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error starting the game.");  // issue running the game
+        }
+    }
 
 }

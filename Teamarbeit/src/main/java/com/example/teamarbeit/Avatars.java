@@ -139,7 +139,7 @@ public class Avatars { //selection of avatars function in this class
 
         String backgroundImage = "-fx-background-image: url('/stage1.png');";
         String backgroundSize = "-fx-background-size: 1000px 666px;";
-        String backgroundOpacity = "-fx-background-opacity: 0.3;";
+        String backgroundOpacity = "-fx-background-opacity: 0.3;"; //Durchsichtigkeit vom BG Image
         selectionLayout.setStyle(backgroundImage + backgroundSize + backgroundOpacity);
 
 
@@ -166,7 +166,7 @@ public class Avatars { //selection of avatars function in this class
                 bothPlayersSelected = true;
             if (callback != null) {
                 callback.onSelectionComplete(backButton); //callback expressing that both players have been selected
-                // Both players have been selected, start the game
+                // Both players have been selected, show the "Start Game" button
                 }
             }
         }

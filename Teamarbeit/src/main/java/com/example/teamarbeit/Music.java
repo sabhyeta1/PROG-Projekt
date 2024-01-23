@@ -51,7 +51,7 @@ public class Music {
         slider.setValue(50); //the default value that is set for the slider
         slider.setOrientation(Orientation.HORIZONTAL); //the slider is presented horizontal
         //settings for moving the sliders
-        slider.setShowTickLabels(true);
+
         slider.setShowTickMarks(true);
         slider.setMajorTickUnit(50);
         slider.setMinorTickCount(5);

@@ -1,7 +1,15 @@
 package com.example.teamarbeit;
 
+import javafx.animation.TranslateTransition;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
+
+import static com.example.teamarbeit.Avatars.selectedImagePlayer1;
+import static com.example.teamarbeit.Avatars.selectedImagePlayer2;
 
 
 public class Paddle {
@@ -32,11 +40,11 @@ public class Paddle {
             this.paddleSpeed = 0.85 * paddleSpeed;
         }
         if (playerID == 3){
-            this.paddleHeight = (int) (GameLogic.PADDLE_HEIGHT * 1.7);
+            this.paddleHeight = (int) (GameLogic.PADDLE_HEIGHT * 1.9);
             this.paddleSpeed = 0.75 * paddleSpeed;
         }
         if (playerID == 4){
-            this.paddleHeight = (int) (GameLogic.PADDLE_HEIGHT * 0.75);
+            this.paddleHeight = (int) (GameLogic.PADDLE_HEIGHT * 0.8);
             this.paddleSpeed = 1.3 * paddleSpeed;
         }
     }
@@ -138,7 +146,6 @@ public class Paddle {
         }
         gc.fillRect(xPaddlePosition, yPaddlePosition, paddleWidth, paddleHeight);
     }
-
 
 
 }
