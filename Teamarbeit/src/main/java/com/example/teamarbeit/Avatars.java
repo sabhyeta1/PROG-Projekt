@@ -58,6 +58,7 @@ public class Avatars { //selection of avatars function in this class
         instructions.setTextFill(Color.WHITE);
         instructions.setFont(new Font(40));
 
+        //Transparente floating Background
         gameImage1 = GameMenu.loadImage("game_avatar1.png");
         gameImage2 = GameMenu.loadImage("game_avatar2.png");
         gameImage3 = GameMenu.loadImage("game_avatar3.png");
@@ -93,7 +94,7 @@ public class Avatars { //selection of avatars function in this class
         view4.setPreserveRatio(true);
         Button avatar4 = new Button("", view4);
 
-
+        //selectCharacter & buttonGlow
         avatar1.setOnAction(e -> selectCharacter(gameImage1,1));
         addGlowEffectOnButtonHover(avatar1, 1);
 
@@ -129,7 +130,7 @@ public class Avatars { //selection of avatars function in this class
         grid.add(avatar2, 1, 0); //top-right
         grid.add(avatar3, 0, 1); //bottom-left
         grid.add(avatar4, 1, 1); //bottom-right
-        grid.add(backButton,0,2);
+
 
 
         VBox selectionLayout = new VBox(10); //stacks instructions and grid of avatars vertically

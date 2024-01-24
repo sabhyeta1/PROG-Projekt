@@ -122,7 +122,7 @@ public class GameLogic extends Application implements ExitPause{
         tl.setCycleCount(Timeline.INDEFINITE); //timeline is executed indefinite times - runs forever, except it is interrupted
         createPaddles();
         createBall();
-        startCountdown(5, ball, gc, 100, WINDOW_WIDTH / 2, (int)WINDOW_HEIGHT / 2);
+        startCountdown(5, gc, 100, WINDOW_WIDTH / 2, (int)WINDOW_HEIGHT / 2);
         updateCanvas();
         updateScore();
         Music.playGameMusic(mediaPlayer2Path);
@@ -152,8 +152,8 @@ public class GameLogic extends Application implements ExitPause{
     }
 
 
-    public static void startCountdown(int duration, Ball ball, GraphicsContext gc, int fontSize, int fontXPos, int fontYPos) { //siehe Visual Countdown Klasse
-        countdown = new VisualCountdown(duration, ball, gc, fontSize, fontXPos, fontYPos);
+    public static void startCountdown(int duration, GraphicsContext gc, int fontSize, int fontXPos, int fontYPos) { //siehe Visual Countdown Klasse
+        countdown = new VisualCountdown(duration, gc, fontSize, fontXPos, fontYPos);
         countdown.countdownLogic();
     }
 
@@ -234,7 +234,7 @@ public class GameLogic extends Application implements ExitPause{
             if (score.scorePlayer1 < MAX_SCORE && score.scorePlayer2 < MAX_SCORE) {
                 createPaddles();
                 createBall(); //ball is recreated in the middle of the screen and a countdown of 3 seconds is started
-                startCountdown(3, ball, gc, 100, WINDOW_WIDTH / 2, (int) WINDOW_HEIGHT / 2);
+                startCountdown(3, gc, 100, WINDOW_WIDTH / 2, (int) WINDOW_HEIGHT / 2);
             }
         }
 
@@ -243,7 +243,7 @@ public class GameLogic extends Application implements ExitPause{
             if (score.scorePlayer1 < MAX_SCORE && score.scorePlayer2 < MAX_SCORE) {
                 createPaddles();
                 createBall(); //ball is recreated in the middle of the screen and a countdown of 3 seconds is started
-                startCountdown(3, ball, gc, 100, WINDOW_WIDTH / 2, (int) WINDOW_HEIGHT / 2);
+                startCountdown(3, gc, 100, WINDOW_WIDTH / 2, (int) WINDOW_HEIGHT / 2);
             }
         }
     }

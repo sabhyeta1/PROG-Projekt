@@ -17,7 +17,6 @@ public class VisualCountdown {
     public int currentCountdownValue;
     private Timeline tl;
     private final GraphicsContext gc;
-    public final Ball ball;
     private final double fontSize;
     private final int fontXPos;
     private final int fontYPos;
@@ -26,7 +25,7 @@ public class VisualCountdown {
 
 
     // Constructor of the class "VisualCountdown"
-    VisualCountdown(int duration, Ball ball, GraphicsContext gc, double fontSize, int fontXPos, int fontYPos) {
+    VisualCountdown(int duration, GraphicsContext gc, double fontSize, int fontXPos, int fontYPos) {
 
         // Initializing instances
         this.countdownStartValue = duration;
@@ -35,7 +34,6 @@ public class VisualCountdown {
         this.fontSize = fontSize;
         this.fontXPos = fontXPos;
         this.fontYPos = fontYPos;
-        this.ball = ball;
         isCountdownStarted = false;
         drawCountdown(gc);
     }
@@ -44,7 +42,7 @@ public class VisualCountdown {
 
     void countdownLogic() {
         tl = new Timeline(); //create a timeline so the execution of the code can be repeated
-        Ball.gameSceneIsRunning = false;
+        Ball.gameSceneIsRunning = false; // to lock the Movement of Ball and Paddle
         tl.setCycleCount(countdownStartValue); //timeline is executed as many times as the countdown needs to be finished (5s countdown --> Timeline is executed 5 times)
         tl.getKeyFrames().add(new KeyFrame(Duration.seconds(1), event -> { //every second comes a keyframe/update
             currentCountdownValue--; //countdown decreases by one and is drawn
@@ -53,7 +51,7 @@ public class VisualCountdown {
             if (currentCountdownValue <= 0 && tl != null) { //if a countdown exists, and it reaches the value 0, the timeline is stopped
                 tl.stop();
 
-                Ball.gameSceneIsRunning = true; //when countdown reached value 0 the ball can move
+                Ball.gameSceneIsRunning = true; //when countdown reached value 0 the ball & paddles can move
             }
         }));
         tl.play(); //Start countdown
@@ -71,7 +69,6 @@ public class VisualCountdown {
         gc.setFont(new Font(fontSize));
         gc.fillText(Integer.toString(currentCountdownValue), fontXPos, fontYPos);
     }
-
 
 
 }
